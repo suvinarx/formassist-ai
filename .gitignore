@@ -1,0 +1,10 @@
+backend/.env
+backend/venv
+backend/generated_pdfs
+frontend/node_modules
+frontend/dist
+.DS_Store
+# Python cache
+__pycache__/
+*.pyc
+backend/__pycache__/

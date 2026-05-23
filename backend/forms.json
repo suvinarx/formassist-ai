@@ -1,0 +1,140 @@
+[
+  {
+    "form_id": "usps_change_of_address_helper",
+    "form_name": "USPS Change of Address Helper Packet",
+    "category": "Moving",
+    "agency": "USPS",
+    "submission_mode": "helper_only",
+    "description": "Helps prepare information needed for USPS mail forwarding. User must submit officially through USPS.",
+    "questions": [
+      {
+        "id": "moving_party_type",
+        "label": "Who is moving?",
+        "type": "single_choice",
+        "options": ["Individual", "Family", "Business"],
+        "required": true
+      },
+      {
+        "id": "move_duration",
+        "label": "Is this move permanent or temporary?",
+        "type": "single_choice",
+        "options": ["Permanent", "Temporary"],
+        "required": true
+      },
+      {
+        "id": "forwarding_start_date",
+        "label": "What date should mail forwarding start?",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "forwarding_end_date",
+        "label": "If temporary, when should forwarding end?",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "old_street",
+        "label": "Old street address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "old_unit",
+        "label": "Old apartment/unit number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "old_city",
+        "label": "Old city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "old_state",
+        "label": "Old state",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "old_zip",
+        "label": "Old ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_street",
+        "label": "New street address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_unit",
+        "label": "New apartment/unit number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "new_city",
+        "label": "New city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_state",
+        "label": "New state",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_zip",
+        "label": "New ZIP code",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "ca_dmv_change_of_address_helper",
+    "form_name": "California DMV Change of Address Helper",
+    "category": "Moving",
+    "agency": "California DMV",
+    "submission_mode": "helper_only",
+    "description": "Helps prepare information for California DMV address update.",
+    "questions": []
+  },
+  {
+    "form_id": "wa_new_resident_driver_license_checklist",
+    "form_name": "Washington New Resident Driver License Checklist",
+    "category": "Moving",
+    "agency": "Washington DOL",
+    "submission_mode": "helper_only",
+    "description": "Checklist for new Washington residents who may need a WA driver license.",
+    "questions": []
+  }
+]
