@@ -1,275 +1,264 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "./firebase";
+import AuthModal from "./AuthModal";
 import "./App.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 
 function App() {
+  const [user, setUser] = useState(undefined);
+  const [showAuth, setShowAuth] = useState(false);
+
   const [step, setStep] = useState("lead");
   const [loading, setLoading] = useState(false);
+  const [loadingMsg, setLoadingMsg] = useState("");
   const [error, setError] = useState("");
 
-  const [lead, setLead] = useState({
-    first_name: "",
-    email: "",
-    situation: "",
-    consent: false,
-  });
-
+  const [situation, setSituation] = useState("");
+  const [consent, setConsent] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
+
+  // AI Fill state
   const [selectedForm, setSelectedForm] = useState(null);
-  const [userDetails, setUserDetails] = useState("");
   const [answers, setAnswers] = useState({});
   const [downloadUrl, setDownloadUrl] = useState("");
+  const [pdfReady, setPdfReady] = useState(false);
 
-  function updateLead(field, value) {
-    setLead((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (u) => setUser(u ?? null));
+    return unsub;
+  }, []);
+
+  function getFirstName(u) {
+    if (!u) return "";
+    if (u.displayName) return u.displayName.split(" ")[0];
+    return u.email.split("@")[0];
+  }
+  function getInitials(u) {
+    if (!u) return "?";
+    if (u.displayName) {
+      const p = u.displayName.split(" ");
+      return (p[0]?.[0] ?? "") + (p[1]?.[0] ?? "");
+    }
+    return u.email[0].toUpperCase();
+  }
+
+  // ── Step 1: Analyze situation ──────────────────────────────────────────────
+  function handleFindForms() {
+    if (!user) { setShowAuth(true); return; }
+    analyzeSituation();
   }
 
   async function analyzeSituation() {
     setError("");
-
-    const isValid =
-      lead.first_name.trim() !== "" &&
-      lead.email.trim() !== "" &&
-      lead.situation.trim() !== "" &&
-      lead.consent === true;
-
-    if (!isValid) {
-      setError("Please enter your first name, email, situation, and consent.");
-      return;
-    }
-
+    if (!situation.trim()) { setError("Please describe your situation."); return; }
+    if (!consent) { setError("Please confirm your consent to continue."); return; }
     try {
       setLoading(true);
-
-      const response = await fetch(`${API_BASE}/api/analyze-situation`, {
+      setLoadingMsg("Analyzing your situation…");
+      const res = await fetch(`${API_BASE}/api/analyze-situation`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          first_name: lead.first_name.trim(),
-          email: lead.email.trim(),
-          situation: lead.situation.trim(),
-          consent: lead.consent,
+          first_name: getFirstName(user),
+          email: user.email,
+          situation: situation.trim(),
+          consent,
         }),
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to analyze situation.");
-      }
-
-      const data = await response.json();
+      if (!res.ok) throw new Error("Failed to analyze situation.");
+      const data = await res.json();
       setRecommendations(data.recommended_forms || []);
       setStep("recommendations");
     } catch (err) {
-      setError(err.message || "Something went wrong while analyzing.");
+      setError(err.message);
     } finally {
       setLoading(false);
+      setLoadingMsg("");
     }
   }
 
+  // ── Step 2: Select form → smart-fill immediately ───────────────────────────
   async function chooseForm(form) {
     setError("");
-
+    setPdfReady(false);
+    setDownloadUrl("");
     try {
       setLoading(true);
+      setLoadingMsg("AI is reading your situation and pre-filling the form…");
 
-      const response = await fetch(`${API_BASE}/api/forms/${form.form_id}`);
-
-      if (!response.ok) {
-        throw new Error("Failed to load selected form.");
-      }
-
-      const data = await response.json();
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
-      setSelectedForm(data);
-      setUserDetails("");
-      setAnswers({});
-      setStep("ai_fill");
-    } catch (err) {
-      setError(err.message || "Something went wrong while loading the form.");
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  async function aiFill() {
-    setError("");
-
-    if (!selectedForm) {
-      setError("Please select a form first.");
-      return;
-    }
-
-    if (!userDetails.trim()) {
-      setError("Please enter the details you want AI to use.");
-      return;
-    }
-
-    try {
-      setLoading(true);
-
-      const response = await fetch(`${API_BASE}/api/ai-fill`, {
+      const res = await fetch(`${API_BASE}/api/smart-fill`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          form_id: selectedForm.form_id,
-          user_details: userDetails.trim(),
+          form_id: form.form_id,
+          situation: situation.trim(),
+          user_name: user.displayName || getFirstName(user),
+          user_email: user.email,
         }),
       });
+      if (!res.ok) throw new Error("Failed to fill form.");
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
 
-      if (!response.ok) {
-        throw new Error("AI fill failed.");
-      }
-
-      const data = await response.json();
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
+      setSelectedForm(data.form);
       setAnswers(data.answers || {});
-      setStep("review");
+      setStep("preview");
     } catch (err) {
-      setError(err.message || "Something went wrong during AI fill.");
+      setError(err.message);
     } finally {
       setLoading(false);
+      setLoadingMsg("");
     }
   }
 
+  // ── Step 3: Update any answer manually ────────────────────────────────────
   function updateAnswer(key, value) {
-    setAnswers((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setAnswers((p) => ({ ...p, [key]: value }));
+    setPdfReady(false);
+    setDownloadUrl("");
   }
 
+  // ── Step 4: Generate PDF ───────────────────────────────────────────────────
   async function generatePdf() {
     setError("");
-
-    if (!selectedForm) {
-      setError("No form selected.");
-      return;
-    }
-
     try {
       setLoading(true);
-
-      const response = await fetch(`${API_BASE}/api/generate-pdf`, {
+      setLoadingMsg("Generating your pre-filled PDF…");
+      const res = await fetch(`${API_BASE}/api/generate-pdf`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           form_id: selectedForm.form_id,
+          form_name: selectedForm.form_name,
+          agency: selectedForm.agency,
           answers,
+          questions: selectedForm.questions,
         }),
       });
-
-      if (!response.ok) {
-        throw new Error("PDF generation failed.");
-      }
-
-      const data = await response.json();
-
-      if (data.error) {
-        throw new Error(data.error);
-      }
-
+      if (!res.ok) throw new Error("PDF generation failed.");
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
       setDownloadUrl(`${API_BASE}${data.download_url}`);
-      setStep("done");
+      setPdfReady(true);
     } catch (err) {
-      setError(err.message || "Something went wrong while generating PDF.");
+      setError(err.message);
     } finally {
       setLoading(false);
+      setLoadingMsg("");
     }
   }
 
   function restart() {
     setStep("lead");
     setLoading(false);
+    setLoadingMsg("");
     setError("");
-    setLead({
-      first_name: "",
-      email: "",
-      situation: "",
-      consent: false,
-    });
+    setSituation("");
+    setConsent(false);
     setRecommendations([]);
     setSelectedForm(null);
-    setUserDetails("");
     setAnswers({});
     setDownloadUrl("");
+    setPdfReady(false);
+  }
+
+  async function handleSignOut() {
+    await signOut(auth);
+    restart();
+  }
+
+  // ── Filled field count ─────────────────────────────────────────────────────
+  function filledCount() {
+    return Object.values(answers).filter((v) => v && String(v).trim()).length;
+  }
+  function totalCount() {
+    return selectedForm?.questions?.length || 0;
+  }
+
+  // ── Loading screen ─────────────────────────────────────────────────────────
+  if (user === undefined) {
+    return (
+      <div className="app-shell" style={{ display: "grid", placeItems: "center", minHeight: "100vh" }}>
+        <div className="auth-loading">
+          <div className="auth-spinner" />
+          <p>Loading FormAssist AI…</p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="app-shell">
-      <div className="background-glow glow-one"></div>
-      <div className="background-glow glow-two"></div>
+      <div className="background-glow glow-one" />
+      <div className="background-glow glow-two" />
 
+      {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
+
+      {/* Loading overlay */}
+      {loading && (
+        <div className="loading-overlay">
+          <div className="loading-card">
+            <div className="auth-spinner" />
+            <p>{loadingMsg || "Please wait…"}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Nav */}
       <nav className="nav">
         <div className="brand">
           <div className="brand-icon">F</div>
           <span>FormAssist AI</span>
         </div>
-
-        <div className="nav-pill">Helper-only MVP</div>
+        <div className="nav-right">
+          {user ? (
+            <div className="nav-user">
+              {user.photoURL ? (
+                <>
+                  <img
+                    src={user.photoURL}
+                    className="nav-avatar-img"
+                    alt={getInitials(user)}
+                    onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }}
+                  />
+                  <div className="nav-avatar" style={{ display: "none" }}>{getInitials(user)}</div>
+                </>
+              ) : (
+                <div className="nav-avatar">{getInitials(user)}</div>
+              )}
+              <span className="nav-name">{getFirstName(user)}</span>
+              <button className="nav-signout" onClick={handleSignOut}>Sign out</button>
+            </div>
+          ) : (
+            <button className="nav-signup-btn" onClick={() => setShowAuth(true)}>
+              Sign up — it's free
+            </button>
+          )}
+        </div>
       </nav>
 
+      {/* ── STEP: LEAD ─────────────────────────────────────────────────────── */}
       {step === "lead" && (
         <main className="landing">
           <section className="hero">
             <div className="hero-copy">
               <div className="eyebrow">AI-powered form preparation</div>
-
-              <h1>
-                Find the right form without reading pages of confusing
-                instructions.
-              </h1>
-
+              <h1>Find the right form without reading pages of confusing instructions.</h1>
               <p className="hero-subtitle">
-                Describe your situation in plain English. FormAssist AI suggests
-                relevant forms, fills safe fields, and creates a print-ready
-                helper packet for review.
+                {user
+                  ? <>Welcome back, <strong>{getFirstName(user)}</strong>! Describe your situation and we'll find and pre-fill the right forms for you.</>
+                  : "Describe your situation in plain English. FormAssist AI finds the right forms, pre-fills them with your info, and generates a print-ready packet."}
               </p>
-
               <div className="hero-actions">
-                <a href="#start" className="primary-link">
-                  Start now
-                </a>
-                <span className="small-note">
-                  No official submission. You stay in control.
-                </span>
+                <a href="#start" className="primary-link">Start now</a>
+                <span className="small-note">No official submission. You stay in control.</span>
               </div>
-
               <div className="feature-row">
-                <div className="feature-card">
-                  <span>01</span>
-                  <strong>Explain situation</strong>
-                  <p>Tell the app what you are trying to do.</p>
-                </div>
-
-                <div className="feature-card">
-                  <span>02</span>
-                  <strong>AI finds forms</strong>
-                  <p>Get recommended forms and helper packets.</p>
-                </div>
-
-                <div className="feature-card">
-                  <span>03</span>
-                  <strong>Print and submit</strong>
-                  <p>Review, print, add sensitive info, and submit.</p>
-                </div>
+                <div className="feature-card"><span>01</span><strong>Explain situation</strong><p>Tell the app what you are trying to do.</p></div>
+                <div className="feature-card"><span>02</span><strong>AI finds & fills</strong><p>Forms are recommended and pre-filled instantly.</p></div>
+                <div className="feature-card"><span>03</span><strong>Download & submit</strong><p>Review, download PDF, and submit officially.</p></div>
               </div>
             </div>
 
@@ -277,235 +266,180 @@ function App() {
               <div className="panel-header">
                 <div>
                   <h2>Start your helper packet</h2>
-                  <p>
-                    We’ll recommend possible forms based on what you describe.
-                  </p>
+                  <p>We'll recommend and pre-fill forms based on your situation.</p>
                 </div>
                 <div className="secure-badge">Safe fields only</div>
               </div>
 
               <Progress step={step} />
-
               {error && <div className="error">{error}</div>}
 
-              <label htmlFor="first_name">First name</label>
-              <input
-                id="first_name"
-                value={lead.first_name}
-                onChange={(e) => updateLead("first_name", e.target.value)}
-                placeholder="Nitin"
-              />
-
-              <label htmlFor="email">Email</label>
-              <input
-                id="email"
-                type="email"
-                value={lead.email}
-                onChange={(e) => updateLead("email", e.target.value)}
-                placeholder="nitin@example.com"
-              />
+              {user ? (
+                <div className="profile-summary">
+                  {user.photoURL ? (
+                    <>
+                      <img src={user.photoURL} className="profile-avatar-img" alt={getInitials(user)}
+                        onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
+                      <div className="profile-avatar" style={{ display: "none" }}>{getInitials(user)}</div>
+                    </>
+                  ) : (
+                    <div className="profile-avatar">{getInitials(user)}</div>
+                  )}
+                  <div>
+                    <p className="profile-name">{user.displayName || getFirstName(user)}</p>
+                    <p className="profile-email">{user.email}</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="signup-nudge">
+                  <span>🔐</span>
+                  <div>
+                    <strong>Sign in to get started</strong>
+                    <p><button className="nudge-link" onClick={() => setShowAuth(true)}>Sign up free</button>{" "}— your info will be pre-filled across all forms.</p>
+                  </div>
+                </div>
+              )}
 
               <label htmlFor="situation">Describe your situation</label>
               <textarea
-                id="situation"
-                rows="5"
-                value={lead.situation}
-                onChange={(e) => updateLead("situation", e.target.value)}
-                placeholder="Example: My name is Nitin Sahai and I am moving from California to Washington."
+                id="situation" rows="5" value={situation}
+                onChange={(e) => setSituation(e.target.value)}
+                placeholder="Example: I am moving from California to Washington and need to update my address with USPS and the DMV."
               />
 
               <div className="checkbox">
-                <input
-                  id="consent"
-                  type="checkbox"
-                  checked={lead.consent}
-                  onChange={(e) => updateLead("consent", e.target.checked)}
-                />
+                <input id="consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
                 <label htmlFor="consent" className="checkbox-label">
-                  I agree that FormAssist AI may use my information to
-                  recommend forms and prepare helper packets. I understand this
-                  app does not officially submit forms.
+                  I agree that FormAssist AI may use my information to recommend forms and prepare helper packets. I understand this app does not officially submit forms.
                 </label>
               </div>
 
-              <button onClick={analyzeSituation} disabled={loading}>
-                {loading ? "Analyzing..." : "Find My Forms"}
-              </button>
-
-              <p className="privacy-note">
-                We do not ask for SSN, payment card, signature, or government ID
-                in this MVP.
-              </p>
+              <button onClick={handleFindForms} disabled={loading}>Find My Forms</button>
+              <p className="privacy-note">We do not ask for SSN, payment card, signature, or government ID.</p>
             </section>
           </section>
         </main>
       )}
 
-      {step !== "lead" && (
+      {/* ── STEP: RECOMMENDATIONS ──────────────────────────────────────────── */}
+      {step === "recommendations" && (
+        <main className="workflow-page">
+          <section className="workflow-card">
+            <div className="workflow-header">
+              <div><h1>Recommended Forms</h1><p>Select a form — AI will instantly pre-fill it from your situation.</p></div>
+              <div className="badge">AI-Powered</div>
+            </div>
+            <Progress step={step} />
+            {error && <div className="error">{error}</div>}
+
+            {recommendations.length === 0 && (
+              <div className="warning">No forms found. Try describing your situation with more detail.</div>
+            )}
+
+            <div className="rec-grid">
+              {recommendations.map((form) => (
+                <div className="rec-card" key={form.form_id}>
+                  <div className={`confidence-badge conf-${form.confidence}`}>{form.confidence} match</div>
+                  <h3>{form.form_name}</h3>
+                  <p>{form.reason}</p>
+                  <button className="rec-select-btn" onClick={() => chooseForm(form)} disabled={loading}>
+                    Select &amp; Auto-Fill →
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <button className="secondary" onClick={() => setStep("lead")}>← Back</button>
+          </section>
+        </main>
+      )}
+
+      {/* ── STEP: PREVIEW ──────────────────────────────────────────────────── */}
+      {step === "preview" && selectedForm && (
         <main className="workflow-page">
           <section className="workflow-card">
             <div className="workflow-header">
               <div>
-                <h1>FormAssist AI</h1>
-                <p>
-                  Find the right form, fill safe fields, and create a
-                  print-ready helper packet.
-                </p>
+                <h1>{selectedForm.form_name}</h1>
+                <p>{selectedForm.agency} · {selectedForm.description}</p>
               </div>
               <div className="badge">Helper Only</div>
             </div>
-
             <Progress step={step} />
-
             {error && <div className="error">{error}</div>}
 
-            {step === "recommendations" && (
-              <div>
-                <h2>Recommended forms/actions</h2>
-                <p className="muted">
-                  Select the form or helper packet you want to prepare.
-                </p>
-
-                {recommendations.length === 0 && (
-                  <div className="warning">
-                    No recommendation found. Try describing your situation with
-                    more details.
-                  </div>
-                )}
-
-                {recommendations.map((form) => (
-                  <div className="recommendation" key={form.form_id}>
-                    <div>
-                      <h3>{form.form_name}</h3>
-                      <p>{form.reason}</p>
-                      <p>
-                        <strong>Confidence:</strong> {form.confidence}
-                      </p>
-                    </div>
-
-                    <button onClick={() => chooseForm(form)} disabled={loading}>
-                      Select
-                    </button>
-                  </div>
-                ))}
-
-                <button className="secondary" onClick={() => setStep("lead")}>
-                  Back
-                </button>
+            {/* Fill stats */}
+            <div className="fill-stats">
+              <div className="fill-bar-wrap">
+                <div className="fill-bar" style={{ width: `${totalCount() ? (filledCount() / totalCount()) * 100 : 0}%` }} />
               </div>
-            )}
+              <span className="fill-label">
+                <strong>{filledCount()}</strong> of <strong>{totalCount()}</strong> fields pre-filled by AI
+              </span>
+            </div>
 
-            {step === "ai_fill" && selectedForm && (
-              <div>
-                <h2>{selectedForm.form_name}</h2>
-                <p className="muted">{selectedForm.description}</p>
+            <div className="warning" style={{ marginTop: 12 }}>
+              Review every field below. Edit anything the AI got wrong, then download your PDF.
+              Sensitive info (SSN, payment, signature) should be added by hand before official submission.
+            </div>
 
-                <div className="warning">
-                  This is a helper packet only. It does not officially submit
-                  anything. You will review, print, add sensitive details if
-                  needed, and submit through the official channel.
-                </div>
-
-                <label htmlFor="userDetails">
-                  Enter details in plain English
-                </label>
-                <textarea
-                  id="userDetails"
-                  rows="9"
-                  value={userDetails}
-                  onChange={(e) => setUserDetails(e.target.value)}
-                  placeholder="Example: My name is Nitin Sahai. I am moving permanently as an individual from 123 Main St, San Jose, CA 95112 to 456 Pine Ave, Seattle, WA 98101. Mail forwarding should start June 15, 2026. My email is nitin@example.com and my phone is 425-555-1212."
-                />
-
-                <button onClick={aiFill} disabled={loading}>
-                  {loading ? "Filling..." : "AI Fill Form"}
-                </button>
-
-                <button
-                  className="secondary"
-                  onClick={() => setStep("recommendations")}
+            {/* Field preview grid */}
+            <div className="preview-grid">
+              {selectedForm.questions.map((q) => (
+                <div
+                  key={q.id}
+                  className={`preview-field ${["old_street","new_street","old_unit","new_unit"].includes(q.id) ? "full-width" : ""}`}
                 >
-                  Back
-                </button>
-              </div>
-            )}
-
-            {step === "review" && selectedForm && (
-              <div>
-                <h2>Review and edit</h2>
-                <p className="muted">
-                  AI filled the safe fields it could understand. Please review
-                  and edit before generating the PDF.
-                </p>
-
-                <div className="warning">
-                  Sensitive information, signatures, payment, and identity
-                  verification should be completed by the user directly with the
-                  official agency.
-                </div>
-
-                <div className="answer-grid">
-                  {Object.keys(answers).length === 0 && (
-                    <div className="warning">
-                      No fields were filled. Go back and provide more details.
-                    </div>
+                  <label htmlFor={`pf_${q.id}`} className="preview-label">
+                    {q.label}{q.required && <span className="required-star"> *</span>}
+                  </label>
+                  {q.type === "single_choice" ? (
+                    <select
+                      id={`pf_${q.id}`}
+                      value={answers[q.id] || ""}
+                      onChange={(e) => updateAnswer(q.id, e.target.value)}
+                      className={`preview-select ${answers[q.id] ? "filled" : "empty"}`}
+                    >
+                      <option value="">— select —</option>
+                      {q.options.map((opt) => (
+                        <option key={opt} value={opt}>{opt}</option>
+                      ))}
+                    </select>
+                  ) : q.type === "date" ? (
+                    <input
+                      id={`pf_${q.id}`}
+                      type="date"
+                      value={answers[q.id] || ""}
+                      onChange={(e) => updateAnswer(q.id, e.target.value)}
+                      className={`preview-input ${answers[q.id] ? "filled" : "empty"}`}
+                    />
+                  ) : (
+                    <input
+                      id={`pf_${q.id}`}
+                      type={q.type === "email" ? "email" : "text"}
+                      value={answers[q.id] || ""}
+                      onChange={(e) => updateAnswer(q.id, e.target.value)}
+                      placeholder={`Enter ${q.label.toLowerCase()}`}
+                      className={`preview-input ${answers[q.id] ? "filled" : "empty"}`}
+                    />
                   )}
-
-                  {Object.keys(answers).map((key) => (
-                    <div className="field" key={key}>
-                      <label htmlFor={key}>{formatLabel(key)}</label>
-                      <input
-                        id={key}
-                        value={answers[key] || ""}
-                        onChange={(e) => updateAnswer(key, e.target.value)}
-                      />
-                    </div>
-                  ))}
                 </div>
+              ))}
+            </div>
 
-                <button onClick={generatePdf} disabled={loading}>
-                  {loading ? "Generating..." : "Generate Print-Ready PDF"}
-                </button>
-
-                <button
-                  className="secondary"
-                  onClick={() => setStep("ai_fill")}
-                >
-                  Back
-                </button>
-              </div>
-            )}
-
-            {step === "done" && (
-              <div>
-                <h2>Your helper packet is ready</h2>
-
-                <div className="success">
-                  Your print-ready PDF has been generated.
-                </div>
-
-                <p>
-                  Print this packet, review it carefully, add any sensitive
-                  information or signature if needed, and submit through the
-                  official agency.
-                </p>
-
-                <a
-                  className="download"
-                  href={downloadUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Download PDF
+            <div className="preview-actions">
+              {pdfReady ? (
+                <a className="download-btn" href={downloadUrl} target="_blank" rel="noreferrer">
+                  ⬇ Download Pre-filled PDF
                 </a>
-
-                <br />
-
-                <button className="secondary" onClick={restart}>
-                  Start another form
+              ) : (
+                <button className="generate-btn" onClick={generatePdf} disabled={loading}>
+                  {loading ? "Generating PDF…" : "Generate Pre-filled PDF"}
                 </button>
-              </div>
-            )}
+              )}
+              <button className="secondary" onClick={() => setStep("recommendations")}>← Back to Forms</button>
+              <button className="secondary" onClick={restart}>Start Over</button>
+            </div>
           </section>
         </main>
       )}
@@ -517,26 +451,15 @@ function Progress({ step }) {
   const steps = [
     ["lead", "1. Situation"],
     ["recommendations", "2. Forms"],
-    ["ai_fill", "3. AI Fill"],
-    ["review", "4. Review"],
-    ["done", "5. PDF"],
+    ["preview", "3. Preview & Edit"],
   ];
-
   return (
     <div className="steps">
       {steps.map(([key, label]) => (
-        <span key={key} className={step === key ? "active" : ""}>
-          {label}
-        </span>
+        <span key={key} className={step === key ? "active" : ""}>{label}</span>
       ))}
     </div>
   );
-}
-
-function formatLabel(key) {
-  return key
-    .replaceAll("_", " ")
-    .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 export default App;
