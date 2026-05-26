@@ -1,4 +1,6 @@
 #!/bin/bash
+#cd frontend
+#npm install react-router-dom
 
 echo "Starting FormAssist AI..."
 
