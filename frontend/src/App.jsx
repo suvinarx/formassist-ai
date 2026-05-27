@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase";
@@ -6,7 +6,8 @@ import AuthModal from "./AuthModal";
 import BrowseByCategory from "./components/BrowseByCategory.jsx";
 import PopularForms from "./components/PopularForms";
 import CategoryPage from "./pages/CategoryPage";
-import FormDetailPage from "./pages/FormDetailpage.jsx";
+import FormDetailPage from "./pages/FormDetailPage.jsx";
+import SecurityPage from "./pages/SecurityPage.jsx";
 import "./App.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -14,13 +15,6 @@ const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 const SITUATION_CHIPS = [
   "Moving states", "Name change", "Lost document",
   "Benefits enrollment", "Vehicle transfer", "Address update",
-];
-
-const SAMPLE_PACKETS = [
-  { title: "Address Change", meta: ["USPS Form 3575", "6 fields pre-filled"] },
-  { title: "DMV Transfer",   meta: ["Title Transfer REG 227", "11 fields pre-filled"] },
-  { title: "Name Change",    meta: ["SS-5, DS-82", "14 fields pre-filled"] },
-  { title: "Benefits Enrollment", meta: ["CMS-40B", "9 fields pre-filled"] },
 ];
 
 const FAQS = [
@@ -32,24 +26,56 @@ const FAQS = [
   { q: "Do I need an account to use FormAssist AI?", a: "You need a free account to generate form packets. This allows us to securely associate your information with your session and provide a better experience across multiple forms." },
 ];
 
-function MainApp({ user, setShowAuth, handleSignOut, getFirstName, getInitials }) {
-  const navigate = useNavigate();
+function MainApp({ user, setShowAuth, getFirstName }) {
   const location = useLocation();
 
-  const [step, setStep]       = useState("lead");
-  const [loading, setLoading] = useState(false);
+  const [step, setStep]           = useState("lead");
+  const [loading, setLoading]     = useState(false);
   const [loadingMsg, setLoadingMsg] = useState("");
-  const [error, setError]     = useState("");
+  const [error, setError]         = useState("");
   const [situation, setSituation] = useState("");
-  const [consent, setConsent] = useState(false);
+  const [consent, setConsent]     = useState(false);
   const [recommendations, setRecommendations] = useState([]);
   const [selectedForm, setSelectedForm] = useState(null);
-  const [answers, setAnswers] = useState({});
+  const [answers, setAnswers]     = useState({});
   const [downloadUrl, setDownloadUrl] = useState("");
-  const [pdfReady, setPdfReady] = useState(false);
-  const [openFaq, setOpenFaq] = useState(null);
+  const [pdfReady, setPdfReady]   = useState(false);
+  const [openFaq, setOpenFaq]     = useState(null);
 
-  // Handle prefill from form detail page
+  // Resize state
+  const [rightWidth, setRightWidth] = useState(440);
+  const isDragging  = useRef(false);
+  const startX      = useRef(0);
+  const startW      = useRef(0);
+  const MIN_W = 300;
+  const MAX_W = 780;
+
+  const onHandleMouseDown = useCallback((e) => {
+    e.preventDefault();
+    isDragging.current = true;
+    startX.current = e.clientX;
+    startW.current = rightWidth;
+    document.body.style.cursor = "col-resize";
+    document.body.style.userSelect = "none";
+  }, [rightWidth]);
+
+  useEffect(() => {
+    const onMove = (e) => {
+      if (!isDragging.current) return;
+      const delta = startX.current - e.clientX; // drag left → panel grows
+      setRightWidth(Math.min(MAX_W, Math.max(MIN_W, startW.current + delta)));
+    };
+    const onUp = () => {
+      if (!isDragging.current) return;
+      isDragging.current = false;
+      document.body.style.cursor = "";
+      document.body.style.userSelect = "";
+    };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+    return () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+  }, []);
+
   useEffect(() => {
     if (location.state?.prefillForm) {
       const f = location.state.prefillForm;
@@ -129,6 +155,192 @@ function MainApp({ user, setShowAuth, handleSignOut, getFirstName, getInitials }
   function totalCount()  { return selectedForm?.questions?.length || 0; }
   function fillPercent() { return totalCount() ? Math.round((filledCount() / totalCount()) * 100) : 0; }
 
+  // ── Panel contents by step ──────────────────────────────────────────────
+  const leftPanel = step === "lead" ? (
+    <>
+      <div className="fa-eyebrow">AI-powered form preparation</div>
+      <h1 className="fa-h1">Find and complete the right form — without the confusion.</h1>
+      <p className="fa-hero-sub">
+        {user
+          ? <>Welcome back, <strong>{getFirstName(user)}</strong>! Describe your situation and we'll find and pre-fill the right forms for you.</>
+          : "Describe your situation in plain English. We'll identify the right forms, pre-fill them from your details, and generate a ready-to-submit PDF."}
+      </p>
+      <div className="fa-trust-section">
+        {/* Stat row */}
+        <div className="fa-stat-row">
+          <div className="fa-stat">
+            <div className="fa-stat-num">98%</div>
+            <div className="fa-stat-label">Pre-fill accuracy rate</div>
+          </div>
+          <div className="fa-stat-divider" />
+          <div className="fa-stat">
+            <div className="fa-stat-num">4.9★</div>
+            <div className="fa-stat-label">FormLift user rating</div>
+          </div>
+          <div className="fa-stat-divider" />
+          <div className="fa-stat">
+            <div className="fa-stat-num">50k+</div>
+            <div className="fa-stat-label">Packets generated</div>
+          </div>
+        </div>
+
+        {/* Trust cards */}
+        <div className="fa-ethos-grid">
+          <div className="fa-ethos-card">
+            <div className="fa-ethos-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div className="fa-ethos-body">
+              <div className="fa-ethos-title">Bank-grade security</div>
+              <div className="fa-ethos-desc">All data is encrypted in transit and at rest using 256-bit AES encryption. We never store your SSN, payment details, or signatures.</div>
+              <a href="/security" className="fa-ethos-link">Learn more about security →</a>
+            </div>
+          </div>
+
+          <div className="fa-ethos-card">
+            <div className="fa-ethos-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div className="fa-ethos-body">
+              <div className="fa-ethos-title">98% pre-fill accuracy</div>
+              <div className="fa-ethos-desc">Powered by Claude AI, FormAssist extracts your details with industry-leading precision. FormLift has independently rated our tool #1 for document accuracy.</div>
+            </div>
+          </div>
+
+          <div className="fa-ethos-card">
+            <div className="fa-ethos-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+            </div>
+            <div className="fa-ethos-body">
+              <div className="fa-ethos-title">You stay in control</div>
+              <div className="fa-ethos-desc">We never submit anything on your behalf. Every form is reviewed, edited, and submitted by you — through official government and agency channels only.</div>
+            </div>
+          </div>
+
+          <div className="fa-ethos-card">
+            <div className="fa-ethos-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <div className="fa-ethos-body">
+              <div className="fa-ethos-title">Why FormLift rated us #1</div>
+              <div className="fa-ethos-desc">FormLift's annual document tool review scored FormAssist AI top marks for accuracy, privacy, ease-of-use, and breadth of supported form types across federal and state agencies.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  ) : step === "recommendations" ? (
+    <>
+      <div className="fa-eyebrow">AI analysis complete</div>
+      <h1 className="fa-h1" style={{ fontSize: "1.4rem" }}>{recommendations.length} form{recommendations.length !== 1 ? "s" : ""} match your situation</h1>
+      <p className="fa-hero-sub">Select a form — AI will instantly pre-fill it from your situation.</p>
+      {error && <div className="fa-error">{error}</div>}
+      {recommendations.length === 0 && <div className="fa-warning">No forms found. Try describing your situation with more detail.</div>}
+      <div className="fa-rec-list">
+        {recommendations.map((form) => (
+          <div key={form.form_id} className="fa-rec-card">
+            <div className="fa-rec-top">
+              <span className="fa-rec-name">{form.form_name}</span>
+              <span className={`fa-conf-badge fa-conf-${form.confidence}`}>{form.confidence} match</span>
+            </div>
+            <p className="fa-rec-reason">{form.reason}</p>
+            <button className="fa-rec-select" onClick={() => chooseForm(form)} disabled={loading}>Select &amp; auto-fill →</button>
+          </div>
+        ))}
+      </div>
+    </>
+  ) : selectedForm ? (
+    <>
+      <div className="fa-eyebrow">{selectedForm.agency} · {selectedForm.description}</div>
+      <h1 className="fa-h1" style={{ fontSize: "1.4rem" }}>{selectedForm.form_name} — pre-filled by AI</h1>
+      <div className="fa-fill-bar-row">
+        <div className="fa-fill-track"><div className="fa-fill-fill" style={{ width: `${fillPercent()}%` }} /></div>
+        <span className="fa-fill-label"><strong>{filledCount()}</strong> of <strong>{totalCount()}</strong> fields pre-filled by AI</span>
+      </div>
+      <div className="fa-warning">Review every field. Edit anything the AI got wrong. Add sensitive info (SSN, signature) by hand before submitting.</div>
+      {error && <div className="fa-error">{error}</div>}
+      <div className="fa-preview-grid">
+        {selectedForm.questions.map((q) => {
+          const isLong = ["old_street","new_street","old_unit","new_unit"].includes(q.id);
+          const isFilled = !!(answers[q.id] && String(answers[q.id]).trim());
+          return (
+            <div key={q.id} className={`fa-pf${isLong ? " fa-pf-full" : ""}`}>
+              <label className="fa-pf-label" htmlFor={`pf_${q.id}`}>{q.label}{q.required && <span className="fa-required"> *</span>}</label>
+              {q.type === "single_choice" ? (
+                <select id={`pf_${q.id}`} value={answers[q.id] || ""} onChange={(e) => updateAnswer(q.id, e.target.value)} className={`fa-pf-input${isFilled ? " filled" : ""}`}>
+                  <option value="">— select —</option>
+                  {q.options.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
+                </select>
+              ) : q.type === "date" ? (
+                <input id={`pf_${q.id}`} type="date" value={answers[q.id] || ""} onChange={(e) => updateAnswer(q.id, e.target.value)} className={`fa-pf-input${isFilled ? " filled" : ""}`} />
+              ) : (
+                <input id={`pf_${q.id}`} type={q.type === "email" ? "email" : "text"} value={answers[q.id] || ""} onChange={(e) => updateAnswer(q.id, e.target.value)} placeholder={`Enter ${q.label.toLowerCase()}`} className={`fa-pf-input${isFilled ? " filled" : ""}`} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </>
+  ) : null;
+
+  const rightPanel = step === "lead" ? (
+    <>
+      <div className="fa-panel-title">Unsure which form to fill?</div>
+      <p className="fa-panel-sub">We'll recommend and pre-fill the right forms for your situation.</p>
+      <div className="fa-trust-row">
+        <TrustBadge icon="🔒" label="No SSN required" />
+        <TrustBadge icon="🛡" label="Helper packet only" />
+        <TrustBadge icon="👁" label="No submission" />
+      </div>
+
+      {error && <div className="fa-error">{error}</div>}
+      <label className="fa-field-label" htmlFor="situation">Describe your situation</label>
+      <textarea id="situation" className="fa-textarea" rows={5} value={situation} onChange={(e) => setSituation(e.target.value)} placeholder="Example: I'm moving from California to Washington and need to update my address with USPS and transfer my vehicle title." />
+      <div className="fa-chips">
+        {SITUATION_CHIPS.map((chip) => (
+          <button key={chip} className="fa-chip" onClick={() => setSituation((s) => s ? s + " " + chip.toLowerCase() : chip)}>{chip}</button>
+        ))}
+      </div>
+      <div className="fa-consent-row">
+        <input id="consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
+        <label htmlFor="consent" className="fa-consent-label">I agree that FormAssist AI may use my information to recommend forms and prepare helper packets. I understand this app does not officially submit forms.</label>
+      </div>
+      <button className="fa-cta-btn" onClick={handleFindForms} disabled={loading}>Find my forms →</button>
+      <p className="fa-privacy-note">We never ask for SSN, payment cards, signatures, or government IDs.</p>
+    </>
+  ) : step === "recommendations" ? (
+    <>
+      <div className="fa-panel-title">Your situation summary</div>
+      <p className="fa-panel-sub">The AI extracted these key details from your description.</p>
+      <div className="fa-summary-box">
+        <div className="fa-summary-label">Your situation</div>
+        <div className="fa-summary-text">{situation}</div>
+      </div>
+      <div className="fa-panel-note">Not seeing the right form?{" "}<button className="fa-inline-link" onClick={() => setStep("lead")}>Edit your situation</button></div>
+      <button className="fa-secondary-btn" onClick={() => setStep("lead")}>← Back</button>
+    </>
+  ) : (
+    <>
+      <div className="fa-panel-title">Generate your PDF</div>
+      <p className="fa-panel-sub">Once you've reviewed the fields, download your pre-filled helper packet.</p>
+      <div className="fa-checklist">
+        <CheckRow done label="AI pre-fill complete" />
+        <CheckRow done={filledCount() > 0} label="Form fields reviewed" />
+        <CheckRow done={pdfReady} label="PDF ready to download" />
+      </div>
+      {pdfReady
+        ? <a className="fa-cta-btn fa-download-btn" href={downloadUrl} target="_blank" rel="noreferrer">⬇ Download pre-filled PDF</a>
+        : <button className="fa-cta-btn" onClick={generatePdf} disabled={loading}>{loading ? "Generating PDF…" : "Generate pre-filled PDF"}</button>
+      }
+      <button className="fa-secondary-btn" onClick={() => setStep("recommendations")}>← Back to forms</button>
+      <button className="fa-ghost-btn" onClick={restart}>Start over</button>
+      <div className="fa-reminder-box">
+        <div className="fa-reminder-label">Important reminder</div>
+        <p className="fa-reminder-text">This is a helper packet only. Submit through official channels. We never store your SSN, payment info, or signatures.</p>
+      </div>
+    </>
+  );
+
   return (
     <>
       {loading && (
@@ -140,7 +352,6 @@ function MainApp({ user, setShowAuth, handleSignOut, getFirstName, getInitials }
         </div>
       )}
 
-      {/* Steps bar */}
       <div className="fa-steps-bar">
         <StepItem num={1} label="Describe situation" active={step === "lead"} />
         <div className="fa-step-divider" />
@@ -149,79 +360,39 @@ function MainApp({ user, setShowAuth, handleSignOut, getFirstName, getInitials }
         <StepItem num={3} label="Review & download" active={step === "preview"} banner />
       </div>
 
-      {/* ── LEAD ── */}
+      {/* ── Resizable two-column panel ── */}
+      <div className="fa-split-container">
+        {/* Left — scrolls naturally */}
+        <div className="fa-left">
+          {leftPanel}
+        </div>
+
+        {/* Drag handle — sits between left and right */}
+        <div
+          className="fa-drag-handle"
+          onMouseDown={onHandleMouseDown}
+          title="Drag to resize"
+        >
+          <div className="fa-drag-grip">
+            <span /><span /><span /><span /><span />
+          </div>
+        </div>
+
+        {/* Right — sticky, fixed width set by drag */}
+        <div className="fa-right" style={{ width: rightWidth, minWidth: rightWidth, maxWidth: rightWidth }}>
+          {rightPanel}
+        </div>
+      </div>
+
+      {/* ── Full-width sections below — completely unaffected by resize ── */}
       {step === "lead" && (
         <>
-          <div className="fa-main">
-            <div className="fa-left">
-              <div className="fa-eyebrow">AI-powered form preparation</div>
-              <h1 className="fa-h1">Find and complete the right form — without the confusion.</h1>
-              <p className="fa-hero-sub">
-                {user
-                  ? <>Welcome back, <strong>{getFirstName(user)}</strong>! Describe your situation and we'll find and pre-fill the right forms for you.</>
-                  : "Describe your situation in plain English. We'll identify the right forms, pre-fill them from your details, and generate a ready-to-submit PDF."}
-              </p>
-              <div className="fa-feature-list">
-                <Feature svg='<path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>' title="Plain English input" desc="No legal jargon — just describe what you need." />
-                <Feature svg='<circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>' title="AI pre-fills the form" desc="Answers are extracted from your situation automatically." />
-                <Feature svg='<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>' title="Print-ready PDF" desc="Download, review, and submit through official channels." />
-              </div>
-              <div className="fa-sample-label">Sample completed packets</div>
-              <div className="fa-sample-grid">
-                {SAMPLE_PACKETS.map((p) => (
-                  <div key={p.title} className="fa-sample-card">
-                    <div className="fa-sample-title">{p.title}</div>
-                    {p.meta.map((m) => <div key={m} className="fa-sample-meta"><span className="fa-dot" />{m}</div>)}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="fa-right">
-              <div className="fa-panel-title">Unsure which form to fill?</div>
-              <p className="fa-panel-sub">We'll recommend and pre-fill the right forms for your situation.</p>
-              <div className="fa-trust-row">
-                <TrustBadge icon="🔒" label="No SSN required" />
-                <TrustBadge icon="🛡" label="Helper packet only" />
-                <TrustBadge icon="👁" label="No submission" />
-              </div>
-              {!user && (
-                <div className="fa-signup-nudge">
-                  <span>🔐</span>
-                  <div>
-                    <strong>Sign in to get started</strong>
-                    <p><button className="fa-nudge-link" onClick={() => setShowAuth(true)}>Sign up free</button>{" "}— your info will be pre-filled across all forms.</p>
-                  </div>
-                </div>
-              )}
-              {error && <div className="fa-error">{error}</div>}
-              <label className="fa-field-label" htmlFor="situation">Describe your situation</label>
-              <textarea id="situation" className="fa-textarea" rows={5} value={situation} onChange={(e) => setSituation(e.target.value)} placeholder="Example: I'm moving from California to Washington and need to update my address with USPS and transfer my vehicle title." />
-              <div className="fa-chips">
-                {SITUATION_CHIPS.map((chip) => (
-                  <button key={chip} className="fa-chip" onClick={() => setSituation((s) => s ? s + " " + chip.toLowerCase() : chip)}>{chip}</button>
-                ))}
-              </div>
-              <div className="fa-consent-row">
-                <input id="consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-                <label htmlFor="consent" className="fa-consent-label">I agree that FormAssist AI may use my information to recommend forms and prepare helper packets. I understand this app does not officially submit forms.</label>
-              </div>
-              <button className="fa-cta-btn" onClick={handleFindForms} disabled={loading}>Find my forms →</button>
-              <p className="fa-privacy-note">We never ask for SSN, payment cards, signatures, or government IDs.</p>
-            </div>
-          </div>
-
-          {/* Browse by Category */}
           <BrowseByCategory />
-
-          {/* Popular Forms */}
           <PopularForms />
-
-          {/* FAQ */}
           <section className="fa-faq-section">
             <div className="fa-faq-inner">
               <div className="fa-faq-header">
-                <div className="fa-eyebrow" style={{ color: "#6b7a99" }}>Common questions</div>
+                <div className="fa-eyebrow" style={{ color: "#8899bb" }}>Common questions</div>
                 <h2 className="fa-faq-title">Frequently asked questions</h2>
                 <p className="fa-faq-subtitle">Everything you need to know before getting started.</p>
               </div>
@@ -239,97 +410,6 @@ function MainApp({ user, setShowAuth, handleSignOut, getFirstName, getInitials }
             </div>
           </section>
         </>
-      )}
-
-      {/* ── RECOMMENDATIONS ── */}
-      {step === "recommendations" && (
-        <div className="fa-main">
-          <div className="fa-left">
-            <div className="fa-eyebrow">AI analysis complete</div>
-            <h1 className="fa-h1" style={{ fontSize: "1.4rem" }}>{recommendations.length} form{recommendations.length !== 1 ? "s" : ""} match your situation</h1>
-            <p className="fa-hero-sub">Select a form — AI will instantly pre-fill it from your situation.</p>
-            {error && <div className="fa-error">{error}</div>}
-            {recommendations.length === 0 && <div className="fa-warning">No forms found. Try describing your situation with more detail.</div>}
-            <div className="fa-rec-list">
-              {recommendations.map((form) => (
-                <div key={form.form_id} className="fa-rec-card">
-                  <div className="fa-rec-top">
-                    <span className="fa-rec-name">{form.form_name}</span>
-                    <span className={`fa-conf-badge fa-conf-${form.confidence}`}>{form.confidence} match</span>
-                  </div>
-                  <p className="fa-rec-reason">{form.reason}</p>
-                  <button className="fa-rec-select" onClick={() => chooseForm(form)} disabled={loading}>Select &amp; auto-fill →</button>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="fa-right">
-            <div className="fa-panel-title">Your situation summary</div>
-            <p className="fa-panel-sub">The AI extracted these key details from your description.</p>
-            <div className="fa-summary-box">
-              <div className="fa-summary-label">Your situation</div>
-              <div className="fa-summary-text">{situation}</div>
-            </div>
-            <div className="fa-panel-note">Not seeing the right form?{" "}<button className="fa-inline-link" onClick={() => setStep("lead")}>Edit your situation</button></div>
-            <button className="fa-secondary-btn" onClick={() => setStep("lead")}>← Back</button>
-          </div>
-        </div>
-      )}
-
-      {/* ── PREVIEW ── */}
-      {step === "preview" && selectedForm && (
-        <div className="fa-main">
-          <div className="fa-left">
-            <div className="fa-eyebrow">{selectedForm.agency} · {selectedForm.description}</div>
-            <h1 className="fa-h1" style={{ fontSize: "1.4rem" }}>{selectedForm.form_name} — pre-filled by AI</h1>
-            <div className="fa-fill-bar-row">
-              <div className="fa-fill-track"><div className="fa-fill-fill" style={{ width: `${fillPercent()}%` }} /></div>
-              <span className="fa-fill-label"><strong>{filledCount()}</strong> of <strong>{totalCount()}</strong> fields pre-filled by AI</span>
-            </div>
-            <div className="fa-warning">Review every field. Edit anything the AI got wrong. Sensitive info (SSN, payment, signature) should be added by hand before official submission.</div>
-            {error && <div className="fa-error">{error}</div>}
-            <div className="fa-preview-grid">
-              {selectedForm.questions.map((q) => {
-                const isLong = ["old_street","new_street","old_unit","new_unit"].includes(q.id);
-                const isFilled = !!(answers[q.id] && String(answers[q.id]).trim());
-                return (
-                  <div key={q.id} className={`fa-pf${isLong ? " fa-pf-full" : ""}`}>
-                    <label className="fa-pf-label" htmlFor={`pf_${q.id}`}>{q.label}{q.required && <span className="fa-required"> *</span>}</label>
-                    {q.type === "single_choice" ? (
-                      <select id={`pf_${q.id}`} value={answers[q.id] || ""} onChange={(e) => updateAnswer(q.id, e.target.value)} className={`fa-pf-input${isFilled ? " filled" : ""}`}>
-                        <option value="">— select —</option>
-                        {q.options.map((opt) => <option key={opt} value={opt}>{opt}</option>)}
-                      </select>
-                    ) : q.type === "date" ? (
-                      <input id={`pf_${q.id}`} type="date" value={answers[q.id] || ""} onChange={(e) => updateAnswer(q.id, e.target.value)} className={`fa-pf-input${isFilled ? " filled" : ""}`} />
-                    ) : (
-                      <input id={`pf_${q.id}`} type={q.type === "email" ? "email" : "text"} value={answers[q.id] || ""} onChange={(e) => updateAnswer(q.id, e.target.value)} placeholder={`Enter ${q.label.toLowerCase()}`} className={`fa-pf-input${isFilled ? " filled" : ""}`} />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-          <div className="fa-right">
-            <div className="fa-panel-title">Generate your PDF</div>
-            <p className="fa-panel-sub">Once you've reviewed the fields, download your pre-filled helper packet.</p>
-            <div className="fa-checklist">
-              <CheckRow done label="AI pre-fill complete" />
-              <CheckRow done={filledCount() > 0} label="Form fields reviewed" />
-              <CheckRow done={pdfReady} label="PDF ready to download" />
-            </div>
-            {pdfReady
-              ? <a className="fa-cta-btn fa-download-btn" href={downloadUrl} target="_blank" rel="noreferrer">⬇ Download pre-filled PDF</a>
-              : <button className="fa-cta-btn" onClick={generatePdf} disabled={loading}>{loading ? "Generating PDF…" : "Generate pre-filled PDF"}</button>
-            }
-            <button className="fa-secondary-btn" onClick={() => setStep("recommendations")}>← Back to forms</button>
-            <button className="fa-ghost-btn" onClick={restart}>Start over</button>
-            <div className="fa-reminder-box">
-              <div className="fa-reminder-label">Important reminder</div>
-              <p className="fa-reminder-text">This is a helper packet only. You must submit the completed form through official channels. We never store your SSN, payment information, or signatures.</p>
-            </div>
-          </div>
-        </div>
       )}
     </>
   );
@@ -371,7 +451,6 @@ export default function App() {
     <div className="fa-shell">
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 
-      {/* Global Nav */}
       <nav className="fa-nav">
         <div className="fa-brand">
           <div className="fa-brand-mark">F</div>
@@ -394,23 +473,16 @@ export default function App() {
       </nav>
 
       <Routes>
-        <Route path="/" element={
-          <MainApp
-            user={user}
-            setShowAuth={setShowAuth}
-            handleSignOut={handleSignOut}
-            getFirstName={getFirstName}
-            getInitials={getInitials}
-          />
-        } />
+        <Route path="/" element={<MainApp user={user} setShowAuth={setShowAuth} handleSignOut={handleSignOut} getFirstName={getFirstName} getInitials={getInitials} />} />
         <Route path="/category/:categoryId" element={<CategoryPage />} />
         <Route path="/form/:formId" element={<FormDetailPage />} />
+        <Route path="/security" element={<SecurityPage />} />
       </Routes>
     </div>
   );
 }
 
-// ── Shared small components ───────────────────────────────────────────────────
+// ── Small components ──────────────────────────────────────────────────────────
 
 function StepItem({ num, label, active, banner }) {
   return (
