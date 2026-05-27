@@ -21,7 +21,7 @@ export default function FormDetailPage() {
   const hasPdf = !!form.pdf_path && !pdfError;
 
   function handleFillWithAI() {
-    navigate("/", { state: { prefillForm: form } });
+    navigate(`/form/${form.form_id}/fill`);
   }
 
   return (

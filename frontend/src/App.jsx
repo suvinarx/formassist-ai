@@ -8,6 +8,7 @@ import PopularForms from "./components/PopularForms";
 import CategoryPage from "./pages/CategoryPage";
 import FormDetailPage from "./pages/FormDetailPage.jsx";
 import SecurityPage from "./pages/SecurityPage.jsx";
+import FormFillPage from "./pages/FormFillPage.jsx";
 import "./App.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -476,6 +477,7 @@ export default function App() {
         <Route path="/" element={<MainApp user={user} setShowAuth={setShowAuth} handleSignOut={handleSignOut} getFirstName={getFirstName} getInitials={getInitials} />} />
         <Route path="/category/:categoryId" element={<CategoryPage />} />
         <Route path="/form/:formId" element={<FormDetailPage />} />
+        <Route path="/form/:formId/fill" element={<FormFillPage />} />
         <Route path="/security" element={<SecurityPage />} />
       </Routes>
     </div>
