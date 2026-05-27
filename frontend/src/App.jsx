@@ -10,6 +10,7 @@ import FormDetailPage from "./pages/FormDetailPage.jsx";
 import SecurityPage from "./pages/SecurityPage.jsx";
 import FormFillPage from "./pages/FormFillPage.jsx";
 import SituationPage from "./pages/SituationPage.jsx";
+import { FORMS as FORMS_FLAT } from "./data/formsData";
 
 function HowItWorks() {
   const [activeCard, setActiveCard] = useState(0);
@@ -132,7 +133,7 @@ const FAQS = [
   { q: "Do I need an account to use FormAssist AI?", a: "You need a free account to generate form packets. This allows us to securely associate your information with your session and provide a better experience across multiple forms." },
 ];
 
-function MainApp({ user, setShowAuth, getFirstName }) {
+function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -149,6 +150,8 @@ function MainApp({ user, setShowAuth, getFirstName }) {
   const [pdfReady, setPdfReady]   = useState(false);
   const [openFaq, setOpenFaq]     = useState(null);
   const [pianoHover, setPianoHover] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
   // Resize state
   const [rightWidth, setRightWidth] = useState(620);
@@ -265,34 +268,7 @@ function MainApp({ user, setShowAuth, getFirstName }) {
 
   // ── Panel contents by step ──────────────────────────────────────────────
   const leftPanel = step === "lead" ? (
-    <>
-      <div className="fa-eyebrow">AI-powered form preparation</div>
-      <h1 className="fa-h1">Find and complete the right form — without the confusion.</h1>
-      <p className="fa-hero-sub">
-        {user
-          ? <>Welcome back, <strong>{getFirstName(user)}</strong>! Describe your situation and we'll find and pre-fill the right forms for you.</>
-          : "Describe your situation in plain English. We'll identify the right forms, pre-fill them from your details, and generate a ready-to-submit PDF."}
-      </p>
-      <div className="fa-trust-section">
-        {/* Stat row only in left panel — ethos cards move below */}
-        <div className="fa-stat-row">
-          <div className="fa-stat">
-            <div className="fa-stat-num">98%</div>
-            <div className="fa-stat-label">Pre-fill accuracy rate</div>
-          </div>
-          <div className="fa-stat-divider" />
-          <div className="fa-stat">
-            <div className="fa-stat-num">4.9★</div>
-            <div className="fa-stat-label">FormLift user rating</div>
-          </div>
-          <div className="fa-stat-divider" />
-          <div className="fa-stat">
-            <div className="fa-stat-num">50k+</div>
-            <div className="fa-stat-label">Packets generated</div>
-          </div>
-        </div>
-      </div>
-    </>
+    <div className="fa-hero-placeholder" />
   ) : step === "recommendations" ? (
     <>
       <div className="fa-eyebrow">AI analysis complete</div>
@@ -352,18 +328,12 @@ function MainApp({ user, setShowAuth, getFirstName }) {
       {/* Tile 1 — navigate to /find-form */}
       <div className="fa-tile" onClick={() => navigate("/find-form")} style={{ cursor: "pointer" }}>
         <div className="fa-tile-img fa-tile-img-1">
-          <div className="fa-tile-scene">
-            <div className="fa-tile-scene-monitor">
-              <div className="fa-tile-screen-glow" />
-              <div className="fa-tile-screen-lines"><span/><span/><span/><span/></div>
-            </div>
-            <div className="fa-tile-scene-docs">
-              <div className="fa-tile-doc fa-tile-doc-1" />
-              <div className="fa-tile-doc fa-tile-doc-2" />
-              <div className="fa-tile-doc fa-tile-doc-3" />
-            </div>
-          </div>
-          <div className="fa-tile-img-badge">
+          <img
+            src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80"
+            alt="Tax forms and documents"
+            style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
+          />
+          <div className="fa-tile-img-badge" style={{ position:"absolute", bottom:12, left:12 }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
             AI-Powered
           </div>
@@ -383,14 +353,12 @@ function MainApp({ user, setShowAuth, getFirstName }) {
       {/* Tile 2 — scroll to browse section */}
       <div className="fa-tile" onClick={() => document.querySelector(".bbc-section")?.scrollIntoView({ behavior: "smooth" })} style={{ cursor: "pointer" }}>
         <div className="fa-tile-img fa-tile-img-2">
-          <div className="fa-tile-scene">
-            <div className="fa-tile-grid-preview">
-              {["📋","🌐","🛂","⚕️","🎖️","🏛️","💼","🏠"].map((e,i) => (
-                <div key={i} className="fa-tile-grid-cell">{e}</div>
-              ))}
-            </div>
-          </div>
-          <div className="fa-tile-img-badge fa-tile-img-badge-2">
+          <img
+            src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?w=800&q=80"
+            alt="Passport with stamps"
+            style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
+          />
+          <div className="fa-tile-img-badge fa-tile-img-badge-2" style={{ position:"absolute", bottom:12, left:12 }}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
             119 forms
           </div>
@@ -451,44 +419,123 @@ function MainApp({ user, setShowAuth, getFirstName }) {
         </div>
       )}
 
-      <nav className="fa-menu-bar">
-        <button className="fa-menu-item" onClick={() => navigate("/")}>Home</button>
-        <div className="fa-menu-dropdown">
-          <button className="fa-menu-item">Browse forms <span className="fa-menu-chevron">▾</span></button>
-          <div className="fa-menu-dropdown-panel">
-            {["Tax Forms","Immigration","Passport & Travel","Benefits & Social","Healthcare","Employment","Veterans","Moving & Address","Motor Vehicle","Legal"].map((label, i) => {
-              const ids = ["tax","immigration","passport","benefits","healthcare","employment","veterans","moving","vehicle","legal"];
-              return <button key={i} className="fa-menu-dd-item" onClick={() => navigate(`/category/${ids[i]}`)}>{label}</button>;
-            })}
-          </div>
+      {/* ── Top nav ── */}
+      <nav className="fa-topnav">
+        <div className="fa-topnav-brand">
+          <div className="fa-brand-mark">F</div>
+          <span className="fa-brand-name">FormAssist AI</span>
         </div>
-        <button className="fa-menu-item" onClick={() => navigate("/security")}>Security</button>
-        <button className="fa-menu-item" onClick={() => document.querySelector(".hiw-section")?.scrollIntoView({ behavior: "smooth" })}>How it works</button>
+        <div className="fa-topnav-links">
+          <button className="fa-topnav-link" onClick={() => navigate("/")}>Home</button>
+          <div className="fa-menu-dropdown">
+            <button className="fa-topnav-link">Browse forms <span className="fa-menu-chevron">▾</span></button>
+            <div className="fa-menu-dropdown-panel">
+              {["Tax Forms","Immigration","Passport & Travel","Benefits & Social","Healthcare","Employment","Veterans","Moving & Address","Motor Vehicle","Legal"].map((label, i) => {
+                const ids = ["tax","immigration","passport","benefits","healthcare","employment","veterans","moving","vehicle","legal"];
+                return <button key={i} className="fa-menu-dd-item" onClick={() => navigate(`/category/${ids[i]}`)}>{label}</button>;
+              })}
+            </div>
+          </div>
+          <button className="fa-topnav-link" onClick={() => navigate("/security")}>Security</button>
+          <button className="fa-topnav-link" onClick={() => document.querySelector(".hiw-section")?.scrollIntoView({ behavior: "smooth" })}>How it works</button>
+        </div>
+        <div className="fa-topnav-right">
+          {user ? (
+            <div style={{ display:"flex", alignItems:"center", gap:10 }}>
+              {user.photoURL
+                ? <img src={user.photoURL} className="fa-avatar-img" alt="" style={{ width:32, height:32, borderRadius:"50%", objectFit:"cover" }} />
+                : <div className="fa-avatar" style={{ width:32, height:32, fontSize:13 }}>{getFirstName(user)?.[0] ?? "U"}</div>}
+              <span style={{ color:"rgba(255,255,255,0.8)", fontSize:13, fontWeight:500 }}>{getFirstName(user)}</span>
+              <button className="fa-topnav-signin" onClick={handleSignOut} style={{ background:"rgba(255,255,255,0.1)" }}>Sign out</button>
+            </div>
+          ) : (
+            <button className="fa-topnav-signin" onClick={() => setShowAuth(true)}>Sign up — it's free</button>
+          )}
+        </div>
       </nav>
 
-      {/* ── Resizable two-column panel ── */}
-      <div className="fa-split-container">
-        {/* Left — scrolls naturally */}
-        <div className="fa-left">
-          {leftPanel}
-        </div>
-
-        {/* Drag handle — sits between left and right */}
-        <div
-          className="fa-drag-handle"
-          onMouseDown={onHandleMouseDown}
-          title="Drag to resize"
-        >
-          <div className="fa-drag-grip">
-            <span /><span /><span /><span /><span />
+      {/* ── Full-bleed photo hero (lead step only) ── */}
+      {step === "lead" && (
+        <div className="fa-hero-fullbleed">
+          <div className="fa-hero-overlay" />
+          <div className="fa-hero-content">
+            <h1 className="fa-hero-h1">Fill Any Form<br /><span className="fa-hero-accent">in Minutes</span></h1>
+            <p className="fa-hero-p">Our AI asks simple questions and fills tax forms, passport applications, and government documents — from official .gov PDFs.</p>
+            <div className="fa-hero-search-wrap">
+              <input
+                className="fa-hero-search"
+                placeholder="Search for a form — W-9, I-485, DS-11, 1040…"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+                onKeyDown={e => {
+                  if (e.key === "Enter" && searchQuery.trim()) {
+                    const q = searchQuery.toLowerCase();
+                    const match = FORMS_FLAT.find(f =>
+                      f.short_name.toLowerCase().includes(q) ||
+                      f.form_id.toLowerCase().includes(q) ||
+                      f.form_name.toLowerCase().includes(q)
+                    );
+                    if (match) navigate(`/form/${match.form_id}`);
+                    else setSearchResults(FORMS_FLAT.filter(f =>
+                      f.short_name.toLowerCase().includes(q) ||
+                      f.form_id.toLowerCase().includes(q) ||
+                      f.form_name.toLowerCase().includes(q)
+                    ).slice(0, 6));
+                  }
+                }}
+              />
+              <button className="fa-hero-search-btn" onClick={() => {
+                const q = searchQuery.toLowerCase();
+                if (!q.trim()) return;
+                setSearchResults(FORMS_FLAT.filter(f =>
+                  f.short_name.toLowerCase().includes(q) ||
+                  f.form_id.toLowerCase().includes(q) ||
+                  f.form_name.toLowerCase().includes(q)
+                ).slice(0, 6));
+              }}>Search</button>
+              {searchResults.length > 0 && (
+                <div className="fa-hero-search-results">
+                  {searchResults.map(f => (
+                    <button key={f.form_id} className="fa-hero-search-result"
+                      onClick={() => { navigate(`/form/${f.form_id}`); setSearchResults([]); setSearchQuery(""); }}>
+                      <span className="fa-search-result-short">{f.short_name}</span>
+                      <span className="fa-search-result-name">{f.form_name.split(",")[0]}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="fa-hero-btns">
+              <button className="fa-hero-btn-primary" onClick={() => document.querySelector(".fa-tile-pair")?.scrollIntoView({ behavior: "smooth" })}>
+                Get Started →
+              </button>
+              <button className="fa-hero-btn-secondary" onClick={() => document.querySelector(".hiw-section")?.scrollIntoView({ behavior: "smooth" })}>
+                Learn More
+              </button>
+            </div>
           </div>
         </div>
+      )}
 
-        {/* Right — sticky, fixed width set by drag */}
-        <div className="fa-right" style={{ width: rightWidth, minWidth: rightWidth, maxWidth: rightWidth }}>
+      {/* ── Non-lead steps use the right panel ── */}
+      {step !== "lead" && (
+        <div className="fa-split-container">
+          <div className="fa-left">{leftPanel}</div>
+          <div className="fa-drag-handle" onMouseDown={onHandleMouseDown} title="Drag to resize">
+            <div className="fa-drag-grip"><span /><span /><span /><span /><span /></div>
+          </div>
+          <div className="fa-right" style={{ width: rightWidth, minWidth: rightWidth, maxWidth: rightWidth }}>
+            {rightPanel}
+          </div>
+        </div>
+      )}
+
+      {/* ── Tile pair shown on lead step below hero ── */}
+      {step === "lead" && (
+        <div className="fa-tile-section">
           {rightPanel}
         </div>
-      </div>
+      )}
 
       {/* ── Full-width sections below — completely unaffected by resize ── */}
       {step === "lead" && (
@@ -520,6 +567,49 @@ function MainApp({ user, setShowAuth, getFirstName }) {
             </div>
           </section>
         </>
+      )}
+
+      {/* ── Footer ── */}
+      {step === "lead" && (
+        <footer className="fa-footer">
+          <div className="fa-footer-inner">
+            <div className="fa-footer-top">
+              <div className="fa-footer-brand">
+                <div className="fa-footer-logo">
+                  <div className="fa-brand-mark" style={{ width: 32, height: 32, fontSize: 14 }}>F</div>
+                  <span className="fa-brand-name" style={{ color: "#fff" }}>FormAssist AI</span>
+                </div>
+                <p className="fa-footer-tagline">Official government forms, pre-filled by AI. Review, sign, and submit through official channels.</p>
+                <div className="fa-footer-source">Forms sourced from IRS · USCIS · SSA · State Dept. · VA · CMS · USPS</div>
+              </div>
+              <div className="fa-footer-cols">
+                <div className="fa-footer-col">
+                  <div className="fa-footer-col-title">Forms</div>
+                  {["tax","immigration","passport","benefits","healthcare","veterans","employment","moving"].map((cat, i) => (
+                    <button key={cat} className="fa-footer-link" onClick={() => navigate(`/category/${cat}`)}>
+                      {["Tax Forms","Immigration","Passport & Travel","Benefits & Social","Healthcare","Veterans","Employment","Moving & Address"][i]}
+                    </button>
+                  ))}
+                </div>
+                <div className="fa-footer-col">
+                  <div className="fa-footer-col-title">Company</div>
+                  <button className="fa-footer-link" onClick={() => navigate("/security")}>Security & Privacy</button>
+                  <button className="fa-footer-link" onClick={() => document.querySelector(".hiw-section")?.scrollIntoView({ behavior: "smooth" })}>How it works</button>
+                  <button className="fa-footer-link" onClick={() => navigate("/find-form")}>AI Form Finder</button>
+                </div>
+                <div className="fa-footer-col">
+                  <div className="fa-footer-col-title">Legal</div>
+                  <span className="fa-footer-text">FormAssist AI is not affiliated with any government agency. We prepare helper packets only — you submit through official channels.</span>
+                  <span className="fa-footer-text" style={{ marginTop: 10, display: "block" }}>We never store SSNs, payment data, or government ID numbers.</span>
+                </div>
+              </div>
+            </div>
+            <div className="fa-footer-bottom">
+              <span>© 2026 FormAssist AI. All rights reserved.</span>
+              <span>Not affiliated with IRS, USCIS, SSA, or any U.S. government agency.</span>
+            </div>
+          </div>
+        </footer>
       )}
     </>
   );
@@ -560,27 +650,6 @@ export default function App() {
   return (
     <div className="fa-shell">
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
-
-      <nav className="fa-nav">
-        <div className="fa-brand">
-          <div className="fa-brand-mark">F</div>
-          <span className="fa-brand-name">FormAssist AI</span>
-        </div>
-        <div className="fa-nav-right">
-          {user ? (
-            <div className="fa-nav-user">
-              {user.photoURL
-                ? <img src={user.photoURL} className="fa-avatar-img" alt={getInitials(user)} onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
-                : null}
-              <div className="fa-avatar" style={user.photoURL ? { display: "none" } : {}}>{getInitials(user)}</div>
-              <span className="fa-nav-name">{getFirstName(user)}</span>
-              <button className="fa-nav-signout" onClick={handleSignOut}>Sign out</button>
-            </div>
-          ) : (
-            <button className="fa-nav-cta" onClick={() => setShowAuth(true)}>Sign up — it's free</button>
-          )}
-        </div>
-      </nav>
 
       <Routes>
         <Route path="/" element={<MainApp user={user} setShowAuth={setShowAuth} handleSignOut={handleSignOut} getFirstName={getFirstName} getInitials={getInitials} />} />
