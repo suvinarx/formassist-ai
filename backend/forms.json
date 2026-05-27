@@ -1,24 +1,29 @@
 [
   {
     "form_id": "usps_change_of_address_helper",
-    "form_name": "USPS Change of Address Helper Packet",
+    "form_name": "USPS Change of Address (PS Form 3575)",
     "category": "Moving",
     "agency": "USPS",
-    "submission_mode": "helper_only",
-    "description": "Helps prepare information needed for USPS mail forwarding. User must submit officially through USPS.",
     "questions": [
       {
         "id": "moving_party_type",
         "label": "Who is moving?",
         "type": "single_choice",
-        "options": ["Individual", "Family", "Business"],
+        "options": [
+          "Individual",
+          "Family",
+          "Business"
+        ],
         "required": true
       },
       {
         "id": "move_duration",
         "label": "Is this move permanent or temporary?",
         "type": "single_choice",
-        "options": ["Permanent", "Temporary"],
+        "options": [
+          "Permanent",
+          "Temporary"
+        ],
         "required": true
       },
       {
@@ -65,7 +70,7 @@
       },
       {
         "id": "old_unit",
-        "label": "Old apartment/unit number",
+        "label": "Old apt/unit number",
         "type": "text",
         "required": false
       },
@@ -78,7 +83,60 @@
       {
         "id": "old_state",
         "label": "Old state",
-        "type": "text",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
         "required": true
       },
       {
@@ -95,7 +153,7 @@
       },
       {
         "id": "new_unit",
-        "label": "New apartment/unit number",
+        "label": "New apt/unit number",
         "type": "text",
         "required": false
       },
@@ -108,7 +166,60 @@
       {
         "id": "new_state",
         "label": "New state",
-        "type": "text",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
         "required": true
       },
       {
@@ -120,21 +231,6602 @@
     ]
   },
   {
-    "form_id": "ca_dmv_change_of_address_helper",
-    "form_name": "California DMV Change of Address Helper",
-    "category": "Moving",
-    "agency": "California DMV",
-    "submission_mode": "helper_only",
-    "description": "Helps prepare information for California DMV address update.",
-    "questions": []
+    "form_id": "w9",
+    "form_name": "Form W-9, Request for Taxpayer Identification Number",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "full_legal_name",
+        "label": "Full legal name (as shown on your income tax return)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "business_name",
+        "label": "Business name / disregarded entity name (if different)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "federal_tax_classification",
+        "label": "Federal tax classification",
+        "type": "single_choice",
+        "options": [
+          "Individual/sole proprietor",
+          "C Corporation",
+          "S Corporation",
+          "Partnership",
+          "Trust/estate",
+          "Limited liability company",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "exemption_payee_code",
+        "label": "Exemption (payee) code",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "exemption_fatca_code",
+        "label": "Exemption from FATCA reporting code",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "address",
+        "label": "Street address (number, street, apt or suite)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city_state_zip",
+        "label": "City, state, and ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "account_numbers",
+        "label": "Account number(s) here (optional)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "requester_name_address",
+        "label": "Requester's name and address (optional)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "tin_ssn",
+        "label": "Social Security Number (SSN) \u2014 leave blank to fill by hand",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "tin_ein",
+        "label": "Employer Identification Number (EIN) \u2014 leave blank to fill by hand",
+        "type": "text",
+        "required": false
+      }
+    ]
   },
   {
-    "form_id": "wa_new_resident_driver_license_checklist",
-    "form_name": "Washington New Resident Driver License Checklist",
+    "form_id": "w4",
+    "form_name": "Form W-4, Employee's Withholding Certificate",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "first_name_middle",
+        "label": "First name and middle initial",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "address",
+        "label": "Home address (number and street or rural route)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city_state_zip",
+        "label": "City or town, state, and ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "filing_status",
+        "label": "Filing status",
+        "type": "single_choice",
+        "options": [
+          "Single or Married filing separately",
+          "Married filing jointly or Qualifying surviving spouse",
+          "Head of household"
+        ],
+        "required": true
+      },
+      {
+        "id": "multiple_jobs",
+        "label": "Step 2: Multiple jobs or spouse works",
+        "type": "single_choice",
+        "options": [
+          "Complete the Multiple Jobs Worksheet (Page 3)",
+          "Use the online estimator at IRS.gov/W4App",
+          "Check this box (only if: only 2 jobs total, similar pay)"
+        ],
+        "required": true
+      },
+      {
+        "id": "dependents_amount",
+        "label": "Step 3: Claim dependent and other credits total dollar amount",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "other_income",
+        "label": "Step 4a: Other income not from jobs (interest, dividends, retirement)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "deductions",
+        "label": "Step 4b: Deductions (if you plan to itemize \u2014 from Deductions Worksheet)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "extra_withholding",
+        "label": "Step 4c: Extra withholding \u2014 additional amount per pay period",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name and address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_date_of_employment",
+        "label": "First date of employment",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "employer_ein",
+        "label": "Employer Identification Number (EIN)",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "w2",
+    "form_name": "Form W-2, Wage and Tax Statement",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "employee_ssn",
+        "label": "Employee Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "employer_ein",
+        "label": "Employer Identification Number (EIN)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_address",
+        "label": "Employer's address and ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employee_name",
+        "label": "Employee's first name and initial, last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employee_address",
+        "label": "Employee's address and ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "control_number",
+        "label": "Control number (box d)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "wages_tips",
+        "label": "Box 1: Wages, tips, other compensation",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "federal_income_tax",
+        "label": "Box 2: Federal income tax withheld",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "social_security_wages",
+        "label": "Box 3: Social security wages",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "social_security_tax",
+        "label": "Box 4: Social security tax withheld",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "medicare_wages",
+        "label": "Box 5: Medicare wages and tips",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "medicare_tax",
+        "label": "Box 6: Medicare tax withheld",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "social_security_tips",
+        "label": "Box 7: Social security tips",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "allocated_tips",
+        "label": "Box 8: Allocated tips",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dependent_care",
+        "label": "Box 10: Dependent care benefits",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "nonqualified_plans",
+        "label": "Box 11: Nonqualified plans",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "box12a",
+        "label": "Box 12a: Code and amount",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "box12b",
+        "label": "Box 12b: Code and amount",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "state",
+        "label": "Box 15: State",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state_ein",
+        "label": "State Employer ID",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "state_wages",
+        "label": "Box 16: State wages, tips, etc.",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "state_income_tax",
+        "label": "Box 17: State income tax",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "locality_name",
+        "label": "Box 18: Locality name",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "1040",
+    "form_name": "Form 1040, U.S. Individual Income Tax Return",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "filing_status",
+        "label": "Filing status",
+        "type": "single_choice",
+        "options": [
+          "Single or Married filing separately",
+          "Married filing jointly or Qualifying surviving spouse",
+          "Head of household",
+          "Qualifying surviving spouse"
+        ],
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Your first name and middle initial",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "last_name",
+        "label": "Your last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Your Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_first_name",
+        "label": "Spouse's first name and middle initial (if MFJ)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_last_name",
+        "label": "Spouse's last name (if MFJ)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_ssn",
+        "label": "Spouse's Social Security Number (if MFJ)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "home_address",
+        "label": "Home address (number and street)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "apt_no",
+        "label": "Apt no.",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "city_town",
+        "label": "City, town, or post office",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "foreign_country",
+        "label": "Foreign country name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "wages_salaries",
+        "label": "Line 1a: Total amount from W-2 box 1",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "tax_exempt_interest",
+        "label": "Line 2a: Tax-exempt interest",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "taxable_interest",
+        "label": "Line 2b: Taxable interest",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "qualified_dividends",
+        "label": "Line 3a: Qualified dividends",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ordinary_dividends",
+        "label": "Line 3b: Ordinary dividends",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ira_distributions",
+        "label": "Line 4b: IRA distributions, taxable amount",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "pensions_annuities",
+        "label": "Line 5b: Pensions and annuities, taxable amount",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "social_security",
+        "label": "Line 6b: Social security benefits, taxable amount",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "capital_gain_loss",
+        "label": "Line 7: Capital gain or (loss)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "other_income",
+        "label": "Line 8: Other income from Schedule 1",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "adjustments",
+        "label": "Line 10: Adjustments to income from Schedule 1",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "standard_deduction_amount",
+        "label": "Line 12: Standard or itemized deduction",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "qbi_deduction",
+        "label": "Line 13: Qualified business income deduction",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "child_tax_credit",
+        "label": "Line 19: Child tax credit / credit for other dependents",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "federal_tax_withheld",
+        "label": "Line 25a: Federal income tax withheld from W-2",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "estimated_tax_payments",
+        "label": "Line 26: 2024 estimated tax payments",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "earned_income_credit",
+        "label": "Line 27: Earned income credit (EIC)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "bank_routing",
+        "label": "Would you like to include direct deposit info for refund?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
+        "id": "routing_number",
+        "label": "Routing number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "account_number",
+        "label": "Account number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "account_type",
+        "label": "Account type",
+        "type": "single_choice",
+        "options": [
+          "Checking",
+          "Savings"
+        ],
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "schedC",
+    "form_name": "Schedule C (Form 1040), Profit or Loss from Business",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "proprietor_name",
+        "label": "Your name (as on Form 1040)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "business_name",
+        "label": "Principal business or profession (e.g., 'Freelance Writer')",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "business_code",
+        "label": "Business code (6-digit IRS code)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ein",
+        "label": "Employer ID Number (EIN)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "business_address",
+        "label": "Business address (if different from home)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city_state_zip",
+        "label": "City, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "accounting_method",
+        "label": "Accounting method",
+        "type": "single_choice",
+        "options": [
+          "Cash",
+          "Accrual",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "material_participation",
+        "label": "Did you materially participate in this business?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "started_2024",
+        "label": "Did you start or acquire this business in 2024?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "gross_receipts",
+        "label": "Line 1: Gross receipts or sales",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "returns_allowances",
+        "label": "Line 2: Returns and allowances",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "cost_of_goods_sold",
+        "label": "Line 4: Cost of goods sold",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "advertising",
+        "label": "Advertising expenses",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "car_expenses",
+        "label": "Car and truck expenses",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "insurance",
+        "label": "Insurance (other than health)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "legal_professional",
+        "label": "Legal and professional services",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "office_expense",
+        "label": "Office expense",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "rent_lease",
+        "label": "Rent or lease",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "repairs",
+        "label": "Repairs and maintenance",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "supplies",
+        "label": "Supplies",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "taxes_licenses",
+        "label": "Taxes and licenses",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "travel",
+        "label": "Travel and meals",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "utilities",
+        "label": "Utilities",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "wages",
+        "label": "Wages less employment credits",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "other_expenses",
+        "label": "Other expenses (describe)",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "4868",
+    "form_name": "Form 4868, Application for Automatic Extension of Time to File",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "first_name",
+        "label": "Your first name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "last_name",
+        "label": "Your last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city_state_zip",
+        "label": "City, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Your Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_ssn",
+        "label": "Spouse's Social Security Number (if MFJ)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "estimated_tax",
+        "label": "Total tax you estimate you'll owe for the year",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "total_payments",
+        "label": "Total 2024 payments (withholding + estimated)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "balance_due",
+        "label": "Balance due (estimated tax minus payments)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "amount_you_are_paying",
+        "label": "Amount you are paying with this request",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "1099nec",
+    "form_name": "Form 1099-NEC, Nonemployee Compensation",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "payer_name",
+        "label": "Payer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_address",
+        "label": "Payer's street address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_city_state_zip",
+        "label": "Payer's city, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_tin",
+        "label": "Payer's TIN (EIN or SSN)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "recipient_tin",
+        "label": "Recipient's TIN (SSN or EIN)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "recipient_name",
+        "label": "Recipient's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "recipient_address",
+        "label": "Recipient's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "recipient_city_state_zip",
+        "label": "Recipient's city, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "nonemployee_compensation",
+        "label": "Box 1: Nonemployee compensation",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "direct_sales",
+        "label": "Box 2: Direct sales over $5,000?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
+        "id": "federal_income_tax",
+        "label": "Box 4: Federal income tax withheld",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "state",
+        "label": "Box 6: State",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state_tax",
+        "label": "Box 7: State income tax withheld",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "schedA",
+    "form_name": "Schedule A (Form 1040), Itemized Deductions",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "taxpayer_name",
+        "label": "Your name as shown on Form 1040",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Your Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "medical_dental",
+        "label": "Line 1: Medical and dental expenses paid",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "agi",
+        "label": "Line 2: Your AGI (from Form 1040 Line 11)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state_local_income_tax",
+        "label": "Line 5a: State and local income taxes paid",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "real_estate_taxes",
+        "label": "Line 5b: Real estate taxes paid",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "personal_property_taxes",
+        "label": "Line 5c: Personal property taxes paid",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "home_mortgage_interest",
+        "label": "Line 8a: Home mortgage interest on Form 1098",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "mortgage_not_on_1098",
+        "label": "Line 8b: Home mortgage interest not on Form 1098",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "investment_interest",
+        "label": "Line 9: Investment interest",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "gifts_by_cash",
+        "label": "Line 11: Gifts to charity by cash or check",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "gifts_other",
+        "label": "Line 12: Gifts to charity other than cash",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "casualty_losses",
+        "label": "Line 15: Casualty/theft losses from disaster",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "unreimbursed_employee",
+        "label": "Line 16: Other itemized deductions",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "i9",
+    "form_name": "Form I-9, Employment Eligibility Verification",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Last name (family name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name (given name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_initial",
+        "label": "Middle initial",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "other_last_names",
+        "label": "Other last names used (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "address",
+        "label": "Address (street number and name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "apt_number",
+        "label": "Apt. number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "city",
+        "label": "City or town",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "date_of_birth",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "U.S. Social Security Number (leave blank to fill by hand)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "email",
+        "label": "Employee's email address",
+        "type": "email",
+        "required": false
+      },
+      {
+        "id": "phone",
+        "label": "Employee's telephone number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "citizenship_status",
+        "label": "I attest, under penalty of perjury, that I am:",
+        "type": "single_choice",
+        "options": [
+          "A citizen of the United States",
+          "A noncitizen national of the United States",
+          "A lawful permanent resident",
+          "An alien authorized to work until a specific date"
+        ],
+        "required": true
+      },
+      {
+        "id": "alien_registration",
+        "label": "USCIS A-Number or I-94 number (if applicable)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "work_auth_expiration",
+        "label": "Expiration date of work authorization (if applicable)",
+        "type": "date",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "i130",
+    "form_name": "Form I-130, Petition for Alien Relatives",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "petitioner_last",
+        "label": "Petitioner: Family name (last name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "petitioner_first",
+        "label": "Petitioner: Given name (first name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "petitioner_middle",
+        "label": "Petitioner: Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "petitioner_dob",
+        "label": "Petitioner: Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "petitioner_sex",
+        "label": "Petitioner: Sex",
+        "type": "single_choice",
+        "options": [
+          "Male",
+          "Female"
+        ],
+        "required": true
+      },
+      {
+        "id": "petitioner_address",
+        "label": "Petitioner: Current address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "petitioner_city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "petitioner_state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "petitioner_zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "petitioner_status",
+        "label": "Petitioner's status",
+        "type": "single_choice",
+        "options": [
+          "U.S. Citizen",
+          "Lawful Permanent Resident"
+        ],
+        "required": true
+      },
+      {
+        "id": "relationship",
+        "label": "Relationship to beneficiary",
+        "type": "single_choice",
+        "options": [
+          "Husband/Wife",
+          "Child",
+          "Parent",
+          "Sibling"
+        ],
+        "required": true
+      },
+      {
+        "id": "beneficiary_last",
+        "label": "Beneficiary: Family name (last name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_first",
+        "label": "Beneficiary: Given name (first name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_middle",
+        "label": "Beneficiary: Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "beneficiary_dob",
+        "label": "Beneficiary: Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "beneficiary_country",
+        "label": "Beneficiary: Country of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_country_citizenship",
+        "label": "Beneficiary: Country of citizenship",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "i485",
+    "form_name": "Form I-485, Application to Register Permanent Residence",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Family name (last name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Given name (first name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "country_of_birth",
+        "label": "Country of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "country_of_citizenship",
+        "label": "Country of citizenship/nationality",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "alien_number",
+        "label": "USCIS A-Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ssn",
+        "label": "U.S. Social Security Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "current_address",
+        "label": "Current address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Daytime phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "immigration_status",
+        "label": "Current immigration status/visa category",
+        "type": "single_choice",
+        "options": [
+          "F-1 Student",
+          "H-1B Worker",
+          "H-4 Dependent",
+          "J-1 Exchange Visitor",
+          "B-1/B-2 Visitor",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "eligibility_category",
+        "label": "Basis for application",
+        "type": "single_choice",
+        "options": [
+          "Family-based (immediate relative)",
+          "Family-based (preference)",
+          "Employment-based",
+          "Refugee/Asylee",
+          "Diversity Visa",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "last_entry_date",
+        "label": "Date of last entry into the U.S.",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "last_entry_status",
+        "label": "Status on last entry",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ever_in_removal",
+        "label": "Have you ever been in removal/deportation proceedings?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "criminal_history",
+        "label": "Have you ever been arrested or convicted of a crime?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "i765",
+    "form_name": "Form I-765, Application for Employment Authorization",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Family name (last name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Given name (first name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "country_of_birth",
+        "label": "Country of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "country_of_citizenship",
+        "label": "Country of citizenship",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "U.S. Social Security Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "alien_number",
+        "label": "USCIS A-Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "current_address",
+        "label": "Address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Daytime phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "eligibility_category",
+        "label": "Eligibility category code (e.g., (c)(3)(A) for DACA, (c)(9) for pending AOS)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "prior_ead_number",
+        "label": "Prior EAD card number (if renewing)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "prior_ead_expiry",
+        "label": "Prior EAD expiration date (if renewing)",
+        "type": "date",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "n400",
+    "form_name": "Form N-400, Application for Naturalization",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Family name (last name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Given name (first name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "other_names",
+        "label": "Other names you have used",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "country_of_birth",
+        "label": "Country of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "alien_number",
+        "label": "USCIS A-Number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "home_address",
+        "label": "Home address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Daytime phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "became_lpr",
+        "label": "Date you became a Lawful Permanent Resident",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "marital_status",
+        "label": "Current marital status",
+        "type": "single_choice",
+        "options": [
+          "Single",
+          "Married",
+          "Divorced",
+          "Widowed",
+          "Marriage Annulled"
+        ],
+        "required": true
+      },
+      {
+        "id": "spouse_name",
+        "label": "Spouse's full name (if married)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "date_of_marriage",
+        "label": "Date of marriage (if applicable)",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "employer_name",
+        "label": "Current employer's name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "employer_address",
+        "label": "Employer's address",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "english_ability",
+        "label": "How well do you speak English?",
+        "type": "single_choice",
+        "options": [
+          "Well",
+          "Not well",
+          "Not at all"
+        ],
+        "required": true
+      },
+      {
+        "id": "ever_claimed_nonresident",
+        "label": "Have you ever claimed to be a non-US national to avoid military service?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "ever_failed_to_file_taxes",
+        "label": "Have you ever failed to file a federal tax return?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "ever_registered_vote",
+        "label": "Do you register and vote in US elections?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "i864",
+    "form_name": "Form I-864, Affidavit of Support",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "sponsor_last",
+        "label": "Sponsor: Family name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sponsor_first",
+        "label": "Sponsor: Given name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sponsor_middle",
+        "label": "Sponsor: Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "sponsor_address",
+        "label": "Sponsor: Home address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sponsor_city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sponsor_state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "sponsor_zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sponsor_phone",
+        "label": "Sponsor: Phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sponsor_email",
+        "label": "Sponsor: Email",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "sponsor_dob",
+        "label": "Sponsor: Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "sponsor_ssn",
+        "label": "Sponsor: Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "sponsor_status",
+        "label": "Sponsor's status",
+        "type": "single_choice",
+        "options": [
+          "U.S. Citizen",
+          "Lawful Permanent Resident"
+        ],
+        "required": true
+      },
+      {
+        "id": "employer",
+        "label": "Sponsor: Current employer",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "current_individual_income",
+        "label": "Sponsor: Current annual individual income",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "household_size",
+        "label": "Total household size (including yourself and immigrant)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "immigrant_name",
+        "label": "Immigrant (intending): Full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "immigrant_dob",
+        "label": "Immigrant: Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "immigrant_country",
+        "label": "Immigrant: Country of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "immigrant_alien_number",
+        "label": "Immigrant: USCIS A-Number",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "ds11",
+    "form_name": "Form DS-11, Application for a U.S. Passport",
+    "category": "Passport",
+    "agency": "U.S. Dept. of State",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "date_of_birth",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "place_of_birth",
+        "label": "Place of birth (city and country)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sex",
+        "label": "Sex",
+        "type": "single_choice",
+        "options": [
+          "Male",
+          "Female",
+          "X"
+        ],
+        "required": true
+      },
+      {
+        "id": "height",
+        "label": "Height (e.g., 5'10\")",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "hair_color",
+        "label": "Hair color",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "eye_color",
+        "label": "Eye color",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number \u2014 fill by hand at the passport office",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Primary phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Home address (street)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "travel_plans",
+        "label": "Do you have specific travel plans?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
+        "id": "travel_departure",
+        "label": "Departure date (if applicable)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "travel_countries",
+        "label": "Countries to be visited",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "emergency_contact_name",
+        "label": "Emergency contact: Full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "emergency_contact_phone",
+        "label": "Emergency contact: Phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "emergency_contact_relationship",
+        "label": "Emergency contact: Relationship",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "book_or_card",
+        "label": "Applying for:",
+        "type": "single_choice",
+        "options": [
+          "Passport Book",
+          "Passport Card",
+          "Both"
+        ],
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "ds82",
+    "form_name": "Form DS-82, U.S. Passport Renewal Application",
+    "category": "Passport",
+    "agency": "U.S. Dept. of State",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "date_of_birth",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "place_of_birth",
+        "label": "Place of birth (city and country)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sex",
+        "label": "Sex",
+        "type": "single_choice",
+        "options": [
+          "Male",
+          "Female",
+          "X"
+        ],
+        "required": true
+      },
+      {
+        "id": "height",
+        "label": "Height (e.g., 5'10\")",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "hair_color",
+        "label": "Hair color",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "eye_color",
+        "label": "Eye color",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number \u2014 fill by hand",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Primary phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Home address (street)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "most_recent_passport_number",
+        "label": "Most recent passport: Book number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "most_recent_passport_issue",
+        "label": "Most recent passport: Issue date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "name_change_reason",
+        "label": "Name change reason (if name changed since last passport)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "book_or_card",
+        "label": "Applying to renew:",
+        "type": "single_choice",
+        "options": [
+          "Passport Book",
+          "Passport Card",
+          "Both"
+        ],
+        "required": true
+      },
+      {
+        "id": "emergency_contact_name",
+        "label": "Emergency contact: Full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "emergency_contact_phone",
+        "label": "Emergency contact: Phone",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "ss5",
+    "form_name": "Form SS-5, Application for a Social Security Card",
+    "category": "Benefits",
+    "agency": "SSA",
+    "questions": [
+      {
+        "id": "full_name_first",
+        "label": "First name (to show on card)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "full_name_middle",
+        "label": "Middle name (to show on card)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "full_name_last",
+        "label": "Last name (to show on card)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "full_name_other",
+        "label": "Other names used",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "mailing_address",
+        "label": "Mailing address (street/apt, PO Box, or rural route)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "citizenship",
+        "label": "Citizenship (U.S. citizen, Legal alien, etc.)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sex",
+        "label": "Sex",
+        "type": "single_choice",
+        "options": [
+          "Male",
+          "Female"
+        ],
+        "required": true
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "place_of_birth_city",
+        "label": "Place of birth: City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "place_of_birth_state",
+        "label": "Place of birth: State or foreign country",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "mothers_name_first",
+        "label": "Mother's first name at her birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "mothers_maiden_name",
+        "label": "Mother's maiden name (last name before first marriage)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "mothers_ssn",
+        "label": "Mother's Social Security Number (if known)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "fathers_name_first",
+        "label": "Father's first name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "fathers_last_name",
+        "label": "Father's last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "fathers_ssn",
+        "label": "Father's Social Security Number (if known)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "previously_applied",
+        "label": "Have you or anyone applied for a Social Security number for this person before?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Your daytime phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "date",
+        "label": "Today's date",
+        "type": "date",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "ssa44",
+    "form_name": "Form SSA-44, Medicare Income-Related Monthly Adjustment",
+    "category": "Benefits",
+    "agency": "SSA",
+    "questions": [
+      {
+        "id": "full_name",
+        "label": "Your full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Your Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "medicare_claim_number",
+        "label": "Medicare claim number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "phone",
+        "label": "Your phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "life_event",
+        "label": "Life-changing event",
+        "type": "single_choice",
+        "options": [
+          "Marriage",
+          "Divorce or annulment",
+          "Death of spouse",
+          "Work stoppage",
+          "Work reduction",
+          "Loss of income-producing property",
+          "Loss of pension income",
+          "Employer settlement payment"
+        ],
+        "required": true
+      },
+      {
+        "id": "event_date",
+        "label": "Date the event occurred",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "current_year",
+        "label": "Current year",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "expected_magi",
+        "label": "Your expected modified adjusted gross income (MAGI) this year",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "expected_spouse_magi",
+        "label": "Spouse's expected MAGI this year (if applicable)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "tax_filing_status",
+        "label": "Tax filing status for the current year",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "cms40b",
+    "form_name": "Form CMS-40B, Application for Medicare Part B",
+    "category": "Healthcare",
+    "agency": "CMS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "medicare_claim_number",
+        "label": "Medicare claim number (from Medicare card)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "sex",
+        "label": "Sex",
+        "type": "single_choice",
+        "options": [
+          "Male",
+          "Female"
+        ],
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Home address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "enrollment_period",
+        "label": "Reason for enrollment",
+        "type": "single_choice",
+        "options": [
+          "Initial Enrollment Period",
+          "General Enrollment Period (Jan 1\u2013Mar 31)",
+          "Special Enrollment Period \u2014 lost employer coverage",
+          "Special Enrollment Period \u2014 other"
+        ],
+        "required": true
+      },
+      {
+        "id": "employer_coverage_ended",
+        "label": "Date employer/union group coverage ended (if SEP)",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer/union name (if applicable)",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "va526ez",
+    "form_name": "VA Form 21-526EZ, Application for Disability Compensation",
+    "category": "Veterans",
+    "agency": "VA",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Veteran's last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Veteran's first name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "va_file_number",
+        "label": "VA file number (if known)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "sex",
+        "label": "Sex",
+        "type": "single_choice",
+        "options": [
+          "Male",
+          "Female"
+        ],
+        "required": true
+      },
+      {
+        "id": "home_address",
+        "label": "Home address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Daytime phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "service_branch",
+        "label": "Branch of service (e.g., Army, Navy, Marine Corps, Air Force, Coast Guard)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "service_start",
+        "label": "Service entry date (from)",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "service_end",
+        "label": "Service separation date (to)",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "character_of_discharge",
+        "label": "Character of discharge",
+        "type": "single_choice",
+        "options": [
+          "Honorable",
+          "General (under honorable conditions)",
+          "Other than honorable",
+          "Bad Conduct",
+          "Dishonorable"
+        ],
+        "required": true
+      },
+      {
+        "id": "disabilities",
+        "label": "List of disabilities/conditions you are claiming (be specific)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "currently_va_patient",
+        "label": "Are you currently receiving VA compensation or pension?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "direct_deposit_routing",
+        "label": "Routing number for direct deposit",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "direct_deposit_account",
+        "label": "Account number for direct deposit",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "direct_deposit_type",
+        "label": "Account type",
+        "type": "single_choice",
+        "options": [
+          "Checking",
+          "Savings"
+        ],
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "va1990",
+    "form_name": "VA Form 22-1990, Application for VA Education Benefits",
+    "category": "Veterans",
+    "agency": "VA",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Veteran/servicemember: Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "sex",
+        "label": "Sex",
+        "type": "single_choice",
+        "options": [
+          "Male",
+          "Female"
+        ],
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Home address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "education_benefit",
+        "label": "Education benefit you are applying for",
+        "type": "single_choice",
+        "options": [
+          "Post-9/11 GI Bill (Ch. 33)",
+          "Montgomery GI Bill Active Duty (Ch. 30)",
+          "Montgomery GI Bill SR (Ch. 1606)",
+          "Survivors' and Dependents' Educational Assistance (Ch. 35)",
+          "National Call to Service",
+          "Tuition Assistance Top-Up",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "school_name",
+        "label": "Name of school or training facility you plan to attend",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "school_address",
+        "label": "School address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "school_city",
+        "label": "School city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "school_state",
+        "label": "School state",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC",
+          "Foreign country"
+        ],
+        "required": true
+      },
+      {
+        "id": "school_zip",
+        "label": "School ZIP",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "education_objective",
+        "label": "Education or training objective (degree, program, etc.)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "service_branch",
+        "label": "Branch of service",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "active_duty_start",
+        "label": "Active duty start date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "active_duty_end",
+        "label": "Active duty separation date (or expected)",
+        "type": "date",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "wh380e",
+    "form_name": "Form WH-380-E, FMLA Certification \u2014 Employee's Own Health Condition",
+    "category": "Employment",
+    "agency": "Dept. of Labor",
+    "questions": [
+      {
+        "id": "employee_name",
+        "label": "Employee's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_contact",
+        "label": "Employer's HR/contact name and phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "patient_name",
+        "label": "Patient's name (if different from employee)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "provider_name",
+        "label": "Health care provider's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_type",
+        "label": "Type of practice / Medical specialty",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_address",
+        "label": "Provider's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_phone",
+        "label": "Provider's phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "condition_description",
+        "label": "Describe the medical condition for which leave is needed",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "inpatient_care",
+        "label": "Does the patient require inpatient care (hospitalization)?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "inpatient_start",
+        "label": "Date inpatient care began (if applicable)",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "inpatient_end",
+        "label": "Date inpatient care ended (if applicable)",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "continuing_treatment",
+        "label": "Will there be continuing treatment by a health care provider?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "treatment_frequency",
+        "label": "Estimated treatment frequency (e.g., every 2 weeks)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "treatment_duration",
+        "label": "Estimated duration of each treatment (e.g., 1\u20132 hours)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "reduced_schedule",
+        "label": "Does condition require a reduced work schedule?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "hours_per_week",
+        "label": "If reduced schedule, hours per week employee can work",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "leave_duration",
+        "label": "Estimated duration of employee's leave (in weeks)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_signature_name",
+        "label": "Health care provider: Print name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_signature_date",
+        "label": "Health care provider: Date signed",
+        "type": "date",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "irs_8822",
+    "form_name": "Form 8822, IRS Change of Address",
     "category": "Moving",
-    "agency": "Washington DOL",
-    "submission_mode": "helper_only",
-    "description": "Checklist for new Washington residents who may need a WA driver license.",
-    "questions": []
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "return_type",
+        "label": "Check if this change affects:",
+        "type": "single_choice",
+        "options": [
+          "Individual",
+          "Joint",
+          "Business/Gift/Estate",
+          "Both individual and business"
+        ],
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Your first name and middle initial",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "last_name",
+        "label": "Your last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Your Social Security Number or ITIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_first_name",
+        "label": "Spouse's first name and middle initial (if joint return)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_last_name",
+        "label": "Spouse's last name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_ssn",
+        "label": "Spouse's SSN or ITIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "prior_address",
+        "label": "Prior address (number, street, apt, PO Box)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "prior_city",
+        "label": "Prior city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "prior_state",
+        "label": "Prior state",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "prior_zip",
+        "label": "Prior ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_address",
+        "label": "New address (number, street, apt, PO Box)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_city",
+        "label": "New city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_state",
+        "label": "New state",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "new_zip",
+        "label": "New ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "foreign_country",
+        "label": "Foreign country name (if outside USA)",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "1040x",
+    "form_name": "Form 1040-X, Amended U.S. Individual Income Tax Return",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "taxpayer_name",
+        "label": "Your name as shown on original return",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Your Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_name",
+        "label": "Spouse's name (if MFJ)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_ssn",
+        "label": "Spouse's SSN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "current_address",
+        "label": "Current home address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city_state_zip",
+        "label": "City, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "original_return_year",
+        "label": "Tax year of the original return being amended",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "original_filing_status",
+        "label": "Original filing status",
+        "type": "single_choice",
+        "options": [
+          "Single or Married filing separately",
+          "Married filing jointly or Qualifying surviving spouse",
+          "Head of household"
+        ],
+        "required": true
+      },
+      {
+        "id": "new_filing_status",
+        "label": "New filing status (if changing)",
+        "type": "single_choice",
+        "options": [
+          "Single or Married filing separately",
+          "Married filing jointly or Qualifying surviving spouse",
+          "Head of household",
+          "No change"
+        ],
+        "required": false
+      },
+      {
+        "id": "original_income",
+        "label": "Original: Total income (as previously reported)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "net_change_income",
+        "label": "Net change to income (positive = increase, negative = decrease)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "original_deductions",
+        "label": "Original: Deductions",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "net_change_deductions",
+        "label": "Net change to deductions",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "original_exemptions",
+        "label": "Original: Exemptions",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "original_tax",
+        "label": "Original: Tax liability",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "original_payments",
+        "label": "Original: Total payments",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "explanation",
+        "label": "Explanation of changes (what you are correcting and why)",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "1040es",
+    "form_name": "Form 1040-ES, Estimated Tax for Individuals",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "first_name",
+        "label": "First name and middle initial",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_name",
+        "label": "Spouse's name (if applicable)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "address",
+        "label": "Address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city_state_zip",
+        "label": "City, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "estimated_taxable_income",
+        "label": "Estimated taxable income for the year",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "estimated_tax_rate",
+        "label": "Estimated tax rate or total tax (from worksheet)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "withholding_credits",
+        "label": "Expected withholding and other credits",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "required_annual_payment",
+        "label": "Required annual payment (90% of current year or 100% of prior year)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payment_amount_q1",
+        "label": "Quarter 1 payment amount (due April 15)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payment_amount_q2",
+        "label": "Quarter 2 payment amount (due June 15)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payment_amount_q3",
+        "label": "Quarter 3 payment amount (due September 15)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payment_amount_q4",
+        "label": "Quarter 4 payment amount (due January 15)",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "1099misc",
+    "form_name": "Form 1099-MISC, Miscellaneous Information",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "payer_name",
+        "label": "Payer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_address",
+        "label": "Payer's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_city_state_zip",
+        "label": "Payer's city, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_tin",
+        "label": "Payer's TIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "recipient_tin",
+        "label": "Recipient's TIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "recipient_name",
+        "label": "Recipient's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "recipient_address",
+        "label": "Recipient's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "recipient_city_state_zip",
+        "label": "Recipient's city, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "rents",
+        "label": "Box 1: Rents",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "royalties",
+        "label": "Box 2: Royalties",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "other_income",
+        "label": "Box 3: Other income",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "federal_income_tax",
+        "label": "Box 4: Federal income tax withheld",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "fishing_boat",
+        "label": "Box 5: Fishing boat proceeds",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "medical_payments",
+        "label": "Box 6: Medical and health care payments",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "nonemployee_comp",
+        "label": "Box 7: Payer made direct sales over $5,000?",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "substitute_payments",
+        "label": "Box 8: Substitute payments in lieu of dividends",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "crop_insurance",
+        "label": "Box 9: Crop insurance proceeds",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "gross_proceeds",
+        "label": "Box 10: Gross proceeds paid to an attorney",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "state",
+        "label": "Box 16: State",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state_tax",
+        "label": "Box 17: State tax withheld",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "1099r",
+    "form_name": "Form 1099-R, Distributions From Pensions/Annuities/Retirement",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "payer_name",
+        "label": "Payer's name (financial institution or plan)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_address",
+        "label": "Payer's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_city_state_zip",
+        "label": "Payer's city, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payer_tin",
+        "label": "Payer's federal ID number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "recipient_tin",
+        "label": "Recipient's TIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "recipient_name",
+        "label": "Recipient's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "recipient_address",
+        "label": "Recipient's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "recipient_city_state_zip",
+        "label": "Recipient's city, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "gross_distribution",
+        "label": "Box 1: Gross distribution",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "taxable_amount",
+        "label": "Box 2a: Taxable amount",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "taxable_not_determined",
+        "label": "Box 2b: Taxable amount not determined?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
+        "id": "capital_gain",
+        "label": "Box 3: Capital gain (included in box 2a)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "federal_income_tax",
+        "label": "Box 4: Federal income tax withheld",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "employee_contributions",
+        "label": "Box 5: Employee contributions / designated Roth basis",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "distribution_code",
+        "label": "Box 7: Distribution code(s) (e.g., 1=early, 7=normal, G=rollover)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ira_sep_simple",
+        "label": "Box 7: IRA/SEP/SIMPLE checkbox?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
+        "id": "state",
+        "label": "Box 12: State",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state_tax",
+        "label": "Box 14: State tax withheld",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "4506t",
+    "form_name": "Form 4506-T, Request for Transcript of Tax Return",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "name_shown_on_return",
+        "label": "Name shown on tax return",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "SSN, ITIN, or EIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_name",
+        "label": "Spouse's name on tax return (if MFJ)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_ssn",
+        "label": "Spouse's SSN or ITIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "current_address",
+        "label": "Current address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city_state_zip",
+        "label": "City, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "previous_address",
+        "label": "Previous address shown on last return filed",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "previous_city_state_zip",
+        "label": "Previous city, state, ZIP",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "transcript_type",
+        "label": "Transcript type requested",
+        "type": "single_choice",
+        "options": [
+          "Return Transcript",
+          "Account Transcript",
+          "Record of Account Transcript",
+          "Wage and Income Transcript",
+          "Verification of Non-Filing"
+        ],
+        "required": true
+      },
+      {
+        "id": "tax_years",
+        "label": "Year(s) or period(s) requested (e.g., 12/31/2023)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "third_party_name",
+        "label": "Third party name (if sending to lender, etc.)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "third_party_address",
+        "label": "Third party address",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "third_party_phone",
+        "label": "Third party phone",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "8822",
+    "form_name": "Form 8822, Change of Address",
+    "category": "Tax",
+    "agency": "IRS",
+    "questions": [
+      {
+        "id": "return_type",
+        "label": "Which return(s) does this change affect?",
+        "type": "single_choice",
+        "options": [
+          "Individual income tax returns",
+          "Gift, estate, or generation-skipping returns",
+          "Employee plan returns",
+          "Business returns"
+        ],
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Your first name and middle initial",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "last_name",
+        "label": "Your last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Your SSN or ITIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_first_name",
+        "label": "Spouse's first name (if joint return)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_last_name",
+        "label": "Spouse's last name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "spouse_ssn",
+        "label": "Spouse's SSN or ITIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "prior_address",
+        "label": "Prior address (street, apt, PO Box)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "prior_city",
+        "label": "Prior city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "prior_state",
+        "label": "Prior state",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "prior_zip",
+        "label": "Prior ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_address",
+        "label": "New address (street, apt, PO Box)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_city",
+        "label": "New city",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "new_state",
+        "label": "New state",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "new_zip",
+        "label": "New ZIP code",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "i90",
+    "form_name": "Form I-90, Application to Replace Permanent Resident Card",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Family name (last name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Given name (first name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "alien_number",
+        "label": "USCIS Alien Registration Number (A-Number)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "U.S. Social Security Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "country_of_birth",
+        "label": "Country of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "country_of_citizenship",
+        "label": "Country of citizenship",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Current physical address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Daytime phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "reason",
+        "label": "Reason for applying",
+        "type": "single_choice",
+        "options": [
+          "Card expired or will expire within 6 months",
+          "Card was lost, stolen, or destroyed",
+          "Card was mutilated or damaged",
+          "Card was never received",
+          "Name or other biographic info changed",
+          "Data on card is incorrect",
+          "Became permanent resident through judicial proceeding",
+          "Two-year card \u2014 conditions removed (file I-751 instead)"
+        ],
+        "required": true
+      },
+      {
+        "id": "current_card_expiry",
+        "label": "Current card expiration date",
+        "type": "date",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "i821d",
+    "form_name": "Form I-821D, Consideration of Deferred Action for Childhood Arrivals (DACA)",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Family name (last name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "Given name (first name)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "country_of_birth",
+        "label": "Country of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "country_of_citizenship",
+        "label": "Country of citizenship",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "alien_number",
+        "label": "USCIS A-Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ssn",
+        "label": "U.S. Social Security Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "current_address",
+        "label": "Current physical address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "us_entry_date",
+        "label": "Date of last entry into the United States",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "us_entry_status",
+        "label": "Immigration status at time of last entry",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "us_continuously_since",
+        "label": "I have continuously resided in the U.S. since (date)",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "school_or_graduated",
+        "label": "Current status:",
+        "type": "single_choice",
+        "options": [
+          "Currently in school",
+          "Has graduated / obtained GED",
+          "Honorably discharged veteran",
+          "Currently in college/university"
+        ],
+        "required": true
+      },
+      {
+        "id": "school_name",
+        "label": "Name of school, college, or institution",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ead_number",
+        "label": "Prior EAD card number (if this is a renewal)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ead_expiry",
+        "label": "Prior EAD expiration date (if renewal)",
+        "type": "date",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "i589",
+    "form_name": "Form I-589, Application for Asylum and Withholding of Removal",
+    "category": "Immigration",
+    "agency": "USCIS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "country_of_birth",
+        "label": "Country of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "country_of_nationality",
+        "label": "Country of citizenship or nationality",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "address_in_us",
+        "label": "Current address in U.S.",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "last_entry_date",
+        "label": "Date of last entry into U.S.",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "last_entry_status",
+        "label": "Status when you last entered the U.S.",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "i94_number",
+        "label": "I-94 Arrival/Departure Record number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "alien_number",
+        "label": "USCIS A-Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "basis_race",
+        "label": "Basis for asylum \u2014 Race?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "basis_religion",
+        "label": "Basis for asylum \u2014 Religion?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "basis_nationality",
+        "label": "Basis for asylum \u2014 Nationality?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "basis_political_opinion",
+        "label": "Basis for asylum \u2014 Political opinion?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "basis_social_group",
+        "label": "Basis for asylum \u2014 Membership in a particular social group?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "basis_torture",
+        "label": "Also claiming Convention Against Torture protection?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "persecution_description",
+        "label": "Describe the harm or persecution you suffered or fear (be specific)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "persecutor",
+        "label": "Who caused or will cause harm to you? (government, group, individual)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "returned_to_country",
+        "label": "Have you returned to your home country after you left?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "ds64",
+    "form_name": "Form DS-64, Statement Regarding Lost or Stolen Passport",
+    "category": "Passport",
+    "agency": "U.S. Dept. of State",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_name",
+        "label": "Middle name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number \u2014 fill by hand",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "place_of_birth",
+        "label": "Place of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "current_address",
+        "label": "Current address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "lost_passport_number",
+        "label": "Lost/stolen passport book number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "lost_passport_issued",
+        "label": "Passport issue date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "lost_passport_issued_at",
+        "label": "Issued at (city, state, country)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "lost_or_stolen",
+        "label": "Was the passport:",
+        "type": "single_choice",
+        "options": [
+          "Lost",
+          "Stolen"
+        ],
+        "required": true
+      },
+      {
+        "id": "circumstances",
+        "label": "Describe how and where the passport was lost or stolen",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "date_of_loss",
+        "label": "Date of loss or theft",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "location_of_loss",
+        "label": "Location of loss or theft (city, country)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "police_report",
+        "label": "Did you file a police report?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "police_report_number",
+        "label": "Police report number",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "va4142",
+    "form_name": "VA Form 21-4142, Authorization to Disclose Information to the VA",
+    "category": "Veterans",
+    "agency": "VA",
+    "questions": [
+      {
+        "id": "veteran_name",
+        "label": "Veteran's full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "va_file_number",
+        "label": "VA file number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "ssn",
+        "label": "Veteran's Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Veteran's date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "veteran_address",
+        "label": "Veteran's current address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Veteran's phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_name_1",
+        "label": "Provider name 1 (doctor, hospital, clinic)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_address_1",
+        "label": "Provider address 1",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_date_range_1",
+        "label": "Approximate dates of treatment at Provider 1",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "condition_treated_1",
+        "label": "Condition(s) treated at Provider 1",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_name_2",
+        "label": "Provider name 2",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "provider_address_2",
+        "label": "Provider address 2",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "provider_date_range_2",
+        "label": "Approximate dates of treatment at Provider 2",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "condition_treated_2",
+        "label": "Condition(s) treated at Provider 2",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "va530",
+    "form_name": "VA Form 21P-530EZ, Application for Burial Benefits",
+    "category": "Veterans",
+    "agency": "VA",
+    "questions": [
+      {
+        "id": "claimant_last",
+        "label": "Claimant: Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "claimant_first",
+        "label": "Claimant: First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "claimant_ssn",
+        "label": "Claimant: Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "claimant_address",
+        "label": "Claimant: Address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "claimant_city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "claimant_state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "claimant_zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "claimant_phone",
+        "label": "Phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "claimant_email",
+        "label": "Email",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "claimant_relationship",
+        "label": "Claimant's relationship to veteran",
+        "type": "single_choice",
+        "options": [
+          "Surviving spouse",
+          "Child",
+          "Parent",
+          "Executor/Administrator of estate",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "veteran_last",
+        "label": "Veteran: Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "veteran_first",
+        "label": "Veteran: First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "veteran_ssn",
+        "label": "Veteran: Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "veteran_va_number",
+        "label": "Veteran: VA file number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "veteran_dob",
+        "label": "Veteran: Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "veteran_dod",
+        "label": "Veteran: Date of death",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "place_of_death",
+        "label": "Place of death (city and state)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "service_branch",
+        "label": "Branch of service",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "service_from",
+        "label": "Service from date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "service_to",
+        "label": "Service to date",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "character_of_discharge",
+        "label": "Character of discharge",
+        "type": "single_choice",
+        "options": [
+          "Honorable",
+          "General (Under Honorable Conditions)",
+          "Other than Honorable",
+          "Unknown"
+        ],
+        "required": true
+      },
+      {
+        "id": "burial_cost",
+        "label": "Burial/funeral expenses you paid",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "burial_location",
+        "label": "Name and location of burial site",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "interment_type",
+        "label": "Type of burial:",
+        "type": "single_choice",
+        "options": [
+          "National cemetery",
+          "Private cemetery",
+          "Cremation",
+          "At sea"
+        ],
+        "required": true
+      },
+      {
+        "id": "routing_number",
+        "label": "Bank routing number for direct deposit",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "account_number",
+        "label": "Bank account number for direct deposit",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "account_type",
+        "label": "Account type",
+        "type": "single_choice",
+        "options": [
+          "Checking",
+          "Savings"
+        ],
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "ps1508",
+    "form_name": "USPS PS Form 1508, Application for Post Office Box Service",
+    "category": "Moving",
+    "agency": "USPS",
+    "questions": [
+      {
+        "id": "name",
+        "label": "Full name of applicant",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "business_name",
+        "label": "Business name (if applicable)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "home_address",
+        "label": "Home or business address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": true
+      },
+      {
+        "id": "id_type_1",
+        "label": "Primary ID type (e.g., Driver's license)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "id_number_1",
+        "label": "Primary ID number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "id_type_2",
+        "label": "Secondary ID type (e.g., credit card, utility bill)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "box_size",
+        "label": "PO Box size requested",
+        "type": "single_choice",
+        "options": [
+          "Extra Small",
+          "Small",
+          "Medium",
+          "Large",
+          "Extra Large"
+        ],
+        "required": true
+      },
+      {
+        "id": "post_office_location",
+        "label": "Post office location (city and ZIP)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "payment_period",
+        "label": "Payment period",
+        "type": "single_choice",
+        "options": [
+          "6 months",
+          "12 months"
+        ],
+        "required": true
+      },
+      {
+        "id": "names_authorized",
+        "label": "Other persons authorized to receive mail in this box (names)",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "ssa827",
+    "form_name": "Form SSA-827, Authorization to Disclose Information to SSA",
+    "category": "Benefits",
+    "agency": "SSA",
+    "questions": [
+      {
+        "id": "full_name",
+        "label": "Full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "address",
+        "label": "Current address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "sources_authorized",
+        "label": "Names of specific sources authorized to release records (doctors, hospitals, schools, employers \u2014 list all)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "records_purpose",
+        "label": "Purpose: SSA/DDS is evaluating your claim for disability benefits",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "date",
+        "label": "Today's date",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "ssa3368",
+    "form_name": "Form SSA-3368, Adult Disability Report",
+    "category": "Benefits",
+    "agency": "SSA",
+    "questions": [
+      {
+        "id": "full_name",
+        "label": "Your full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "ssn",
+        "label": "Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "disabling_conditions",
+        "label": "List all disabling conditions (physical or mental)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "onset_date",
+        "label": "Date you became unable to work because of your condition(s)",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "still_disabled",
+        "label": "Are you still disabled?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "recovery_date",
+        "label": "If recovered, when?",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "height",
+        "label": "Your height",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "weight",
+        "label": "Your weight",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "medications",
+        "label": "List all medications you take (name, dosage, frequency, side effects)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "medical_providers",
+        "label": "List doctors, hospitals, clinics you have seen (names, addresses, dates)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "work_history_last15",
+        "label": "Jobs you had in the last 15 years (job title, dates, duties)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "education_level",
+        "label": "Highest grade or degree completed",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "daily_activities",
+        "label": "Describe your daily activities (what you can and cannot do)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "limitations",
+        "label": "Describe how your conditions limit your ability to work",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "cmsl564",
+    "form_name": "Form CMS-L564, Request for Employment Information",
+    "category": "Healthcare",
+    "agency": "CMS",
+    "questions": [
+      {
+        "id": "employee_name",
+        "label": "Employee's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employee_ssn",
+        "label": "Employee's Social Security Number or Medicare number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "employee_dob",
+        "label": "Employee's date of birth",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_address",
+        "label": "Employer's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_city_state_zip",
+        "label": "Employer's city, state, ZIP",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_phone",
+        "label": "Employer's phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_ein",
+        "label": "Employer's EIN",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "coverage_start",
+        "label": "Date employer group health plan coverage began",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "coverage_end",
+        "label": "Date employer group health plan coverage ended",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "still_covered",
+        "label": "Is the employee currently covered by the group health plan?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "plan_name",
+        "label": "Name of the health insurance plan",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "authorizing_official",
+        "label": "Name and title of person completing this form",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "date_signed",
+        "label": "Date signed",
+        "type": "date",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "wh381",
+    "form_name": "Form WH-381, FMLA Notice of Eligibility and Rights",
+    "category": "Employment",
+    "agency": "Dept. of Labor",
+    "questions": [
+      {
+        "id": "employee_name",
+        "label": "Employee's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "notice_date",
+        "label": "Date of this notice",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_contact",
+        "label": "HR contact name and phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "fmla_eligible",
+        "label": "Is the employee eligible for FMLA leave?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "reason_not_eligible",
+        "label": "If not eligible, reason:",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "qualifying_reason",
+        "label": "Qualifying reason for the leave",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_start",
+        "label": "Expected leave start date",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_duration",
+        "label": "Estimated leave duration",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "intermittent_leave",
+        "label": "Will leave be taken intermittently or on a reduced schedule?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "intermittent_schedule",
+        "label": "If intermittent, estimated frequency and duration of each absence",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "paid_leave_required",
+        "label": "Is the employee required to substitute paid leave?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "paid_leave_type",
+        "label": "Type of paid leave to be substituted",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "medical_certification_required",
+        "label": "Is medical certification required?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "certification_due",
+        "label": "Date certification is due (15 calendar days)",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "fitness_for_duty_required",
+        "label": "Will a fitness-for-duty certification be required?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "benefits_maintained",
+        "label": "Will health benefits be maintained during leave?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "benefit_continuation_details",
+        "label": "Any conditions for benefit continuation",
+        "type": "text",
+        "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "wh382",
+    "form_name": "Form WH-382, FMLA Designation Notice",
+    "category": "Employment",
+    "agency": "Dept. of Labor",
+    "questions": [
+      {
+        "id": "employee_name",
+        "label": "Employee's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "notice_date",
+        "label": "Date of this notice",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_designated",
+        "label": "The leave is designated as:",
+        "type": "single_choice",
+        "options": [
+          "FMLA-qualifying",
+          "Not FMLA-qualifying",
+          "Pending \u2014 more information needed"
+        ],
+        "required": true
+      },
+      {
+        "id": "leave_period",
+        "label": "Leave period (from date to date)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "hours_counted",
+        "label": "Amount of leave counted against FMLA entitlement (hours)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "additional_info_needed",
+        "label": "Is additional information needed?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "additional_info_description",
+        "label": "What additional information is needed:",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "additional_info_due",
+        "label": "Date additional information is due:",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "fitness_for_duty_required",
+        "label": "Is a fitness-for-duty certification required before returning?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "fitness_for_duty_functions",
+        "label": "Essential functions employee must be able to perform:",
+        "type": "text",
+        "required": false
+      }
+    ]
   }
 ]

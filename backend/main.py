@@ -35,13 +35,8 @@ PDF_DIR    = BASE_DIR / "generated_pdfs"
 PDF_DIR.mkdir(exist_ok=True)
 
 # Import overlay helpers
-try:
-    from pdf_overlay import get_pdf_path_for_form, overlay_data_on_pdf, try_acroform_fill
-    from form_coordinates import get_coordinates
-    OVERLAY_AVAILABLE = True
-except ImportError as e:
-    print(f"Overlay not available: {e}")
-    OVERLAY_AVAILABLE = False
+from pdf_filler import generate_filled_pdf
+from pdf_field_maps import get_field_map
 
 
 # ── Request models ────────────────────────────────────────────────────────────
@@ -181,175 +176,18 @@ Return JSON only. Use question id as key. Empty string if unknown. Don't invent 
 
 @app.post("/api/generate-pdf")
 def generate_pdf(request: PdfRequest):
-    pdf_id    = str(uuid.uuid4())
-    pdf_name  = f"{request.form_id}_{pdf_id}.pdf"
-    pdf_path  = PDF_DIR / pdf_name
-
-    # ── Try overlay onto official form first ──────────────────────────────
-    if OVERLAY_AVAILABLE:
-        official_path = get_pdf_path_for_form(request.form_id, {})
-        if official_path:
-            coords = get_coordinates(request.form_id)
-
-            # 1. Try AcroForm fill (for PDFs that have fillable fields)
-            if try_acroform_fill(official_path, request.answers, request.questions, pdf_path):
-                return {"message": "PDF generated (form fill)", "download_url": f"/api/download/{pdf_name}"}
-
-            # 2. Try coordinate overlay
-            if coords:
-                success = overlay_data_on_pdf(
-                    official_path,
-                    request.answers,
-                    request.questions,
-                    coords,
-                    pdf_path,
-                    request.form_name,
-                    request.agency,
-                )
-                if success:
-                    return {"message": "PDF generated (overlay)", "download_url": f"/api/download/{pdf_name}"}
-
-            # 3. No coordinates yet — append a clean data sheet after the official form
-            _append_data_to_official(official_path, request, pdf_path)
-            return {"message": "PDF generated (form + data sheet)", "download_url": f"/api/download/{pdf_name}"}
-
-    # ── Fallback: formatted summary PDF ───────────────────────────────────
-    _generate_summary_pdf(request, pdf_path)
-    return {"message": "PDF generated (summary)", "download_url": f"/api/download/{pdf_name}"}
-
-
-def _append_data_to_official(official_path: Path, request: PdfRequest, output_path: Path):
-    """Combine official form PDF + a clean filled-data appendix."""
-    import pdfrw
-    import io
-    from reportlab.pdfgen import canvas as rl_canvas
-
-    # Build the data appendix as a reportlab PDF in memory
-    buf = io.BytesIO()
-    _generate_summary_pdf(request, buf)
-    buf.seek(0)
-
-    # Merge: official form pages first, then our data sheet
-    writer = pdfrw.PdfWriter()
-    official = pdfrw.PdfReader(str(official_path))
-    for page in official.pages:
-        writer.addpage(page)
-
-    data_sheet = pdfrw.PdfReader(buf)
-    for page in data_sheet.pages:
-        writer.addpage(page)
-
-    writer.write(str(output_path))
-
-
-def _generate_summary_pdf(request: PdfRequest, dest):
-    """Generate a well-formatted data summary PDF (original fallback)."""
-    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-    from reportlab.lib.enums import TA_LEFT
-
-    doc = SimpleDocTemplate(dest if isinstance(dest, str) else str(dest) if not hasattr(dest,'write') else dest,
-                            pagesize=letter,
-                            rightMargin=0.75*inch, leftMargin=0.75*inch,
-                            topMargin=0.75*inch, bottomMargin=0.75*inch)
-    if hasattr(dest,'write'):
-        doc = SimpleDocTemplate(dest, pagesize=letter,
-                                rightMargin=0.75*inch, leftMargin=0.75*inch,
-                                topMargin=0.75*inch, bottomMargin=0.75*inch)
-
-    styles = getSampleStyleSheet()
-    title_s = ParagraphStyle("T", parent=styles["Normal"], fontSize=20, fontName="Helvetica-Bold", textColor=colors.HexColor("#0d1f3c"), spaceAfter=4)
-    sub_s    = ParagraphStyle("S", parent=styles["Normal"], fontSize=10, fontName="Helvetica", textColor=colors.HexColor("#6b7280"), spaceAfter=2)
-    sec_s    = ParagraphStyle("H", parent=styles["Normal"], fontSize=13, fontName="Helvetica-Bold", textColor=colors.HexColor("#0d1f3c"), spaceBefore=16, spaceAfter=6)
-    lbl_s    = ParagraphStyle("L", parent=styles["Normal"], fontSize=8,  fontName="Helvetica-Bold", textColor=colors.HexColor("#6b7280"), spaceAfter=2)
-    val_s    = ParagraphStyle("V", parent=styles["Normal"], fontSize=11, fontName="Helvetica", textColor=colors.HexColor("#0d1f3c"), spaceAfter=8)
-    emp_s    = ParagraphStyle("E", parent=styles["Normal"], fontSize=11, fontName="Helvetica", textColor=colors.HexColor("#9ca3af"), spaceAfter=8)
-    dis_s    = ParagraphStyle("D", parent=styles["Normal"], fontSize=8,  fontName="Helvetica", textColor=colors.HexColor("#6b7280"), spaceAfter=4, leading=13)
-    warn_s   = ParagraphStyle("W", parent=styles["Normal"], fontSize=9,  fontName="Helvetica-Bold", textColor=colors.HexColor("#92400e"), spaceAfter=4)
-
-    story = []
-    story.append(Paragraph("FormAssist AI", title_s))
-    story.append(Paragraph("Prepared Data — Not an official submission", sub_s))
-    story.append(Spacer(1,6))
-    story.append(HRFlowable(width="100%", thickness=2, color=colors.HexColor("#0d1f3c")))
-    story.append(Spacer(1,8))
-
-    meta = [["Form", request.form_name], ["Agency", request.agency], ["Status", "Helper — review all fields then submit officially"]]
-    mt = Table(meta, colWidths=[1.2*inch, 5.8*inch])
-    mt.setStyle(TableStyle([
-        ("FONTNAME",(0,0),(0,-1),"Helvetica-Bold"),("FONTSIZE",(0,0),(-1,-1),10),
-        ("TEXTCOLOR",(0,0),(0,-1),colors.HexColor("#6b7280")),
-        ("TEXTCOLOR",(1,0),(1,-1),colors.HexColor("#0d1f3c")),
-        ("BOTTOMPADDING",(0,0),(-1,-1),4),("VALIGN",(0,0),(-1,-1),"TOP"),
-    ]))
-    story.append(mt)
-    story.append(Spacer(1,12))
-
-    warn_data = [[Paragraph("⚠ Important",warn_s), Paragraph(
-        "Review every field. Add any missing or sensitive information by hand. Sign where required. Submit through the official agency.", dis_s)]]
-    wt = Table(warn_data, colWidths=[1.1*inch,5.9*inch])
-    wt.setStyle(TableStyle([
-        ("BACKGROUND",(0,0),(-1,-1),colors.HexColor("#fffbeb")),
-        ("BOX",(0,0),(-1,-1),1,colors.HexColor("#fcd34d")),
-        ("TOPPADDING",(0,0),(-1,-1),10),("BOTTOMPADDING",(0,0),(-1,-1),10),
-        ("LEFTPADDING",(0,0),(-1,-1),10),("RIGHTPADDING",(0,0),(-1,-1),10),
-        ("VALIGN",(0,0),(-1,-1),"TOP"),
-    ]))
-    story.append(wt)
-    story.append(Spacer(1,16))
-    story.append(Paragraph("Your Filled-In Information", sec_s))
-    story.append(HRFlowable(width="100%", thickness=0.5, color=colors.HexColor("#e5e7eb")))
-    story.append(Spacer(1,10))
-
-    questions = request.questions
-    answers   = request.answers
-    i = 0
-    while i < len(questions):
-        q = questions[i]
-        val = answers.get(q["id"],"")
-        lbl_txt = q["label"] + (" *" if q.get("required") else "")
-        val_txt = str(val) if val else "— not provided —"
-        v_s = val_s if val else emp_s
-
-        wide = q["id"] in ["old_street","new_street","old_unit","new_unit","situation","description","address"]
-        if wide or i+1 >= len(questions):
-            row = [[Paragraph(lbl_txt.upper(),lbl_s), Paragraph(val_txt,v_s)], [Paragraph("",lbl_s),Paragraph("",val_s)]]
-            t = Table([[row[0],row[1]]], colWidths=[3.5*inch,3.5*inch])
-            t.setStyle(TableStyle([("VALIGN",(0,0),(-1,-1),"TOP"),("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),16)]))
-            story.append(t)
-            i += 1
-        else:
-            q2 = questions[i+1]
-            val2 = answers.get(q2["id"],"")
-            lbl2_txt = q2["label"] + (" *" if q2.get("required") else "")
-            val2_txt = str(val2) if val2 else "— not provided —"
-            v2_s = val_s if val2 else emp_s
-            row = [[Paragraph(lbl_txt.upper(),lbl_s), Paragraph(val_txt,v_s)],
-                   [Paragraph(lbl2_txt.upper(),lbl_s),Paragraph(val2_txt,v2_s)]]
-            t = Table([[row[0],row[1]]], colWidths=[3.5*inch,3.5*inch])
-            t.setStyle(TableStyle([("VALIGN",(0,0),(-1,-1),"TOP"),("LEFTPADDING",(0,0),(-1,-1),0),("RIGHTPADDING",(0,0),(-1,-1),16)]))
-            story.append(t)
-            i += 2
-
-    story.append(Spacer(1,16))
-    story.append(HRFlowable(width="100%", thickness=0.5, color=colors.HexColor("#e5e7eb")))
-    story.append(Paragraph("Next Steps", sec_s))
-    for idx, step in enumerate([
-        "Review every field above and correct any errors.",
-        "Fill in any fields marked '— not provided —' by hand.",
-        "Complete identity verification directly with the official agency.",
-        "Do NOT submit payment information through FormAssist AI.",
-        "Add your handwritten signature where required.",
-        "Submit through the official agency website, by mail, or at their office.",
-    ], 1):
-        story.append(Paragraph(f"{idx}.  {step}", dis_s))
-
-    story.append(Spacer(1,12))
-    story.append(HRFlowable(width="100%", thickness=0.5, color=colors.HexColor("#e5e7eb")))
-    story.append(Spacer(1,8))
-    story.append(Paragraph(
-        "Disclaimer: FormAssist AI helps prepare information. It does not provide legal advice and does not submit official forms. Always verify with the relevant agency.", dis_s))
-    doc.build(story)
+    filename = f"{request.form_id}_{uuid.uuid4().hex[:8]}.pdf"
+    out_path = PDF_DIR / filename
+    method = generate_filled_pdf(
+        form_id=request.form_id,
+        form_name=request.form_name,
+        agency=request.agency,
+        answers=request.answers,
+        questions=request.questions,
+        output_path=out_path,
+    )
+    print(f"[generate-pdf] {method} -> {filename}")
+    return {"download_url": f"/api/download/{filename}", "method": method}
 
 
 @app.get("/api/download/{filename}")

@@ -9,6 +9,111 @@ import CategoryPage from "./pages/CategoryPage";
 import FormDetailPage from "./pages/FormDetailPage.jsx";
 import SecurityPage from "./pages/SecurityPage.jsx";
 import FormFillPage from "./pages/FormFillPage.jsx";
+import SituationPage from "./pages/SituationPage.jsx";
+
+function HowItWorks() {
+  const [activeCard, setActiveCard] = useState(0);
+  const [fading, setFading] = useState(false);
+
+  const TRUST_CARDS = [
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+      tag: "Security",
+      title: "Bank-grade security",
+      desc: "All data is encrypted in transit and at rest using 256-bit AES encryption. We never store your SSN, payment details, or signatures — not even temporarily.",
+      link: { label: "Learn more about security →", href: "/security" },
+      accent: "#3d6aff",
+    },
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>,
+      tag: "Accuracy",
+      title: "98% pre-fill accuracy",
+      desc: "Powered by Claude AI, FormAssist extracts your details with industry-leading precision. FormLift independently rated our tool #1 for document accuracy across all form types.",
+      accent: "#1a9e6e",
+    },
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>,
+      tag: "Control",
+      title: "You stay in control",
+      desc: "We never submit anything on your behalf. Every form is reviewed, edited, and submitted by you — through official government and agency channels only.",
+      accent: "#e07c1a",
+    },
+    {
+      icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>,
+      tag: "Recognition",
+      title: "FormLift's #1 rated tool",
+      desc: "FormLift's annual document tool review scored FormAssist AI top marks for accuracy, privacy, ease-of-use, and breadth of supported federal and state form types.",
+      accent: "#a855f7",
+    },
+  ];
+
+  const STEPS = [
+    { num: "01", title: "Describe your situation", desc: "Type what you need in plain English — no legal jargon. Or browse 119 official forms directly by category." },
+    { num: "02", title: "AI fills the form", desc: "Our AI reads your description, finds the right form, and pre-fills every field it can from your details." },
+    { num: "03", title: "Review every field", desc: "Check the pre-filled form side-by-side. Edit anything the AI got wrong. Add sensitive info like SSN by hand." },
+    { num: "04", title: "Download & submit officially", desc: "Download your packet as a PDF. Sign where required and submit through the official agency channel — we never submit for you." },
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFading(true);
+      setTimeout(() => {
+        setActiveCard(c => (c + 1) % TRUST_CARDS.length);
+        setFading(false);
+      }, 400);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const card = TRUST_CARDS[activeCard];
+
+  return (
+    <section className="hiw-section">
+      <div className="hiw-inner">
+
+        {/* LEFT — steps */}
+        <div className="hiw-left">
+          <div className="fa-eyebrow" style={{ color: "rgba(255,255,255,0.4)" }}>How it works</div>
+          <h2 className="hiw-title">Simple steps to your filled form</h2>
+          <p className="hiw-subtitle">We make navigating government paperwork easier, faster, and more accurate.</p>
+
+          <div className="hiw-steps">
+            {STEPS.map((s) => (
+              <div key={s.num} className="hiw-step">
+                <div className="hiw-step-num">{s.num}</div>
+                <div className="hiw-step-body">
+                  <div className="hiw-step-title">{s.title}</div>
+                  <div className="hiw-step-desc">{s.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT — rotating trust card */}
+        <div className="hiw-right">
+          <div className="hiw-card-wrap">
+            <div className={`hiw-card${fading ? " fading" : ""}`} style={{ "--card-accent": card.accent }}>
+              <div className="hiw-card-tag">{card.tag}</div>
+              <div className="hiw-card-icon">{card.icon}</div>
+              <h3 className="hiw-card-title">{card.title}</h3>
+              <p className="hiw-card-desc">{card.desc}</p>
+              {card.link && <a href={card.link.href} className="hiw-card-link">{card.link.label}</a>}
+            </div>
+            {/* Dots */}
+            <div className="hiw-dots">
+              {TRUST_CARDS.map((_, i) => (
+                <button key={i} className={`hiw-dot${i === activeCard ? " active" : ""}`}
+                  onClick={() => { setFading(true); setTimeout(() => { setActiveCard(i); setFading(false); }, 300); }} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
 import "./App.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -29,6 +134,7 @@ const FAQS = [
 
 function MainApp({ user, setShowAuth, getFirstName }) {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [step, setStep]           = useState("lead");
   const [loading, setLoading]     = useState(false);
@@ -42,14 +148,15 @@ function MainApp({ user, setShowAuth, getFirstName }) {
   const [downloadUrl, setDownloadUrl] = useState("");
   const [pdfReady, setPdfReady]   = useState(false);
   const [openFaq, setOpenFaq]     = useState(null);
+  const [pianoHover, setPianoHover] = useState(null);
 
   // Resize state
-  const [rightWidth, setRightWidth] = useState(440);
+  const [rightWidth, setRightWidth] = useState(620);
   const isDragging  = useRef(false);
   const startX      = useRef(0);
   const startW      = useRef(0);
-  const MIN_W = 300;
-  const MAX_W = 780;
+  const MIN_W = 400;
+  const MAX_W = 900;
 
   const onHandleMouseDown = useCallback((e) => {
     e.preventDefault();
@@ -167,7 +274,7 @@ function MainApp({ user, setShowAuth, getFirstName }) {
           : "Describe your situation in plain English. We'll identify the right forms, pre-fill them from your details, and generate a ready-to-submit PDF."}
       </p>
       <div className="fa-trust-section">
-        {/* Stat row */}
+        {/* Stat row only in left panel — ethos cards move below */}
         <div className="fa-stat-row">
           <div className="fa-stat">
             <div className="fa-stat-num">98%</div>
@@ -182,50 +289,6 @@ function MainApp({ user, setShowAuth, getFirstName }) {
           <div className="fa-stat">
             <div className="fa-stat-num">50k+</div>
             <div className="fa-stat-label">Packets generated</div>
-          </div>
-        </div>
-
-        {/* Trust cards */}
-        <div className="fa-ethos-grid">
-          <div className="fa-ethos-card">
-            <div className="fa-ethos-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            </div>
-            <div className="fa-ethos-body">
-              <div className="fa-ethos-title">Bank-grade security</div>
-              <div className="fa-ethos-desc">All data is encrypted in transit and at rest using 256-bit AES encryption. We never store your SSN, payment details, or signatures.</div>
-              <a href="/security" className="fa-ethos-link">Learn more about security →</a>
-            </div>
-          </div>
-
-          <div className="fa-ethos-card">
-            <div className="fa-ethos-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            </div>
-            <div className="fa-ethos-body">
-              <div className="fa-ethos-title">98% pre-fill accuracy</div>
-              <div className="fa-ethos-desc">Powered by Claude AI, FormAssist extracts your details with industry-leading precision. FormLift has independently rated our tool #1 for document accuracy.</div>
-            </div>
-          </div>
-
-          <div className="fa-ethos-card">
-            <div className="fa-ethos-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            </div>
-            <div className="fa-ethos-body">
-              <div className="fa-ethos-title">You stay in control</div>
-              <div className="fa-ethos-desc">We never submit anything on your behalf. Every form is reviewed, edited, and submitted by you — through official government and agency channels only.</div>
-            </div>
-          </div>
-
-          <div className="fa-ethos-card">
-            <div className="fa-ethos-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            </div>
-            <div className="fa-ethos-body">
-              <div className="fa-ethos-title">Why FormLift rated us #1</div>
-              <div className="fa-ethos-desc">FormLift's annual document tool review scored FormAssist AI top marks for accuracy, privacy, ease-of-use, and breadth of supported form types across federal and state agencies.</div>
-            </div>
           </div>
         </div>
       </div>
@@ -285,30 +348,65 @@ function MainApp({ user, setShowAuth, getFirstName }) {
   ) : null;
 
   const rightPanel = step === "lead" ? (
-    <>
-      <div className="fa-panel-title">Unsure which form to fill?</div>
-      <p className="fa-panel-sub">We'll recommend and pre-fill the right forms for your situation.</p>
-      <div className="fa-trust-row">
-        <TrustBadge icon="🔒" label="No SSN required" />
-        <TrustBadge icon="🛡" label="Helper packet only" />
-        <TrustBadge icon="👁" label="No submission" />
+    <div className="fa-tile-pair">
+      {/* Tile 1 — navigate to /find-form */}
+      <div className="fa-tile" onClick={() => navigate("/find-form")} style={{ cursor: "pointer" }}>
+        <div className="fa-tile-img fa-tile-img-1">
+          <div className="fa-tile-scene">
+            <div className="fa-tile-scene-monitor">
+              <div className="fa-tile-screen-glow" />
+              <div className="fa-tile-screen-lines"><span/><span/><span/><span/></div>
+            </div>
+            <div className="fa-tile-scene-docs">
+              <div className="fa-tile-doc fa-tile-doc-1" />
+              <div className="fa-tile-doc fa-tile-doc-2" />
+              <div className="fa-tile-doc fa-tile-doc-3" />
+            </div>
+          </div>
+          <div className="fa-tile-img-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg>
+            AI-Powered
+          </div>
+        </div>
+        <div className="fa-tile-body">
+          <h3 className="fa-tile-title">Unsure which form to fill?</h3>
+          <p className="fa-tile-desc">Describe your situation and we'll identify, pre-fill, and generate the right forms automatically.</p>
+          <ul className="fa-tile-checks">
+            <li><span>✓</span><span><strong>AI finds the right form</strong> from your description</span></li>
+            <li><span>✓</span><span><strong>Fields pre-filled</strong> automatically</span></li>
+            <li><span>✓</span><span><strong>Download-ready PDF</strong> — review, sign, submit</span></li>
+          </ul>
+          <div className="fa-tile-cta">Let AI find my form →</div>
+        </div>
       </div>
 
-      {error && <div className="fa-error">{error}</div>}
-      <label className="fa-field-label" htmlFor="situation">Describe your situation</label>
-      <textarea id="situation" className="fa-textarea" rows={5} value={situation} onChange={(e) => setSituation(e.target.value)} placeholder="Example: I'm moving from California to Washington and need to update my address with USPS and transfer my vehicle title." />
-      <div className="fa-chips">
-        {SITUATION_CHIPS.map((chip) => (
-          <button key={chip} className="fa-chip" onClick={() => setSituation((s) => s ? s + " " + chip.toLowerCase() : chip)}>{chip}</button>
-        ))}
+      {/* Tile 2 — scroll to browse section */}
+      <div className="fa-tile" onClick={() => document.querySelector(".bbc-section")?.scrollIntoView({ behavior: "smooth" })} style={{ cursor: "pointer" }}>
+        <div className="fa-tile-img fa-tile-img-2">
+          <div className="fa-tile-scene">
+            <div className="fa-tile-grid-preview">
+              {["📋","🌐","🛂","⚕️","🎖️","🏛️","💼","🏠"].map((e,i) => (
+                <div key={i} className="fa-tile-grid-cell">{e}</div>
+              ))}
+            </div>
+          </div>
+          <div className="fa-tile-img-badge fa-tile-img-badge-2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            119 forms
+          </div>
+        </div>
+        <div className="fa-tile-body">
+          <h3 className="fa-tile-title">Know which form you need?</h3>
+          <p className="fa-tile-desc">Browse all 119 official forms by category — tax, immigration, passport, veterans, and more.</p>
+          <ul className="fa-tile-checks">
+            <li><span>✓</span><span><strong>10 categories</strong> of federal forms</span></li>
+            <li><span>✓</span><span><strong>119 official forms</strong> from .gov sources</span></li>
+            <li><span>✓</span><span><strong>Fill with AI</strong> or download blank</span></li>
+          </ul>
+          <div className="fa-tile-cta">Browse all forms →</div>
+        </div>
       </div>
-      <div className="fa-consent-row">
-        <input id="consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} />
-        <label htmlFor="consent" className="fa-consent-label">I agree that FormAssist AI may use my information to recommend forms and prepare helper packets. I understand this app does not officially submit forms.</label>
-      </div>
-      <button className="fa-cta-btn" onClick={handleFindForms} disabled={loading}>Find my forms →</button>
-      <p className="fa-privacy-note">We never ask for SSN, payment cards, signatures, or government IDs.</p>
-    </>
+    </div>
   ) : step === "recommendations" ? (
     <>
       <div className="fa-panel-title">Your situation summary</div>
@@ -353,13 +451,20 @@ function MainApp({ user, setShowAuth, getFirstName }) {
         </div>
       )}
 
-      <div className="fa-steps-bar">
-        <StepItem num={1} label="Describe situation" active={step === "lead"} />
-        <div className="fa-step-divider" />
-        <StepItem num={2} label="Choose form" active={step === "recommendations"} />
-        <div className="fa-step-divider" />
-        <StepItem num={3} label="Review & download" active={step === "preview"} banner />
-      </div>
+      <nav className="fa-menu-bar">
+        <button className="fa-menu-item" onClick={() => navigate("/")}>Home</button>
+        <div className="fa-menu-dropdown">
+          <button className="fa-menu-item">Browse forms <span className="fa-menu-chevron">▾</span></button>
+          <div className="fa-menu-dropdown-panel">
+            {["Tax Forms","Immigration","Passport & Travel","Benefits & Social","Healthcare","Employment","Veterans","Moving & Address","Motor Vehicle","Legal"].map((label, i) => {
+              const ids = ["tax","immigration","passport","benefits","healthcare","employment","veterans","moving","vehicle","legal"];
+              return <button key={i} className="fa-menu-dd-item" onClick={() => navigate(`/category/${ids[i]}`)}>{label}</button>;
+            })}
+          </div>
+        </div>
+        <button className="fa-menu-item" onClick={() => navigate("/security")}>Security</button>
+        <button className="fa-menu-item" onClick={() => document.querySelector(".hiw-section")?.scrollIntoView({ behavior: "smooth" })}>How it works</button>
+      </nav>
 
       {/* ── Resizable two-column panel ── */}
       <div className="fa-split-container">
@@ -389,6 +494,10 @@ function MainApp({ user, setShowAuth, getFirstName }) {
       {step === "lead" && (
         <>
           <BrowseByCategory />
+
+          {/* ── How it works + rotating trust cards ── */}
+          <HowItWorks />
+
           <PopularForms />
           <section className="fa-faq-section">
             <div className="fa-faq-inner">
@@ -478,6 +587,7 @@ export default function App() {
         <Route path="/category/:categoryId" element={<CategoryPage />} />
         <Route path="/form/:formId" element={<FormDetailPage />} />
         <Route path="/form/:formId/fill" element={<FormFillPage />} />
+        <Route path="/find-form" element={<SituationPage />} />
         <Route path="/security" element={<SecurityPage />} />
       </Routes>
     </div>
