@@ -9,3 +9,7 @@ __pycache__/
 *.pyc
 backend/__pycache__/
 run.sh.save
+*.log
+.env
+__pycache__/
+venv/
