@@ -1,11 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { getCategoryById, getFormsByCategory } from "../data/formsData";
+import { getCategoryById, FORMS } from "../data/formsData";
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const category = getCategoryById(categoryId);
-  const forms = getFormsByCategory(categoryId);
+
+  // Filter directly from FORMS — never trust cached function results
+  const forms = FORMS.filter(f => f.category === categoryId && !f.hidden);
 
   if (!category) {
     return (
@@ -18,7 +20,6 @@ export default function CategoryPage() {
 
   return (
     <div className="cp-shell">
-      {/* Header */}
       <div className="cp-hero" style={{ "--cat-color": category.color, "--cat-light": category.colorLight }}>
         <div className="cp-hero-inner">
           <button className="cp-back" onClick={() => navigate("/")}>← Back</button>
@@ -29,7 +30,6 @@ export default function CategoryPage() {
         </div>
       </div>
 
-      {/* Forms list */}
       <div className="cp-body">
         <div className="cp-body-inner">
           <h2 className="cp-list-title">All {category.label}</h2>
@@ -48,10 +48,7 @@ export default function CategoryPage() {
                     </div>
                     <div className="cp-form-desc">{form.description}</div>
                   </div>
-                  <button
-                    className="cp-form-btn"
-                    onClick={() => navigate(`/form/${form.form_id}`)}
-                  >
+                  <button className="cp-form-btn" onClick={() => navigate(`/form/${form.form_id}`)}>
                     View form →
                   </button>
                 </div>

@@ -5,12 +5,13 @@ import { auth } from "./firebase";
 import AuthModal from "./AuthModal";
 import BrowseByCategory from "./components/BrowseByCategory.jsx";
 import PopularForms from "./components/PopularForms";
-import CategoryPage from "./pages/CategoryPage";
+import CategoryPage from "./pages/CategoryPage.jsx";
 import FormDetailPage from "./pages/FormDetailPage.jsx";
 import SecurityPage from "./pages/SecurityPage.jsx";
 import FormFillPage from "./pages/FormFillPage.jsx";
 import SituationPage from "./pages/SituationPage.jsx";
-import { FORMS as FORMS_FLAT } from "./data/formsData";
+import { FORMS } from "./data/formsData";
+const FORMS_FLAT = FORMS.filter(f => !f.hidden);
 
 function HowItWorks() {
   const [activeCard, setActiveCard] = useState(0);
