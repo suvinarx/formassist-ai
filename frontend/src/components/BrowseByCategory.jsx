@@ -5,7 +5,7 @@ const CAT_BACK = {
   tax: {
     emoji: "📋",
     headline: "IRS tax forms",
-    sub: "W-9 Request for Taxpayer Identification Number",
+    sub: "W-9, W-4, 1040, Schedule C and more",
     color: "#1a3458",
   },
 };
@@ -26,38 +26,17 @@ const CAT_ICONS = {
   ),
 };
 
-function isW9Form(form) {
-  const searchableText = [
-    form.id,
-    form.title,
-    form.name,
-    form.label,
-    form.formNumber,
-    form.description,
-  ]
-    .filter(Boolean)
-    .join(" ")
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, "");
-
-  return searchableText.includes("w9");
-}
-
-// Only show W-9 form
+// Only show non-hidden tax forms
 function getVisible(categoryId) {
-  return FORMS.filter(
-    (form) =>
-      form.category === categoryId &&
-      !form.hidden &&
-      isW9Form(form)
-  );
+  return FORMS.filter((f) => f.category === categoryId && !f.hidden);
 }
 
 export default function BrowseByCategory() {
   const navigate = useNavigate();
 
+  // Only keep the tax category
   const visibleCategories = CATEGORIES.filter(
-    (cat) => getVisible(cat.id).length > 0
+    (cat) => cat.id === "tax" && getVisible(cat.id).length > 0
   );
 
   return (
@@ -68,25 +47,21 @@ export default function BrowseByCategory() {
             className="fa-eyebrow"
             style={{ color: "rgba(255,255,255,0.4)" }}
           >
-            Explore form
+            Explore all form types
           </div>
 
           <h2 className="bbc-title">Browse by category</h2>
 
           <p className="bbc-subtitle">
-            Select the W-9 form and get started with AI pre-fill.
+            Select a category to see all available forms and get started with AI
+            pre-fill.
           </p>
         </div>
 
         <div className="bbc-grid">
           {visibleCategories.map((cat) => {
             const count = getVisible(cat.id).length;
-            const back = CAT_BACK[cat.id] || {
-              emoji: "📄",
-              headline: cat.label,
-              sub: "W-9 form",
-              color: cat.color,
-            };
+            const back = CAT_BACK[cat.id] || {};
 
             return (
               <div key={cat.id} className="bbc-flip-wrap">
@@ -99,7 +74,7 @@ export default function BrowseByCategory() {
                     style={{ "--cat-color": cat.color }}
                   >
                     <div className="bbc-card-icon-wrap">
-                      {CAT_ICONS[cat.id] || CAT_ICONS.tax}
+                      {CAT_ICONS[cat.id]}
                     </div>
 
                     <div className="bbc-card-label">{cat.label}</div>
@@ -130,16 +105,11 @@ export default function BrowseByCategory() {
                     style={{ "--cat-color": back.color || cat.color }}
                   >
                     <div className="bbc-card-back-emoji">{back.emoji}</div>
-
                     <div className="bbc-card-back-headline">
                       {back.headline}
                     </div>
-
                     <div className="bbc-card-back-sub">{back.sub}</div>
-
-                    <div className="bbc-card-back-cta">
-                      Browse W-9 form →
-                    </div>
+                    <div className="bbc-card-back-cta">Browse forms →</div>
                   </div>
                 </div>
               </div>
