@@ -1,17 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import { CATEGORIES, FORMS } from "../data/formsData";
+import { CATEGORIES, getFormsByCategory } from "../data/formsData";
 
 const CAT_BACK = {
-  tax:         { emoji: "📋", headline: "IRS tax forms", sub: "W-9, W-4, 1040, Schedule C and more", color: "#1a3458" },
-  moving:      { emoji: "🏠", headline: "Move with ease", sub: "USPS address change, IRS 8822", color: "#1a5c3a" },
-  immigration: { emoji: "🌐", headline: "USCIS forms", sub: "I-9, I-485, N-400, I-765 and more", color: "#5c1a1a" },
-  healthcare:  { emoji: "⚕️", headline: "Medicare forms", sub: "CMS-40B, Part B enrollment and more", color: "#1a4a5c" },
-  employment:  { emoji: "💼", headline: "FMLA & labor", sub: "WH-380, WH-381, WH-382 and more", color: "#3a1a5c" },
-  vehicle:     { emoji: "🚗", headline: "DMV & titles", sub: "Vehicle transfer and registration", color: "#5c3a1a" },
-  benefits:    { emoji: "🏛️", headline: "Social Security", sub: "SS-5, SSA-44, disability forms", color: "#1a5c5c" },
-  veterans:    { emoji: "🎖️", headline: "VA benefits", sub: "21-526EZ, GI Bill, burial claims", color: "#2a4a1a" },
-  legal:       { emoji: "⚖️", headline: "Legal forms", sub: "Court filings, appeals, declarations", color: "#4a4a1a" },
-  passport:    { emoji: "🛂", headline: "Passport forms", sub: "DS-11, DS-82, DS-64 and more", color: "#1a2e5c" },
+  tax:         { emoji: "📋", headline: "IRS tax forms",        sub: "W-9 and more",                     color: "#1a3458" },
+  moving:      { emoji: "🏠", headline: "Move with ease",       sub: "USPS address change, IRS 8822",     color: "#1a5c3a" },
+  immigration: { emoji: "🌐", headline: "USCIS forms",          sub: "I-9, I-485, N-400, I-765 and more", color: "#5c1a1a" },
+  healthcare:  { emoji: "⚕️", headline: "Medicare forms",       sub: "CMS-40B, Part B and more",          color: "#1a4a5c" },
+  employment:  { emoji: "💼", headline: "FMLA & labor",         sub: "WH-380, WH-381 and more",           color: "#3a1a5c" },
+  vehicle:     { emoji: "🚗", headline: "DMV & titles",         sub: "Vehicle transfer, registration",    color: "#5c3a1a" },
+  benefits:    { emoji: "🏛️", headline: "Social Security",      sub: "SS-5, SSA-44, disability forms",    color: "#1a5c5c" },
+  veterans:    { emoji: "🎖️", headline: "VA benefits",          sub: "21-526EZ, GI Bill, burial",         color: "#2a4a1a" },
+  legal:       { emoji: "⚖️", headline: "Legal forms",          sub: "Court filings, appeals",            color: "#4a4a1a" },
+  passport:    { emoji: "🛂", headline: "Passport forms",       sub: "DS-11, DS-82, DS-64 and more",      color: "#1a2e5c" },
 };
 
 const CAT_ICONS = {
@@ -27,15 +27,9 @@ const CAT_ICONS = {
   passport:    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="2" width="18" height="20" rx="2"/><circle cx="12" cy="11" r="3"/><path d="M3 16h18"/></svg>,
 };
 
-// Always filter hidden directly from FORMS — never trust cached function results
-function getVisible(categoryId) {
-  return FORMS.filter(f => f.category === categoryId && !f.hidden);
-}
-
 export default function BrowseByCategory() {
   const navigate = useNavigate();
-
-  const visibleCategories = CATEGORIES.filter(cat => getVisible(cat.id).length > 0);
+  const visibleCategories = CATEGORIES.filter(cat => getFormsByCategory(cat.id).length > 0);
 
   return (
     <section className="bbc-section">
@@ -47,7 +41,7 @@ export default function BrowseByCategory() {
         </div>
         <div className="bbc-grid">
           {visibleCategories.map((cat) => {
-            const count = getVisible(cat.id).length;
+            const count = getFormsByCategory(cat.id).length;
             const back  = CAT_BACK[cat.id] || {};
             return (
               <div key={cat.id} className="bbc-flip-wrap">

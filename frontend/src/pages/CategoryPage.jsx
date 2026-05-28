@@ -1,13 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { getCategoryById, FORMS } from "../data/formsData";
+import { getCategoryById, getFormsByCategory } from "../data/formsData";
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const category = getCategoryById(categoryId);
-
-  // Filter directly from FORMS — never trust cached function results
-  const forms = FORMS.filter(f => f.category === categoryId && !f.hidden);
+  const forms = getFormsByCategory(categoryId);
 
   if (!category) {
     return (
@@ -29,7 +27,6 @@ export default function CategoryPage() {
           <div className="cp-hero-badge">{forms.length} form{forms.length !== 1 ? "s" : ""} available</div>
         </div>
       </div>
-
       <div className="cp-body">
         <div className="cp-body-inner">
           <h2 className="cp-list-title">All {category.label}</h2>
