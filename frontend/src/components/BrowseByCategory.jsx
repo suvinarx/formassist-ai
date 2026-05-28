@@ -5,7 +5,7 @@ const CAT_BACK = {
   tax: {
     emoji: "📋",
     headline: "IRS tax forms",
-    sub: "W-9",
+    sub: "W-9 Request for Taxpayer Identification Number",
     color: "#1a3458",
   },
 };
@@ -26,18 +26,30 @@ const CAT_ICONS = {
   ),
 };
 
+function isW9Form(form) {
+  const searchableText = [
+    form.id,
+    form.title,
+    form.name,
+    form.label,
+    form.formNumber,
+    form.description,
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "");
+
+  return searchableText.includes("w9");
+}
+
 // Only show W-9 form
 function getVisible(categoryId) {
   return FORMS.filter(
-    (f) =>
-      f.category === categoryId &&
-      !f.hidden &&
-      (
-        f.id === "w9" ||
-        f.id === "w-9" ||
-        f.title?.toLowerCase().includes("w-9") ||
-        f.name?.toLowerCase().includes("w-9")
-      )
+    (form) =>
+      form.category === categoryId &&
+      !form.hidden &&
+      isW9Form(form)
   );
 }
 
@@ -69,7 +81,12 @@ export default function BrowseByCategory() {
         <div className="bbc-grid">
           {visibleCategories.map((cat) => {
             const count = getVisible(cat.id).length;
-            const back = CAT_BACK[cat.id] || {};
+            const back = CAT_BACK[cat.id] || {
+              emoji: "📄",
+              headline: cat.label,
+              sub: "W-9 form",
+              color: cat.color,
+            };
 
             return (
               <div key={cat.id} className="bbc-flip-wrap">
@@ -82,7 +99,7 @@ export default function BrowseByCategory() {
                     style={{ "--cat-color": cat.color }}
                   >
                     <div className="bbc-card-icon-wrap">
-                      {CAT_ICONS[cat.id]}
+                      {CAT_ICONS[cat.id] || CAT_ICONS.tax}
                     </div>
 
                     <div className="bbc-card-label">{cat.label}</div>
