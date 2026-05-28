@@ -1,178 +1,220 @@
 import { useNavigate } from "react-router-dom";
 
-const SECURITY_FEATURES = [
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="8" width="20" height="12" rx="2"/>
-        <path d="M6 8V6a6 6 0 0 1 12 0v2"/>
-        <circle cx="12" cy="14" r="1.5"/>
-      </svg>
-    ),
-    title: "256-bit data encryption",
-    desc: "FormAssist AI encrypts all data in transit using TLS 1.3 and at rest using AES-256 — the same standard used by financial institutions and government agencies. The transmission of data between you and our servers is impossible to intercept or decipher by an outside party.",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        <polyline points="9 12 11 14 15 10"/>
-      </svg>
-    ),
-    title: "Zero sensitive data storage",
-    desc: "We never store your Social Security Number, payment card information, government ID numbers, or handwritten signatures. Our system is architected specifically to exclude these fields — they are never transmitted to our servers in the first place.",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-      </svg>
-    ),
-    title: "You control your data",
-    desc: "Your situational data is used only to generate your helper packet during your session. We do not sell, share, or rent your personal information to third parties. You can request full deletion of your account and associated data at any time by contacting support.",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <polyline points="9 11 12 14 22 4"/>
-        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-      </svg>
-    ),
-    title: "No unauthorized submissions",
-    desc: "FormAssist AI is a helper tool only. We never submit any form on your behalf to any government agency or official body. Every packet we generate is reviewed, corrected, and submitted exclusively by you through the appropriate official channel.",
-  },
-];
-
-const COMPLIANCE = [
-  {
-    badge: "🔐",
-    title: "SOC 2 Type II aligned",
-    desc: "Our infrastructure and processes are designed in alignment with SOC 2 Type II requirements, covering security, availability, and confidentiality principles. We conduct regular internal audits against these standards.",
-  },
-  {
-    badge: "🇪🇺",
-    title: "GDPR compliant",
-    desc: "FormAssist AI is committed to compliance with the General Data Protection Regulation, giving users in the EU transparency and control over their personal data. We participate in data minimization and purpose limitation principles.",
-  },
-  {
-    badge: "🏥",
-    title: "HIPAA considerations",
-    desc: "We do not process Protected Health Information (PHI) as defined by HIPAA. Our architecture deliberately excludes fields that would constitute PHI, reducing regulatory surface area for users in healthcare-related situations.",
-  },
-  {
-    badge: "🇺🇸",
-    title: "CCPA compliant",
-    desc: "California residents have the right to know what data we collect, request deletion, and opt out of data sale. We comply fully with the California Consumer Privacy Act. We do not sell personal information.",
-  },
-  {
-    badge: "🔒",
-    title: "Firebase Authentication",
-    desc: "User accounts are managed through Google Firebase Authentication, which provides industry-standard OAuth 2.0 flows, brute-force protection, and secure session management without storing plaintext passwords.",
-  },
-  {
-    badge: "🛡",
-    title: "No third-party data sharing",
-    desc: "Your personal information is never sold or shared with advertisers, data brokers, or marketing platforms. We use only essential analytics to improve the product, with no behavioral profiling or ad targeting.",
-  },
-];
-
 export default function SecurityPage() {
   const navigate = useNavigate();
 
   return (
     <div className="sec-shell">
+
       {/* Nav */}
-      <nav className="fa-nav">
-        <div className="fa-brand">
+      <nav className="fa-topnav">
+        <div className="fa-topnav-brand" onClick={() => navigate("/")} style={{ cursor:"pointer" }}>
           <div className="fa-brand-mark">F</div>
           <span className="fa-brand-name">FormAssist AI</span>
         </div>
-        <button className="fa-nav-cta" onClick={() => navigate("/")}>← Back to home</button>
+        <div className="fa-topnav-right">
+          <button className="fa-topnav-signin" onClick={() => navigate("/")}>← Back to home</button>
+        </div>
       </nav>
 
       {/* Hero */}
-      <div className="sec-hero">
-        <div className="sec-hero-inner">
-          <div className="fa-eyebrow" style={{ color: "rgba(255,255,255,0.55)" }}>Trust & Privacy</div>
-          <h1 className="sec-hero-title">Your security is our foundation</h1>
-          <p className="sec-hero-sub">FormAssist AI is built from the ground up to handle sensitive situations with care. Here's exactly how we protect your data.</p>
-          <div className="sec-hero-badges">
-            <span className="sec-badge">256-bit AES encryption</span>
-            <span className="sec-badge">No SSN storage</span>
-            <span className="sec-badge">GDPR compliant</span>
-            <span className="sec-badge">CCPA compliant</span>
+      <div style={{
+        background: "linear-gradient(rgba(10,22,48,0.82) 0%, rgba(10,22,48,0.7) 100%), url('https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1600&q=80') center/cover no-repeat",
+        padding: "60px 64px 56px",
+      }}>
+        <div style={{ maxWidth:700, position:"relative", zIndex:1 }}>
+          <div style={{ fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em", color:"rgba(255,255,255,0.45)", marginBottom:12 }}>Trust & Privacy</div>
+          <h1 style={{ fontFamily:"'DM Serif Display',Georgia,serif", fontSize:"2.6rem", fontWeight:400, color:"#fff", margin:"0 0 16px", lineHeight:1.15, letterSpacing:"-0.3px" }}>
+            How FormAssist AI handles your information
+          </h1>
+          <p style={{ fontSize:16, color:"rgba(255,255,255,0.7)", lineHeight:1.65, margin:"0 0 28px", maxWidth:580 }}>
+            We only ask for the information needed to fill your specific form — and we never store the sensitive parts. Here's exactly how it works.
+          </p>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:10 }}>
+            {["No SSN stored","No payment data","Official .gov forms only","You submit — not us"].map(b => (
+              <span key={b} style={{ background:"rgba(255,255,255,0.1)", border:"1px solid rgba(255,255,255,0.2)", borderRadius:20, padding:"5px 14px", fontSize:12, fontWeight:600, color:"rgba(255,255,255,0.85)" }}>{b}</span>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* How we protect your data */}
-      <section className="sec-section">
-        <div className="sec-inner">
-          <h2 className="sec-section-title">Here's how FormAssist AI protects your data</h2>
-          <p className="sec-section-sub">Every architectural decision we make starts with the question: what's the minimum data we need, and how do we protect it?</p>
-          <div className="sec-feature-grid">
-            {SECURITY_FEATURES.map((f, i) => (
-              <div key={i} className="sec-feature-card">
-                <div className="sec-feature-icon">{f.icon}</div>
-                <h3 className="sec-feature-title">{f.title}</h3>
-                <p className="sec-feature-desc">{f.desc}</p>
+      {/* What we collect — honest table */}
+      <section style={{ background:"#fff", padding:"64px 64px 56px" }}>
+        <div style={{ maxWidth:900, margin:"0 auto" }}>
+          <h2 style={{ fontFamily:"'DM Serif Display',Georgia,serif", fontSize:"1.9rem", fontWeight:400, color:"#0d1f3c", margin:"0 0 10px" }}>Exactly what we collect — and what we don't</h2>
+          <p style={{ fontSize:15, color:"#6b7280", lineHeight:1.65, margin:"0 0 36px" }}>
+            FormAssist AI is a helper tool. We ask only the fields required for your specific form. You decide what to provide.
+          </p>
+
+          <div style={{ border:"1.5px solid #e5e7eb", borderRadius:14, overflow:"hidden" }}>
+            {/* Header */}
+            <div style={{ display:"grid", gridTemplateColumns:"1fr 100px 100px", background:"#0d1f3c", padding:"12px 20px", gap:8 }}>
+              <span style={{ fontSize:12, fontWeight:700, color:"rgba(255,255,255,0.5)", textTransform:"uppercase", letterSpacing:"0.07em" }}>Information type</span>
+              <span style={{ fontSize:12, fontWeight:700, color:"rgba(255,255,255,0.5)", textTransform:"uppercase", letterSpacing:"0.07em", textAlign:"center" }}>Collected</span>
+              <span style={{ fontSize:12, fontWeight:700, color:"rgba(255,255,255,0.5)", textTransform:"uppercase", letterSpacing:"0.07em", textAlign:"center" }}>Stored</span>
+            </div>
+            {[
+              ["Your name, address, email",                            true,  "Optional — only if you enable 'Remember my answers'"],
+              ["Date of birth, place of birth",                        true,  "Optional — only if you enable 'Remember my answers'"],
+              ["Employment info, income figures",                      true,  "Optional — only if you enable 'Remember my answers'"],
+              ["Social Security Number (SSN / ITIN)",                  false, "Never — we explicitly exclude this from saved data"],
+              ["Alien Registration Number (A-Number)",                 false, "Never — we explicitly exclude this from saved data"],
+              ["Passport or government ID numbers",                    false, "Never — we explicitly exclude this from saved data"],
+              ["Payment card or bank account numbers",                 false, "Never — excluded from all fields and storage"],
+              ["Handwritten signatures",                               false, "Never — you sign the physical form yourself"],
+              ["Your uploaded documents (for AI extraction)",          true,  "Never — used only to extract data in-session, then discarded"],
+              ["Account email (Firebase Auth)",                        true,  "Yes — required to maintain your account"],
+              ["Generated PDF packets",                                true,  "Temporarily — deleted from server after download"],
+            ].map(([label, collected, note], i) => (
+              <div key={i} style={{ display:"grid", gridTemplateColumns:"1fr 100px 100px", padding:"14px 20px", borderTop:"1px solid #f3f4f6", background: i%2===0?"#fff":"#fafafa", gap:8, alignItems:"center" }}>
+                <div>
+                  <div style={{ fontSize:14, fontWeight:500, color:"#0d1f3c", marginBottom:2 }}>{label}</div>
+                  <div style={{ fontSize:12, color:"#9ca3af" }}>{note}</div>
+                </div>
+                <div style={{ textAlign:"center" }}>
+                  {collected
+                    ? <span style={{ fontSize:13, fontWeight:700, color:"#0d1f3c" }}>Yes</span>
+                    : <span style={{ fontSize:13, fontWeight:700, color:"#dc2626" }}>No</span>}
+                </div>
+                <div style={{ textAlign:"center" }}>
+                  {!collected || note.startsWith("Never")
+                    ? <span style={{ fontSize:13, fontWeight:700, color:"#dc2626" }}>Never</span>
+                    : note.includes("Optional")
+                      ? <span style={{ fontSize:13, fontWeight:700, color:"#d97706" }}>Optional</span>
+                      : <span style={{ fontSize:13, fontWeight:700, color:"#0d1f3c" }}>Yes</span>}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Why FormLift rated us #1 */}
-      <section className="sec-rating-section">
-        <div className="sec-inner">
-          <div className="sec-rating-card">
-            <div className="sec-rating-left">
-              <div className="sec-rating-stars">★★★★★</div>
-              <div className="sec-rating-score">4.9 / 5.0</div>
-              <div className="sec-rating-source">FormLift Annual Review</div>
-            </div>
-            <div className="sec-rating-right">
-              <h2 className="sec-rating-title">Why FormLift rated FormAssist AI #1</h2>
-              <p className="sec-rating-desc">FormLift's independent annual document tool benchmark evaluates products across accuracy, privacy architecture, ease-of-use, and form coverage. FormAssist AI earned top marks in every category:</p>
-              <div className="sec-rating-criteria">
-                <div className="sec-criterion"><span className="sec-criterion-score">98%</span><span>Pre-fill accuracy across 20+ form types</span></div>
-                <div className="sec-criterion"><span className="sec-criterion-score">#1</span><span>Privacy architecture — zero sensitive field storage</span></div>
-                <div className="sec-criterion"><span className="sec-criterion-score">#1</span><span>Easiest onboarding — plain English situation input</span></div>
-                <div className="sec-criterion"><span className="sec-criterion-score">Top</span><span>Federal & state form coverage breadth</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Compliance certifications */}
-      <section className="sec-section sec-section-alt">
-        <div className="sec-inner">
-          <h2 className="sec-section-title">Compliance certifications and regulations</h2>
-          <p className="sec-section-sub">Our platform is designed to meet or exceed the compliance standards that matter most for users handling personal and government documents.</p>
-          <div className="sec-compliance-grid">
-            {COMPLIANCE.map((c, i) => (
-              <div key={i} className="sec-compliance-card">
-                <div className="sec-compliance-badge">{c.badge}</div>
-                <h3 className="sec-compliance-title">{c.title}</h3>
-                <p className="sec-compliance-desc">{c.desc}</p>
+      {/* How it works technically */}
+      <section style={{ background:"#f9fafb", padding:"64px 64px 56px", borderTop:"1px solid #e5e7eb" }}>
+        <div style={{ maxWidth:900, margin:"0 auto" }}>
+          <h2 style={{ fontFamily:"'DM Serif Display',Georgia,serif", fontSize:"1.9rem", fontWeight:400, color:"#0d1f3c", margin:"0 0 10px" }}>How the system actually works</h2>
+          <p style={{ fontSize:15, color:"#6b7280", lineHeight:1.65, margin:"0 0 36px" }}>No black boxes. Here's the technical flow from your input to the downloaded PDF.</p>
+          <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
+            {[
+              {
+                n:"01", title:"You describe your situation or fill in a form",
+                body:"You type your situation in plain English, or you navigate directly to a form and fill in the fields. We ask only the fields that form actually requires — nothing extra.",
+                tag:null
+              },
+              {
+                n:"02", title:"Claude AI extracts or maps your answers",
+                body:"If you upload a document (passport, prior form, ID), Claude AI reads it and extracts relevant text. That document is never stored on our servers — it's processed in-memory during your session only. If you type answers manually, they go directly to the PDF filler.",
+                tag:"Powered by Claude (Anthropic)"
+              },
+              {
+                n:"03", title:"Your data is mapped to official .gov form fields",
+                body:"We download the actual official PDF from the relevant agency (IRS, USCIS, SSA, etc.) and fill the AcroForm fields directly using your answers. We use the exact form you'd get from irs.gov or uscis.gov — not a template or approximation.",
+                tag:"119 official .gov PDFs"
+              },
+              {
+                n:"04", title:"You download the filled PDF",
+                body:"The completed packet is stored temporarily on our server so you can download it. It's deleted automatically after download. We never email, submit, or transmit your PDF to any government agency.",
+                tag:"You submit — not us"
+              },
+              {
+                n:"05", title:"You review, sign, and submit officially",
+                body:"Every packet includes a reminder to review all fields, add sensitive info (SSN, signatures) by hand, and submit only through the official agency channel — irs.gov, uscis.gov, usps.com, va.gov, etc. We are a preparation tool, not a filing service.",
+                tag:null
+              },
+            ].map((s, i, arr) => (
+              <div key={s.n} style={{ display:"grid", gridTemplateColumns:"72px 1fr", gap:0 }}>
+                <div style={{ display:"flex", flexDirection:"column", alignItems:"center" }}>
+                  <div style={{ width:44, height:44, borderRadius:"50%", background:"#0d1f3c", color:"#fff", display:"flex", alignItems:"center", justifyContent:"center", fontSize:14, fontWeight:800, flexShrink:0 }}>{s.n}</div>
+                  {i < arr.length-1 && <div style={{ width:2, flex:1, background:"#e5e7eb", margin:"4px 0" }} />}
+                </div>
+                <div style={{ paddingBottom: i < arr.length-1 ? 32 : 0, paddingTop:8, paddingLeft:16 }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:10, marginBottom:6, flexWrap:"wrap" }}>
+                    <h3 style={{ fontSize:16, fontWeight:700, color:"#0d1f3c", margin:0 }}>{s.title}</h3>
+                    {s.tag && <span style={{ fontSize:11, fontWeight:700, background:"#e8edf7", color:"#1e3a6e", borderRadius:6, padding:"2px 9px" }}>{s.tag}</span>}
+                  </div>
+                  <p style={{ fontSize:14, color:"#6b7280", lineHeight:1.7, margin:0 }}>{s.body}</p>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="sec-cta-section">
-        <div className="sec-inner sec-cta-inner">
-          <h2 className="sec-cta-title">Ready to get started?</h2>
-          <p className="sec-cta-sub">Your data is safe with us. Describe your situation and we'll find and pre-fill the right forms.</p>
-          <button className="sec-cta-btn" onClick={() => navigate("/")}>Go to FormAssist AI →</button>
+      {/* Auth & account */}
+      <section style={{ background:"#fff", padding:"64px 64px 56px", borderTop:"1px solid #e5e7eb" }}>
+        <div style={{ maxWidth:900, margin:"0 auto", display:"grid", gridTemplateColumns:"1fr 1fr", gap:32 }}>
+          <div style={{ background:"#f9fafb", border:"1.5px solid #e5e7eb", borderRadius:16, padding:"28px" }}>
+            <div style={{ width:44, height:44, background:"#0d1f3c", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:16 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3 style={{ fontSize:16, fontWeight:700, color:"#0d1f3c", margin:"0 0 10px" }}>Account security — Firebase Auth</h3>
+            <p style={{ fontSize:14, color:"#6b7280", lineHeight:1.7, margin:0 }}>
+              Accounts are managed through Google Firebase Authentication. We never store your password — Firebase handles all credential management using industry-standard OAuth 2.0. Supports Sign in with Google with brute-force protection built in.
+            </p>
+          </div>
+          <div style={{ background:"#f9fafb", border:"1.5px solid #e5e7eb", borderRadius:16, padding:"28px" }}>
+            <div style={{ width:44, height:44, background:"#0d1f3c", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:16 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+            </div>
+            <h3 style={{ fontSize:16, fontWeight:700, color:"#0d1f3c", margin:"0 0 10px" }}>Optional local data saving</h3>
+            <p style={{ fontSize:14, color:"#6b7280", lineHeight:1.7, margin:0 }}>
+              The "Remember my answers" toggle saves non-sensitive form data to your browser's local storage only — it never leaves your device. SSNs, alien numbers, passport numbers, and all other sensitive fields are explicitly excluded from this feature regardless of the setting.
+            </p>
+          </div>
+          <div style={{ background:"#f9fafb", border:"1.5px solid #e5e7eb", borderRadius:16, padding:"28px" }}>
+            <div style={{ width:44, height:44, background:"#0d1f3c", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:16 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <h3 style={{ fontSize:16, fontWeight:700, color:"#0d1f3c", margin:"0 0 10px" }}>We are not a law or tax firm</h3>
+            <p style={{ fontSize:14, color:"#6b7280", lineHeight:1.7, margin:0 }}>
+              FormAssist AI prepares helper packets only. We do not provide legal advice, tax advice, or immigration advice. The forms we fill are for reference — you are responsible for reviewing every field, verifying accuracy, and submitting through official channels. When in doubt, consult a licensed professional.
+            </p>
+          </div>
+          <div style={{ background:"#f9fafb", border:"1.5px solid #e5e7eb", borderRadius:16, padding:"28px" }}>
+            <div style={{ width:44, height:44, background:"#0d1f3c", borderRadius:12, display:"flex", alignItems:"center", justifyContent:"center", marginBottom:16 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="22" height="22"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </div>
+            <h3 style={{ fontSize:16, fontWeight:700, color:"#0d1f3c", margin:"0 0 10px" }}>No third-party data sharing</h3>
+            <p style={{ fontSize:14, color:"#6b7280", lineHeight:1.7, margin:0 }}>
+              Your personal information is never sold, shared, or provided to advertisers, data brokers, or marketing platforms. The only third-party services we use are Firebase (auth), OpenAI/Anthropic (AI extraction during your session), and our hosting provider.
+            </p>
+          </div>
         </div>
       </section>
+
+      {/* Official sources */}
+      <section style={{ background:"#0d1f3c", padding:"56px 64px" }}>
+        <div style={{ maxWidth:900, margin:"0 auto", textAlign:"center" }}>
+          <h2 style={{ fontFamily:"'DM Serif Display',Georgia,serif", fontSize:"1.8rem", fontWeight:400, color:"#fff", margin:"0 0 12px" }}>Forms sourced directly from official agencies</h2>
+          <p style={{ fontSize:15, color:"rgba(255,255,255,0.55)", margin:"0 0 36px", lineHeight:1.65 }}>
+            Every PDF we fill is downloaded from the original government source. We do not use third-party form providers or scanned copies.
+          </p>
+          <div style={{ display:"flex", flexWrap:"wrap", gap:12, justifyContent:"center", marginBottom:40 }}>
+            {[
+              ["IRS","irs.gov","Tax forms — W-9, 1040, W-4, schedules"],
+              ["USCIS","uscis.gov","Immigration — I-765, I-485, N-400, I-130"],
+              ["SSA","ssa.gov","Social Security — SS-5, SSA-44, disability"],
+              ["State Dept.","travel.state.gov","Passport — DS-11, DS-82, DS-64"],
+              ["VA","va.gov","Veterans — 21-526EZ, 22-1990, 21-4142"],
+              ["CMS","cms.gov","Medicare — CMS-40B, CMS-L564"],
+              ["USPS","usps.com","Moving — PS Form 3575"],
+              ["Dept. of Labor","dol.gov","Employment — WH-380, WH-381, WH-382"],
+            ].map(([agency, url, forms]) => (
+              <div key={agency} style={{ background:"rgba(255,255,255,0.06)", border:"1px solid rgba(255,255,255,0.1)", borderRadius:12, padding:"16px 20px", textAlign:"left", minWidth:200 }}>
+                <div style={{ fontSize:15, fontWeight:700, color:"#fff", marginBottom:2 }}>{agency}</div>
+                <div style={{ fontSize:11, color:"rgba(255,255,255,0.35)", marginBottom:6 }}>{url}</div>
+                <div style={{ fontSize:12, color:"rgba(255,255,255,0.55)" }}>{forms}</div>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => navigate("/")}
+            style={{ background:"#2dd4b0", color:"#0a1628", border:"none", borderRadius:10, padding:"14px 32px", fontSize:15, fontWeight:700, fontFamily:"inherit", cursor:"pointer" }}>
+            Start filling a form →
+          </button>
+        </div>
+      </section>
+
     </div>
   );
 }

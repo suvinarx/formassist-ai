@@ -321,37 +321,37 @@
     "questions": [
       {
         "id": "first_name_middle",
-        "label": "First name and middle initial",
+        "label": "Step 1a: Your first name and middle initial",
         "type": "text",
         "required": true
       },
       {
         "id": "last_name",
-        "label": "Last name",
+        "label": "Step 1a: Your last name",
         "type": "text",
         "required": true
       },
       {
-        "id": "ssn",
-        "label": "Social Security Number",
-        "type": "text",
-        "required": false
-      },
-      {
         "id": "address",
-        "label": "Home address (number and street or rural route)",
+        "label": "Step 1a: Home address (number and street or rural route)",
         "type": "text",
         "required": true
       },
       {
         "id": "city_state_zip",
-        "label": "City or town, state, and ZIP code",
+        "label": "Step 1a: City or town, state, and ZIP code",
         "type": "text",
         "required": true
       },
       {
+        "id": "ssn",
+        "label": "Step 1b: Social Security Number",
+        "type": "text",
+        "required": false
+      },
+      {
         "id": "filing_status",
-        "label": "Filing status",
+        "label": "Step 1c: Filing status",
         "type": "single_choice",
         "options": [
           "Single or Married filing separately",
@@ -361,37 +361,65 @@
         "required": true
       },
       {
-        "id": "multiple_jobs",
-        "label": "Step 2: Multiple jobs or spouse works",
-        "type": "single_choice",
-        "options": [
-          "Complete the Multiple Jobs Worksheet (Page 3)",
-          "Use the online estimator at IRS.gov/W4App",
-          "Check this box (only if: only 2 jobs total, similar pay)"
-        ],
-        "required": true
+        "id": "step2_note",
+        "label": "Step 2 \u2014 Multiple Jobs: Complete ONLY if you (or your spouse if MFJ) have more than one job at a time, OR if you are MFJ and your spouse also works. If this does NOT apply to you, skip to Step 3.",
+        "type": "text",
+        "required": false,
+        "is_note": true
       },
       {
-        "id": "dependents_amount",
-        "label": "Step 3: Claim dependent and other credits total dollar amount",
+        "id": "multiple_jobs_method",
+        "label": "Step 2: Multiple jobs or spouse works \u2014 choose ONE method (or skip if only one job)",
+        "type": "single_choice",
+        "options": [
+          "Skip \u2014 I have only one job and am Single or MFJ with non-working spouse",
+          "Use IRS Tax Withholding Estimator at IRS.gov/W4App (most accurate)",
+          "Use Multiple Jobs Worksheet on page 3 of the W-4",
+          "Check this box (ONLY if there are exactly 2 jobs total with similar pay)"
+        ],
+        "required": false
+      },
+      {
+        "id": "step3_note",
+        "label": "Step 3 \u2014 Dependents: If your total income is $200,000 or less ($400,000 if MFJ), complete this step. Otherwise skip.",
+        "type": "text",
+        "required": false,
+        "is_note": true
+      },
+      {
+        "id": "qualifying_children_amount",
+        "label": "Step 3: Number of qualifying children under 17 \u00d7 $2,000 (e.g., 2 children = enter $4,000)",
         "type": "text",
         "required": false
       },
       {
+        "id": "other_dependents_amount",
+        "label": "Step 3: Number of other dependents \u00d7 $500 (e.g., 1 dependent = enter $500)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "step4_note",
+        "label": "Step 4 \u2014 Optional adjustments. Complete only if they apply to you.",
+        "type": "text",
+        "required": false,
+        "is_note": true
+      },
+      {
         "id": "other_income",
-        "label": "Step 4a: Other income not from jobs (interest, dividends, retirement)",
+        "label": "Step 4a: Other income NOT from jobs (interest, dividends, retirement) \u2014 enter annual amount",
         "type": "text",
         "required": false
       },
       {
         "id": "deductions",
-        "label": "Step 4b: Deductions (if you plan to itemize \u2014 from Deductions Worksheet)",
+        "label": "Step 4b: Deductions \u2014 only if you plan to itemize (from Deductions Worksheet page 3)",
         "type": "text",
         "required": false
       },
       {
         "id": "extra_withholding",
-        "label": "Step 4c: Extra withholding \u2014 additional amount per pay period",
+        "label": "Step 4c: Extra withholding \u2014 additional amount per pay period to withhold",
         "type": "text",
         "required": false
       },
@@ -1668,8 +1696,14 @@
         "required": false
       },
       {
+        "id": "uscis_online_account",
+        "label": "USCIS Online Account Number (if any)",
+        "type": "text",
+        "required": false
+      },
+      {
         "id": "current_address",
-        "label": "Current address",
+        "label": "Current address (street and apt)",
         "type": "text",
         "required": true
       },
@@ -1746,59 +1780,103 @@
       },
       {
         "id": "phone",
-        "label": "Daytime phone number",
+        "label": "Daytime phone",
         "type": "text",
         "required": true
       },
       {
         "id": "email",
         "label": "Email address",
-        "type": "email",
-        "required": true
+        "type": "text",
+        "required": false
       },
       {
         "id": "immigration_status",
-        "label": "Current immigration status/visa category",
+        "label": "Current immigration status (your most recent visa or status)",
         "type": "single_choice",
         "options": [
           "F-1 Student",
-          "H-1B Worker",
+          "F-2 Dependent",
+          "H-1B Specialty Occupation",
           "H-4 Dependent",
           "J-1 Exchange Visitor",
+          "J-2 Dependent",
+          "L-1 Intracompany Transferee",
+          "O-1 Extraordinary Ability",
+          "TN NAFTA",
           "B-1/B-2 Visitor",
+          "DACA (c)(33)",
+          "Paroled into U.S.",
+          "No lawful status",
           "Other"
         ],
         "required": true
       },
       {
         "id": "eligibility_category",
-        "label": "Basis for application",
+        "label": "Basis for I-485 (eligibility category)",
         "type": "single_choice",
         "options": [
-          "Family-based (immediate relative)",
-          "Family-based (preference)",
-          "Employment-based",
-          "Refugee/Asylee",
-          "Diversity Visa",
+          "Immediate relative of U.S. citizen (spouse, child under 21, parent)",
+          "Family preference category (Form I-130 approved)",
+          "Employment-based preference (Form I-140 approved)",
+          "Diversity Visa (DV lottery winner)",
+          "Asylee (granted asylum \u2014 Form I-94 or asylum approval notice)",
+          "Refugee (admitted as refugee)",
+          "Special Immigrant",
           "Other"
         ],
         "required": true
       },
       {
-        "id": "last_entry_date",
-        "label": "Date of last entry into the U.S.",
+        "id": "priority_date",
+        "label": "Priority date from your approved petition (if applicable)",
         "type": "text",
         "required": false
+      },
+      {
+        "id": "i94_number",
+        "label": "I-94 Arrival/Departure Record Number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "authorized_stay_expiration",
+        "label": "Date your authorized stay expires or expired (from I-94 or visa)",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "last_entry_date",
+        "label": "Date of last entry into the U.S.",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "last_entry_place",
+        "label": "Place (port) of last entry into the U.S.",
+        "type": "text",
+        "required": true
       },
       {
         "id": "last_entry_status",
-        "label": "Status on last entry",
+        "label": "Immigration status at time of last entry (e.g., F-1, H-1B, B-2)",
         "type": "text",
-        "required": false
+        "required": true
       },
       {
         "id": "ever_in_removal",
-        "label": "Have you ever been in removal/deportation proceedings?",
+        "label": "Have you EVER been in immigration court removal/deportation proceedings?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "ever_failed_to_appear",
+        "label": "Have you EVER failed to appear at an immigration hearing?",
         "type": "single_choice",
         "options": [
           "Yes",
@@ -1808,7 +1886,37 @@
       },
       {
         "id": "criminal_history",
-        "label": "Have you ever been arrested or convicted of a crime?",
+        "label": "Have you EVER been arrested, cited, charged, indicted, convicted, or placed in an alternative sentencing program?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "criminal_details",
+        "label": "Describe each arrest/charge/conviction \u2014 date, location, charge, sentence",
+        "type": "text",
+        "required": false,
+        "show_if": {
+          "field": "criminal_history",
+          "value": "Yes"
+        }
+      },
+      {
+        "id": "immigration_violation",
+        "label": "Have you EVER violated the terms of your U.S. visa or immigration status?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "public_charge",
+        "label": "Are you likely to become a public charge (dependent on government assistance)?",
         "type": "single_choice",
         "options": [
           "Yes",
@@ -2007,7 +2115,7 @@
       },
       {
         "id": "other_names",
-        "label": "Other names you have used",
+        "label": "Other names ever used (including maiden name, nicknames)",
         "type": "text",
         "required": false
       },
@@ -2025,7 +2133,7 @@
       },
       {
         "id": "alien_number",
-        "label": "USCIS A-Number",
+        "label": "USCIS A-Number (on your green card)",
         "type": "text",
         "required": true
       },
@@ -2037,7 +2145,7 @@
       },
       {
         "id": "home_address",
-        "label": "Home address",
+        "label": "Home address (street)",
         "type": "text",
         "required": true
       },
@@ -2121,13 +2229,24 @@
       {
         "id": "email",
         "label": "Email address",
-        "type": "email",
-        "required": true
+        "type": "text",
+        "required": false
       },
       {
         "id": "became_lpr",
-        "label": "Date you became a Lawful Permanent Resident",
+        "label": "Date you became a Lawful Permanent Resident (from green card)",
         "type": "date",
+        "required": true
+      },
+      {
+        "id": "basis",
+        "label": "Basis for applying for naturalization",
+        "type": "single_choice",
+        "options": [
+          "I have been a Lawful Permanent Resident for at least 5 years",
+          "I have been a LPR for at least 3 years AND have been married to and living with the same U.S. citizen for the last 3 years",
+          "I am a qualifying U.S. military member or veteran"
+        ],
         "required": true
       },
       {
@@ -2135,7 +2254,7 @@
         "label": "Current marital status",
         "type": "single_choice",
         "options": [
-          "Single",
+          "Single (never married)",
           "Married",
           "Divorced",
           "Widowed",
@@ -2145,25 +2264,57 @@
       },
       {
         "id": "spouse_name",
-        "label": "Spouse's full name (if married)",
+        "label": "Spouse's full name",
         "type": "text",
-        "required": false
+        "required": false,
+        "show_if": {
+          "field": "marital_status",
+          "value": "Married"
+        }
       },
       {
         "id": "date_of_marriage",
-        "label": "Date of marriage (if applicable)",
+        "label": "Date of marriage",
         "type": "date",
-        "required": false
+        "required": false,
+        "show_if": {
+          "field": "marital_status",
+          "value": "Married"
+        }
+      },
+      {
+        "id": "spouse_citizenship",
+        "label": "Spouse's country of citizenship",
+        "type": "text",
+        "required": false,
+        "show_if": {
+          "field": "marital_status",
+          "value": "Married"
+        }
+      },
+      {
+        "id": "spouse_is_usc",
+        "label": "Is your spouse a U.S. citizen?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false,
+        "show_if": {
+          "field": "marital_status",
+          "value": "Married"
+        }
       },
       {
         "id": "employer_name",
-        "label": "Current employer's name",
+        "label": "Current employer name",
         "type": "text",
         "required": false
       },
       {
         "id": "employer_address",
-        "label": "Employer's address",
+        "label": "Employer address",
         "type": "text",
         "required": false
       },
@@ -2179,8 +2330,35 @@
         "required": true
       },
       {
+        "id": "native_language",
+        "label": "What is your native language?",
+        "type": "single_choice",
+        "options": [
+          "English",
+          "Spanish",
+          "Chinese (Mandarin/Cantonese)",
+          "Hindi",
+          "Arabic",
+          "Tagalog",
+          "Vietnamese",
+          "Korean",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "exemption_65_20",
+        "label": "Are you 65+ years old AND have been a LPR for 20+ years? (qualifies for English/civics exemption)",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
         "id": "ever_claimed_nonresident",
-        "label": "Have you ever claimed to be a non-US national to avoid military service?",
+        "label": "Have you ever claimed to be a non-U.S. national to avoid U.S. military service?",
         "type": "single_choice",
         "options": [
           "Yes",
@@ -2190,7 +2368,7 @@
       },
       {
         "id": "ever_failed_to_file_taxes",
-        "label": "Have you ever failed to file a federal tax return?",
+        "label": "Have you failed to file a required federal, state, or local tax return in the last 5 years?",
         "type": "single_choice",
         "options": [
           "Yes",
@@ -2199,14 +2377,66 @@
         "required": true
       },
       {
-        "id": "ever_registered_vote",
-        "label": "Do you register and vote in US elections?",
+        "id": "ever_been_member_organization",
+        "label": "Have you EVER been a member of or associated with any organization, association, fund, foundation, party, club, society, or similar group?",
         "type": "single_choice",
         "options": [
           "Yes",
           "No"
         ],
         "required": true
+      },
+      {
+        "id": "organizations_list",
+        "label": "List all organizations you have been a member of",
+        "type": "text",
+        "required": false,
+        "show_if": {
+          "field": "ever_been_member_organization",
+          "value": "Yes"
+        }
+      },
+      {
+        "id": "ever_committed_crime",
+        "label": "Have you EVER committed, assisted, or attempted to commit a crime for which you were NOT arrested?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "ever_arrested",
+        "label": "Have you EVER been arrested, cited, or detained by any law enforcement officer?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "crime_details",
+        "label": "Describe the arrest/crime, date, location, and outcome",
+        "type": "text",
+        "required": false,
+        "show_if": {
+          "field": "ever_arrested",
+          "value": "Yes"
+        }
+      },
+      {
+        "id": "selective_service",
+        "label": "If male and between 18-26 when you entered the U.S., did you register with the Selective Service?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No",
+          "Not applicable \u2014 I am female",
+          "Not applicable \u2014 I was over 26 when I entered the U.S."
+        ],
+        "required": false
       }
     ]
   },
@@ -6826,6 +7056,1433 @@
         "label": "Essential functions employee must be able to perform:",
         "type": "text",
         "required": false
+      }
+    ]
+  },
+  {
+    "form_id": "cms10114",
+    "form_name": "Form CMS-10114, Notice of Medicare Non-Coverage",
+    "category": "Healthcare",
+    "agency": "CMS",
+    "questions": [
+      {
+        "id": "beneficiary_name",
+        "label": "Beneficiary's full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_address",
+        "label": "Beneficiary's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "beneficiary_zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "medicare_number",
+        "label": "Medicare Number (from Medicare card)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_name",
+        "label": "Name of provider/facility issuing this notice",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_address",
+        "label": "Provider address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_phone",
+        "label": "Provider phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "service_being_discontinued",
+        "label": "Service or care being discontinued (describe specifically)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "last_covered_date",
+        "label": "Last date Medicare will cover this service",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "notice_delivery_date",
+        "label": "Date this notice was delivered to beneficiary",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "reason_for_discontinuation",
+        "label": "Reason Medicare coverage is ending for this service",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_requests_qio_review",
+        "label": "Does the beneficiary want to request a QIO (Quality Improvement Organization) expedited review?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
+        "id": "qio_name",
+        "label": "Name of the QIO in your state (if requesting review)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "qio_phone",
+        "label": "QIO phone number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "appeal_deadline",
+        "label": "Deadline to request appeal (noon the day before last covered date)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_contact_name",
+        "label": "Provider contact name for questions",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_contact_phone",
+        "label": "Provider contact phone for questions",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "cms10182",
+    "form_name": "Form CMS-10182, Medicare Redetermination Request",
+    "category": "Healthcare",
+    "agency": "CMS",
+    "questions": [
+      {
+        "id": "beneficiary_name",
+        "label": "Beneficiary's full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_address",
+        "label": "Beneficiary's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "beneficiary_zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "medicare_number",
+        "label": "Medicare Number (from Medicare card)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "beneficiary_phone",
+        "label": "Beneficiary's phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "dob",
+        "label": "Beneficiary's date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "requestor_type",
+        "label": "Who is filing this request?",
+        "type": "single_choice",
+        "options": [
+          "Beneficiary",
+          "Authorized representative",
+          "Provider",
+          "Supplier"
+        ],
+        "required": true
+      },
+      {
+        "id": "representative_name",
+        "label": "Authorized representative name (if applicable)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "representative_address",
+        "label": "Representative address",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "claim_number",
+        "label": "Claim number from the Medicare Summary Notice (MSN)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "date_of_service",
+        "label": "Date of service being appealed",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "item_service_appealed",
+        "label": "Item or service you are appealing",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_name",
+        "label": "Name of provider or supplier who furnished the item/service",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "date_of_initial_determination",
+        "label": "Date on the initial determination (from MSN or remittance)",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "reason_for_appeal",
+        "label": "Why do you disagree with this decision? Be specific.",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "additional_info_attached",
+        "label": "Are you attaching additional information to support your appeal?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
+        "id": "additional_info_description",
+        "label": "Describe any attached documents",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "date_signed",
+        "label": "Date you are signing this request",
+        "type": "date",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "cms1490s",
+    "form_name": "Form CMS-1490S, Patient's Request for Medical Payment",
+    "category": "Healthcare",
+    "agency": "CMS",
+    "questions": [
+      {
+        "id": "patient_name",
+        "label": "Patient's full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "patient_address",
+        "label": "Patient's address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "patient_city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "patient_state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "patient_zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "patient_dob",
+        "label": "Patient's date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "medicare_number",
+        "label": "Medicare Number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "patient_phone",
+        "label": "Patient's phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "request_type",
+        "label": "Type of request",
+        "type": "single_choice",
+        "options": [
+          "Medicare Part A (hospital)",
+          "Medicare Part B (medical)"
+        ],
+        "required": true
+      },
+      {
+        "id": "provider_name",
+        "label": "Provider or supplier name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_address",
+        "label": "Provider address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "service_date_from",
+        "label": "Service date (from)",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "service_date_to",
+        "label": "Service date (to)",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "diagnosis",
+        "label": "Diagnosis or nature of illness/injury",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "description_of_services",
+        "label": "Description of services or items received",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "amount_charged",
+        "label": "Amount charged by provider",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "amount_paid",
+        "label": "Amount you have already paid, if any",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "other_insurance",
+        "label": "Do you have other health insurance besides Medicare?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "other_insurance_name",
+        "label": "Other insurance plan name",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "other_insurance_policy",
+        "label": "Other insurance policy/group number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "reason_provider_did_not_bill",
+        "label": "Why didn't the provider bill Medicare directly?",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "cms20027",
+    "form_name": "Form CMS-20027, Medicare Advantage Enrollment Request",
+    "category": "Healthcare",
+    "agency": "CMS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_initial",
+        "label": "Middle initial",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "medicare_number",
+        "label": "Medicare Number (from red, white, and blue Medicare card)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Home address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "email",
+        "label": "Email address",
+        "type": "email",
+        "required": false
+      },
+      {
+        "id": "part_a",
+        "label": "Do you have Medicare Part A (Hospital Insurance)?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "part_b",
+        "label": "Do you have Medicare Part B (Medical Insurance)?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "plan_name",
+        "label": "Name of Medicare Advantage plan you want to join",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "plan_id",
+        "label": "Plan ID or contract number (from plan materials)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "medicaid",
+        "label": "Do you have Medicaid?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "medicaid_number",
+        "label": "Medicaid number",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "long_term_care",
+        "label": "Do you live in a long-term care facility?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "primary_care_doctor",
+        "label": "Name of primary care doctor you want to use",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "esrd",
+        "label": "Have you been diagnosed with End-Stage Renal Disease (ESRD)?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "enrollment_period",
+        "label": "Reason for enrolling now",
+        "type": "single_choice",
+        "options": [
+          "Initial Coverage Election Period (new to Medicare)",
+          "Annual Enrollment Period (Oct 15\u2013Dec 7)",
+          "Open Enrollment Period (Jan 1\u2013Mar 31)",
+          "Special Enrollment Period \u2014 lost other coverage",
+          "Special Enrollment Period \u2014 moved out of plan service area",
+          "Other Special Enrollment Period"
+        ],
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "cms1763",
+    "form_name": "Form CMS-1763, Request to Terminate Medicare Part B",
+    "category": "Healthcare",
+    "agency": "CMS",
+    "questions": [
+      {
+        "id": "last_name",
+        "label": "Last name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "first_name",
+        "label": "First name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "middle_initial",
+        "label": "Middle initial",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "dob",
+        "label": "Date of birth",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "medicare_number",
+        "label": "Medicare Number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "address",
+        "label": "Current address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "city",
+        "label": "City",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "state",
+        "label": "State",
+        "type": "single_choice",
+        "options": [
+          "AL",
+          "AK",
+          "AZ",
+          "AR",
+          "CA",
+          "CO",
+          "CT",
+          "DE",
+          "FL",
+          "GA",
+          "HI",
+          "ID",
+          "IL",
+          "IN",
+          "IA",
+          "KS",
+          "KY",
+          "LA",
+          "ME",
+          "MD",
+          "MA",
+          "MI",
+          "MN",
+          "MS",
+          "MO",
+          "MT",
+          "NE",
+          "NV",
+          "NH",
+          "NJ",
+          "NM",
+          "NY",
+          "NC",
+          "ND",
+          "OH",
+          "OK",
+          "OR",
+          "PA",
+          "RI",
+          "SC",
+          "SD",
+          "TN",
+          "TX",
+          "UT",
+          "VT",
+          "VA",
+          "WA",
+          "WV",
+          "WI",
+          "WY",
+          "DC"
+        ],
+        "required": true
+      },
+      {
+        "id": "zip",
+        "label": "ZIP code",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "phone",
+        "label": "Daytime phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "reason_for_termination",
+        "label": "Reason for requesting termination of Part B",
+        "type": "single_choice",
+        "options": [
+          "I have employer group health plan coverage",
+          "I have coverage through my spouse's employer",
+          "I have TRICARE or other military coverage",
+          "I do not want or need Part B",
+          "Other"
+        ],
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer providing health coverage (if applicable)",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "coverage_effective_date",
+        "label": "Date other coverage became effective",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "other_reason",
+        "label": "Other reason for terminating Part B",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "understand_consequences",
+        "label": "I understand that if I later want Part B, I may face a late enrollment penalty and can only re-enroll during limited enrollment periods.",
+        "type": "single_choice",
+        "options": [
+          "Yes \u2014 I understand"
+        ],
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "wh384",
+    "form_name": "Form WH-384, FMLA Certification \u2014 Qualifying Exigency",
+    "category": "Employment",
+    "agency": "Dept. of Labor",
+    "questions": [
+      {
+        "id": "employee_name",
+        "label": "Employee's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "notice_date",
+        "label": "Date of this certification",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "military_member_name",
+        "label": "Name of military member (covered servicemember)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "military_member_relationship",
+        "label": "Employee's relationship to military member",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "military_member_status",
+        "label": "Military member's status",
+        "type": "single_choice",
+        "options": [
+          "Active duty",
+          "Called to active duty from Reserve or National Guard"
+        ],
+        "required": true
+      },
+      {
+        "id": "military_branch",
+        "label": "Branch of military",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "military_unit",
+        "label": "Military unit, if known",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "deployment_date",
+        "label": "Date of deployment or call-up, if known",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "exigency_category",
+        "label": "Category of qualifying exigency",
+        "type": "single_choice",
+        "options": [
+          "Short-notice deployment (7 days or less notice)",
+          "Military events and related activities",
+          "Childcare and school activities",
+          "Financial and legal arrangements",
+          "Counseling",
+          "Rest and recuperation (up to 15 calendar days)",
+          "Post-deployment activities",
+          "Parental care",
+          "Additional activities (requires employer agreement)"
+        ],
+        "required": true
+      },
+      {
+        "id": "exigency_description",
+        "label": "Describe the specific exigency and how leave is needed",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_dates",
+        "label": "Approximate dates or schedule of leave needed",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_duration",
+        "label": "Total amount of leave needed (hours/days)",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "wh385",
+    "form_name": "Form WH-385, FMLA Certification \u2014 Serious Injury or Illness (Military)",
+    "category": "Employment",
+    "agency": "Dept. of Labor",
+    "questions": [
+      {
+        "id": "employee_name",
+        "label": "Employee's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "servicemember_name",
+        "label": "Servicemember's full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employee_relationship",
+        "label": "Employee's relationship to servicemember",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "servicemember_status",
+        "label": "Servicemember status",
+        "type": "single_choice",
+        "options": [
+          "Current member of Armed Forces",
+          "Veteran (discharged within last 5 years)"
+        ],
+        "required": true
+      },
+      {
+        "id": "military_branch",
+        "label": "Branch of military",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "discharge_date",
+        "label": "Date of discharge (if veteran)",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "discharge_character",
+        "label": "Character of discharge (if veteran)",
+        "type": "single_choice",
+        "options": [
+          "Honorable",
+          "General (Under Honorable Conditions)",
+          "Other",
+          "Unknown"
+        ],
+        "required": false
+      },
+      {
+        "id": "provider_name",
+        "label": "Health care provider's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_type",
+        "label": "Type of provider / specialty",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_phone",
+        "label": "Provider's phone number",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "injury_illness",
+        "label": "Describe the serious injury or illness",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "inpatient",
+        "label": "Is or was servicemember hospitalized?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "treatment_dates",
+        "label": "Approximate treatment dates",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "incapacity_description",
+        "label": "How does the condition render the servicemember unable to care for themselves?",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "care_needed",
+        "label": "What care does the employee need to provide?",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_duration",
+        "label": "Estimated duration of leave needed",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "wh385v",
+    "form_name": "Form WH-385-V, FMLA Certification \u2014 Veteran Serious Injury or Illness",
+    "category": "Employment",
+    "agency": "Dept. of Labor",
+    "questions": [
+      {
+        "id": "employee_name",
+        "label": "Employee's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "veteran_name",
+        "label": "Veteran's full name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employee_relationship",
+        "label": "Employee's relationship to veteran",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "military_branch",
+        "label": "Branch of military",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "discharge_date",
+        "label": "Date of discharge from service",
+        "type": "date",
+        "required": true
+      },
+      {
+        "id": "discharge_character",
+        "label": "Character of discharge",
+        "type": "single_choice",
+        "options": [
+          "Honorable",
+          "General (Under Honorable Conditions)",
+          "Other than Honorable",
+          "Bad Conduct",
+          "Dishonorable"
+        ],
+        "required": true
+      },
+      {
+        "id": "provider_name",
+        "label": "Health care provider's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_type",
+        "label": "Provider type/specialty",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_phone",
+        "label": "Provider phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "injury_description",
+        "label": "Describe the serious injury or illness",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "service_connected",
+        "label": "Is the condition service-connected (VA-determined)?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": false
+      },
+      {
+        "id": "va_rating",
+        "label": "VA disability rating percentage, if known",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "treatment_ongoing",
+        "label": "Is treatment ongoing? Describe.",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "care_needed",
+        "label": "Care employee needs to provide",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_duration",
+        "label": "Estimated total leave needed",
+        "type": "text",
+        "required": true
+      }
+    ]
+  },
+  {
+    "form_id": "wh380f",
+    "form_name": "Form WH-380-F, FMLA Certification \u2014 Family Member's Serious Health Condition",
+    "category": "Employment",
+    "agency": "Dept. of Labor",
+    "questions": [
+      {
+        "id": "employee_name",
+        "label": "Employee's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "employer_name",
+        "label": "Employer's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "patient_name",
+        "label": "Patient's name (family member)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "patient_relationship",
+        "label": "Patient's relationship to employee",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_name",
+        "label": "Health care provider's name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_type",
+        "label": "Type of practice / specialty",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_address",
+        "label": "Provider address",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_phone",
+        "label": "Provider phone",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "condition_description",
+        "label": "Describe the medical condition or health problem",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "inpatient",
+        "label": "Does the condition require inpatient care?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "inpatient_start",
+        "label": "Inpatient admission date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "inpatient_end",
+        "label": "Inpatient discharge date",
+        "type": "date",
+        "required": false
+      },
+      {
+        "id": "continuing_treatment",
+        "label": "Is continuing treatment by a health care provider required?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "treatment_frequency",
+        "label": "Estimated frequency of treatment visits (e.g., every 2 weeks)",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "treatment_duration",
+        "label": "Estimated duration of each treatment visit",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "intermittent",
+        "label": "Will employee need intermittent or reduced schedule leave?",
+        "type": "single_choice",
+        "options": [
+          "Yes",
+          "No"
+        ],
+        "required": true
+      },
+      {
+        "id": "intermittent_details",
+        "label": "If intermittent, estimated frequency and duration of absences",
+        "type": "text",
+        "required": false
+      },
+      {
+        "id": "care_needed",
+        "label": "Describe the care the employee will provide to the family member",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "leave_duration_estimate",
+        "label": "Estimated total duration of leave needed",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_signature_name",
+        "label": "Health care provider: Printed name",
+        "type": "text",
+        "required": true
+      },
+      {
+        "id": "provider_signature_date",
+        "label": "Health care provider: Date signed",
+        "type": "date",
+        "required": true
       }
     ]
   }

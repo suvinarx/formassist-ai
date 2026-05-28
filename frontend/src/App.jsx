@@ -137,6 +137,14 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Auto-open auth modal if redirected from a gated action
+  useEffect(() => {
+    if (location.search.includes("signin=1")) {
+      setShowAuth(true);
+      navigate("/", { replace: true });
+    }
+  }, [location.search]);
+
   const [step, setStep]           = useState("lead");
   const [loading, setLoading]     = useState(false);
   const [loadingMsg, setLoadingMsg] = useState("");

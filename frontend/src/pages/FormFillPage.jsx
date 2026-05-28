@@ -244,6 +244,20 @@ export default function FormFillPage() {
                 {questions && (
                   <div className="ff-fields-scroll">
                     {questions.map(q => {
+                      // Handle conditional show_if
+                      if (q.show_if) {
+                        const depVal = answers[q.show_if.field] || "";
+                        if (depVal !== q.show_if.value) return null;
+                      }
+                      // Handle note fields (instructions, not inputs)
+                      if (q.is_note) {
+                        return (
+                          <div key={q.id} className="ff-field-note">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            {q.label}
+                          </div>
+                        );
+                      }
                       const val    = answers[q.id] || "";
                       const filled = !!(val && String(val).trim());
                       const sens   = isSensitive(q.id);

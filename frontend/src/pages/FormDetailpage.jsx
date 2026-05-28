@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFormById, getCategoryById, getFormsByCategory } from "../data/formsData";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function FormDetailPage() {
   const { formId } = useParams();
   const navigate   = useNavigate();
   const form       = getFormById(formId);
-  const [pdfError, setPdfError] = useState(false);
+  const [pdfError, setPdfError]   = useState(false);
+  const [user, setUser]           = useState(undefined); // undefined = loading
+  const [showSignIn, setShowSignIn] = useState(false);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, u => setUser(u ?? null));
+    return unsub;
+  }, []);
+
+  function requireAuth(action) {
+    if (!user) { setShowSignIn(true); return false; }
+    return true;
+  }
 
   if (!form) return (
     <div className="cp-not-found">
@@ -20,6 +34,31 @@ export default function FormDetailPage() {
 
   return (
     <div className="fd-shell">
+
+      {/* ── Sign-in prompt modal ── */}
+      {showSignIn && (
+        <div className="fd-signin-backdrop" onClick={() => setShowSignIn(false)}>
+          <div className="fd-signin-modal" onClick={e => e.stopPropagation()}>
+            <button className="fd-signin-close" onClick={() => setShowSignIn(false)}>✕</button>
+            <div className="fd-signin-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#0d1f3c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="28" height="28"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <h3 className="fd-signin-title">Sign in to continue</h3>
+            <p className="fd-signin-sub">Create a free account to fill forms with AI, download official PDFs, and save your progress.</p>
+            <div className="fd-signin-bullets">
+              <div className="fd-signin-bullet"><span>✓</span> Fill any of 119 official government forms</div>
+              <div className="fd-signin-bullet"><span>✓</span> AI pre-fills fields from your information</div>
+              <div className="fd-signin-bullet"><span>✓</span> Download filled PDFs — no SSN required</div>
+            </div>
+            <button className="fd-signin-cta" onClick={() => { setShowSignIn(false); navigate("/?signin=1"); }}>
+              Sign up free — takes 30 seconds →
+            </button>
+            <button className="fd-signin-secondary" onClick={() => { setShowSignIn(false); navigate("/?signin=1"); }}>
+              Already have an account? Sign in
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* ── Nav ── */}
       <nav className="fa-topnav">
@@ -60,13 +99,13 @@ export default function FormDetailPage() {
           <h1 className="fd-hero-h1">{form.form_name}</h1>
           <p className="fd-hero-sub">{form.description}</p>
           <div className="fd-hero-actions">
-            <button className="fd-hero-fill-btn" onClick={() => navigate(`/form/${form.form_id}/fill`)}>
+            <button className="fd-hero-fill-btn" onClick={() => requireAuth() && navigate(`/form/${form.form_id}/fill`)}>
               Fill with AI →
             </button>
             {form.pdf_path && (
-              <a href={form.pdf_path} target="_blank" rel="noreferrer" className="fd-hero-dl-btn">
+              <button className="fd-hero-dl-btn" onClick={() => { if (requireAuth()) window.open(form.pdf_path, "_blank"); }}>
                 ⬇ Download blank PDF
-              </a>
+              </button>
             )}
           </div>
           <div className="fd-hero-trust">
@@ -85,7 +124,7 @@ export default function FormDetailPage() {
 
           {/* AI CTA block */}
           <div className="fd-cta-block">
-            <button className="fd-fill-btn" onClick={() => navigate(`/form/${form.form_id}/fill`)}>
+            <button className="fd-fill-btn" onClick={() => requireAuth() && navigate(`/form/${form.form_id}/fill`)}>
               Fill out form with AI →
             </button>
             <div className="fd-cta-bullets">
@@ -141,13 +180,13 @@ export default function FormDetailPage() {
               {form.specs?.last_updated && <div className="fd-preview-row"><span className="fd-preview-key">Updated</span><span className="fd-preview-val">{form.specs.last_updated}</span></div>}
               <div className="fd-preview-row"><span className="fd-preview-key">AI fill</span><span className="fd-preview-val fd-val-green">Available ✓</span></div>
             </div>
-            <button className="fd-fill-btn fd-fill-btn-card" onClick={() => navigate(`/form/${form.form_id}/fill`)}>
+            <button className="fd-fill-btn fd-fill-btn-card" onClick={() => requireAuth() && navigate(`/form/${form.form_id}/fill`)}>
               Fill out with AI →
             </button>
             {form.pdf_path && (
-              <a href={form.pdf_path} target="_blank" rel="noreferrer" className="fd-download-official">
+              <button className="fd-download-official" onClick={() => { if (requireAuth()) window.open(form.pdf_path, "_blank"); }}>
                 ⬇ Download official PDF
-              </a>
+              </button>
             )}
             {form.official_url && (
               <a href={form.official_url} target="_blank" rel="noreferrer" className="fd-official-link">
@@ -162,17 +201,31 @@ export default function FormDetailPage() {
             <div className="fd-pdf-panel-header">
               <span className="fd-pdf-panel-title">FORM PREVIEW</span>
               {hasPdf && (
-                <a href={form.pdf_path} target="_blank" rel="noreferrer" className="fd-pdf-open-link">
+                <button className="fd-pdf-open-link" style={{ background:"none", border:"none", cursor:"pointer", fontFamily:"inherit" }}
+                  onClick={() => { if (requireAuth()) window.open(form.pdf_path, "_blank"); }}>
                   Open full screen ↗
-                </a>
+                </button>
               )}
               {!hasPdf && form.official_url && (
-                <a href={form.official_url} target="_blank" rel="noreferrer" className="fd-pdf-open-link">
+                <button className="fd-pdf-open-link" style={{ background:"none", border:"none", cursor:"pointer", fontFamily:"inherit" }}
+                  onClick={() => { if (requireAuth()) window.open(form.official_url, "_blank"); }}>
                   Get form ↗
-                </a>
+                </button>
               )}
             </div>
-            {hasPdf ? (
+            {!user && user !== undefined ? (
+              /* Locked state for signed-out users */
+              <div className="fd-pdf-locked">
+                <div className="fd-pdf-locked-inner">
+                  <div className="fd-pdf-locked-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#0d1f3c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="28" height="28"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  </div>
+                  <div className="fd-pdf-locked-title">Sign in to preview</div>
+                  <div className="fd-pdf-locked-sub">Create a free account to view and download the official form.</div>
+                  <button className="fd-pdf-locked-btn" onClick={() => setShowSignIn(true)}>Sign up free →</button>
+                </div>
+              </div>
+            ) : hasPdf ? (
               <div className="fd-pdf-embed-wrap">
                 <iframe src={form.pdf_path} className="fd-pdf-embed" title={form.form_name} onError={() => setPdfError(true)} />
               </div>
@@ -182,9 +235,10 @@ export default function FormDetailPage() {
                 <div className="fd-pdf-fallback-name">{form.form_name}</div>
                 <div className="fd-pdf-fallback-sub">This form is available directly from {form.agency}.</div>
                 {form.official_url && (
-                  <a href={form.official_url} target="_blank" rel="noreferrer" className="fd-pdf-fallback-btn">
+                  <button className="fd-pdf-fallback-btn" style={{ background:"none", border:"none", cursor:"pointer", fontFamily:"inherit" }}
+                    onClick={() => { if (requireAuth()) window.open(form.official_url, "_blank"); }}>
                     Get official form ↗
-                  </a>
+                  </button>
                 )}
               </div>
             )}

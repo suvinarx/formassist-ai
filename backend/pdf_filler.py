@@ -196,7 +196,7 @@ def _official_plus_appendix(official_pdf, form_name, agency, answers, questions,
 
 
 def _formatted_data_pdf(form_name, agency, answers, questions, dest):
-    doc = SimpleDocTemplate(dest, pagesize=letter,
+    doc = SimpleDocTemplate(str(dest) if hasattr(dest,'__fspath__') else dest, pagesize=letter,
         rightMargin=0.85*inch, leftMargin=0.85*inch,
         topMargin=0.85*inch, bottomMargin=0.85*inch)
 
@@ -241,17 +241,19 @@ def _formatted_data_pdf(form_name, agency, answers, questions, dest):
     story.append(HRFlowable(width="100%",thickness=0.5,color=colors.HexColor("#e5e7eb")))
     story.append(Spacer(1,12))
 
+    # Filter out note/instruction fields before building the grid
+    display_questions = [q for q in questions if not q.get('is_note')]
     i=0
-    while i<len(questions):
-        q1=questions[i]; v1=str(answers.get(q1["id"],"")).strip()
+    while i<len(display_questions):
+        q1=display_questions[i]; v1=str(answers.get(q1["id"],"")).strip()
         wide=any(k in q1["id"] for k in ["address","description","street","condition","disabilities","explanation","persecution","history","education","situation"])
-        if wide or i+1>=len(questions):
+        if wide or i+1>=len(display_questions):
             story.append(KeepTogether([
                 Paragraph(q1["label"].upper()+("  *" if q1.get("required") else ""),lbl_s),
                 Paragraph(v1 if v1 else "— not provided —",val_s if v1 else emp_s)]))
             i+=1
         else:
-            q2=questions[i+1]; v2=str(answers.get(q2["id"],"")).strip()
+            q2=display_questions[i+1]; v2=str(answers.get(q2["id"],"")).strip()
             t=Table([[Paragraph(q1["label"].upper()+("  *" if q1.get("required") else ""),lbl_s),
                       Paragraph(q2["label"].upper()+("  *" if q2.get("required") else ""),lbl_s)],
                      [Paragraph(v1 if v1 else "— not provided —",val_s if v1 else emp_s),
