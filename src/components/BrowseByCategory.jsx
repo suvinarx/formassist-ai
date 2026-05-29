@@ -2,16 +2,16 @@ import { useNavigate } from "react-router-dom";
 import { CATEGORIES, getFormsByCategory } from "../data/formsData";
 
 const CAT_BACK = {
-  tax:         { emoji: "📋", headline: "IRS tax forms",        sub: "W-9 and more",                     color: "#3d6aff" },
-  moving:      { emoji: "🏠", headline: "Move with ease",       sub: "USPS address change, IRS 8822",     color: "#1a9e6e" },
-  immigration: { emoji: "🌐", headline: "USCIS forms",          sub: "I-9, I-485, N-400, I-765 and more", color: "#e05252" },
-  healthcare:  { emoji: "⚕️", headline: "Medicare forms",       sub: "CMS-40B, Part B and more",          color: "#0ea5c9" },
-  employment:  { emoji: "💼", headline: "FMLA & labor",         sub: "WH-380, WH-381 and more",           color: "#a855f7" },
-  vehicle:     { emoji: "🚗", headline: "DMV & titles",         sub: "Vehicle transfer, registration",    color: "#f97316" },
-  benefits:    { emoji: "🏛️", headline: "Social Security",      sub: "SS-5, SSA-44, disability forms",    color: "#14b8a6" },
-  veterans:    { emoji: "🎖️", headline: "VA benefits",          sub: "21-526EZ, GI Bill, burial",         color: "#84cc16" },
-  legal:       { emoji: "⚖️", headline: "Legal forms",          sub: "Court filings, appeals",            color: "#eab308" },
-  passport:    { emoji: "🛂", headline: "Passport forms",       sub: "DS-11, DS-82, DS-64 and more",      color: "#6366f1" },
+  tax:         { emoji: "📋", headline: "IRS tax forms",        sub: "W-9 and more",                     color: "#1a3458" },
+  moving:      { emoji: "🏠", headline: "Move with ease",       sub: "USPS address change, IRS 8822",     color: "#1a5c3a" },
+  immigration: { emoji: "🌐", headline: "USCIS forms",          sub: "I-9, I-485, N-400, I-765 and more", color: "#5c1a1a" },
+  healthcare:  { emoji: "⚕️", headline: "Medicare forms",       sub: "CMS-40B, Part B and more",          color: "#1a4a5c" },
+  employment:  { emoji: "💼", headline: "FMLA & labor",         sub: "WH-380, WH-381 and more",           color: "#3a1a5c" },
+  vehicle:     { emoji: "🚗", headline: "DMV & titles",         sub: "Vehicle transfer, registration",    color: "#5c3a1a" },
+  benefits:    { emoji: "🏛️", headline: "Social Security",      sub: "SS-5, SSA-44, disability forms",    color: "#1a5c5c" },
+  veterans:    { emoji: "🎖️", headline: "VA benefits",          sub: "21-526EZ, GI Bill, burial",         color: "#2a4a1a" },
+  legal:       { emoji: "⚖️", headline: "Legal forms",          sub: "Court filings, appeals",            color: "#4a4a1a" },
+  passport:    { emoji: "🛂", headline: "Passport forms",       sub: "DS-11, DS-82, DS-64 and more",      color: "#1a2e5c" },
 };
 
 const CAT_ICONS = {
@@ -46,7 +46,7 @@ export default function BrowseByCategory() {
             return (
               <div key={cat.id} className="bbc-flip-wrap">
                 <div className="bbc-flip-inner" onClick={() => navigate(`/category/${cat.id}`)}>
-                  <div className="bbc-card-front" style={{ "--cat-color": (CAT_BACK[cat.id] || {}).color || cat.color }}>
+                  <div className="bbc-card-front" style={{ "--cat-color": cat.color }}>
                     <div className="bbc-card-icon-wrap">{CAT_ICONS[cat.id]}</div>
                     <div className="bbc-card-label">{cat.label}</div>
                     <div className="bbc-card-count">{count} form{count !== 1 ? "s" : ""}</div>
