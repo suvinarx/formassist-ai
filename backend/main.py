@@ -11,8 +11,17 @@ load_dotenv(override=True)
 
 app = FastAPI(title="FormAssist AI")
 app.add_middleware(CORSMiddleware,
-    allow_origins=["*"], allow_credentials=True,
-    allow_methods=["*"], allow_headers=["*"])
+    allow_origins=[
+        "https://www.doculyft.com",
+        "https://doculyft.com",
+        "https://doculyft.vercel.app",
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL   = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
