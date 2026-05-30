@@ -1,0 +1,28 @@
+{
+    "rewrites": [
+      { "source": "/(.*)", "destination": "/index.html" }
+    ],
+    "redirects": [
+      {
+        "source": "/:path*",
+        "has": [{ "type": "host", "value": "doculyft.com" }],
+        "destination": "https://www.doculyft.com/:path*",
+        "permanent": true
+      }
+    ],
+    "headers": [
+      {
+        "source": "/(.*)",
+        "headers": [
+          { "key": "X-Frame-Options",        "value": "SAMEORIGIN" },
+          { "key": "X-Content-Type-Options", "value": "nosniff" },
+          { "key": "Referrer-Policy",        "value": "strict-origin-when-cross-origin" },
+          { "key": "Permissions-Policy",     "value": "camera=(), microphone=(), geolocation=()" },
+          {
+            "key": "Content-Security-Policy",
+            "value": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://*.firebaseapp.com https://*.firebase.com https://*.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src * data: blob:; connect-src 'self' https://*.firebaseio.com https://*.googleapis.com https://api.anthropic.com http://127.0.0.1:8000 https://doculyft-backend.vercel.app; frame-src 'self'; object-src 'self';"
+          }
+        ]
+      }
+    ]
+  }
