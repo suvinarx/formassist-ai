@@ -10,7 +10,7 @@ export default function SecurityPage() {
       <nav className="fa-topnav">
         <div className="fa-topnav-brand" onClick={() => navigate("/")} style={{ cursor:"pointer" }}>
           <div className="fa-brand-mark">F</div>
-          <span className="fa-brand-name">FormAssist AI</span>
+          <span className="fa-brand-name">DocuLyft</span>
         </div>
         <div className="fa-topnav-right">
           <button className="fa-topnav-signin" onClick={() => navigate("/")}>← Back to home</button>
@@ -25,7 +25,7 @@ export default function SecurityPage() {
         <div style={{ maxWidth:700, position:"relative", zIndex:1 }}>
           <div style={{ fontSize:11, fontWeight:700, textTransform:"uppercase", letterSpacing:"0.1em", color:"rgba(255,255,255,0.45)", marginBottom:12 }}>Trust & Privacy</div>
           <h1 style={{ fontFamily:"'DM Serif Display',Georgia,serif", fontSize:"2.6rem", fontWeight:400, color:"#fff", margin:"0 0 16px", lineHeight:1.15, letterSpacing:"-0.3px" }}>
-            How FormAssist AI handles your information
+            How DocuLyft handles your information
           </h1>
           <p style={{ fontSize:16, color:"rgba(255,255,255,0.7)", lineHeight:1.65, margin:"0 0 28px", maxWidth:580 }}>
             We only ask for the information needed to fill your specific form — and we never store the sensitive parts. Here's exactly how it works.
@@ -43,7 +43,7 @@ export default function SecurityPage() {
         <div style={{ maxWidth:900, margin:"0 auto" }}>
           <h2 style={{ fontFamily:"'DM Serif Display',Georgia,serif", fontSize:"1.9rem", fontWeight:400, color:"#0d1f3c", margin:"0 0 10px" }}>Exactly what we collect — and what we don't</h2>
           <p style={{ fontSize:15, color:"#6b7280", lineHeight:1.65, margin:"0 0 36px" }}>
-            FormAssist AI is a helper tool. We ask only the fields required for your specific form. You decide what to provide.
+            DocuLyft is a helper tool. We ask only the fields required for your specific form. You decide what to provide.
           </p>
 
           <div style={{ border:"1.5px solid #e5e7eb", borderRadius:14, overflow:"hidden" }}>
@@ -167,7 +167,7 @@ export default function SecurityPage() {
             </div>
             <h3 style={{ fontSize:16, fontWeight:700, color:"#0d1f3c", margin:"0 0 10px" }}>We are not a law or tax firm</h3>
             <p style={{ fontSize:14, color:"#6b7280", lineHeight:1.7, margin:0 }}>
-              FormAssist AI prepares helper packets only. We do not provide legal advice, tax advice, or immigration advice. The forms we fill are for reference — you are responsible for reviewing every field, verifying accuracy, and submitting through official channels. When in doubt, consult a licensed professional.
+              DocuLyft prepares helper packets only. We do not provide legal advice, tax advice, or immigration advice. The forms we fill are for reference — you are responsible for reviewing every field, verifying accuracy, and submitting through official channels. When in doubt, consult a licensed professional.
             </p>
           </div>
           <div style={{ background:"#f9fafb", border:"1.5px solid #e5e7eb", borderRadius:16, padding:"28px" }}>

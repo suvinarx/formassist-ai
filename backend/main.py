@@ -9,19 +9,10 @@ import os, json, uuid
 
 load_dotenv(override=True)
 
-app = FastAPI(title="FormAssist AI")
+app = FastAPI(title="DocuLyft")
 app.add_middleware(CORSMiddleware,
-    allow_origins=[
-        "https://www.doculyft.com",
-        "https://doculyft.com",
-        "https://doculyft.vercel.app",
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+    allow_origins=["*"], allow_credentials=True,
+    allow_methods=["*"], allow_headers=["*"])
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 OPENAI_MODEL   = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
@@ -44,6 +35,10 @@ class AiFillRequest(BaseModel):
 class PdfRequest(BaseModel):
     form_id: str; form_name: str; agency: str
     answers: dict; questions: list
+
+class SmartFillRequest(BaseModel):
+    form_id: str; situation: str
+    user_name: str = ""; user_email: str = ""
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 def load_forms():
@@ -80,6 +75,12 @@ def analyze(req: SituationRequest):
     t = req.situation.lower()
     if any(w in t for w in ["move","moving","address"]):
         return {"recommended_forms":[{"form_id":"usps_change_of_address_helper","form_name":"USPS Change of Address","confidence":"high","reason":"You are moving."}]}
+    if any(w in t for w in ["w9","w-9","taxpayer id","freelance","contractor"]):
+        return {"recommended_forms":[{"form_id":"w9","form_name":"Form W-9","confidence":"high","reason":"W-9 is required for contractor/freelance work."}]}
+    if any(w in t for w in ["1040","tax return","income tax","file taxes"]):
+        return {"recommended_forms":[{"form_id":"1040","form_name":"Form 1040","confidence":"high","reason":"1040 is the standard individual income tax return."}]}
+    if any(w in t for w in ["passport","travel","ds-11","ds11"]):
+        return {"recommended_forms":[{"form_id":"ds64","form_name":"DS-64 Report of Lost/Stolen Passport","confidence":"medium","reason":"DS-64 is for reporting a lost or stolen passport."}]}
     return {"recommended_forms":[]}
 
 @app.get("/api/forms/{form_id}")
@@ -103,6 +104,56 @@ def ai_fill(req: AiFillRequest):
         return {"answers": parse_json(content)}
     except:
         return {"answers": {q["id"]: "" for q in questions}}
+
+# FIX: Added /api/smart-fill endpoint (was missing — caused 404 in App.jsx chooseForm())
+@app.post("/api/smart-fill")
+def smart_fill(req: SmartFillRequest):
+    """
+    Called by App.jsx when user picks a recommended form.
+    Combines form lookup + AI pre-fill from the situation text.
+    """
+    forms = load_forms()
+    form = next((f for f in forms if f["form_id"] == req.form_id), None)
+    if not form:
+        return {"error": f"Form '{req.form_id}' not found", "form": None, "answers": {}}
+
+    questions = form.get("questions", [])
+
+    # Build hint text from situation + user name/email
+    hint_parts = [f"Situation: {req.situation}"]
+    if req.user_name:
+        hint_parts.append(f"User name: {req.user_name}")
+    if req.user_email:
+        hint_parts.append(f"User email: {req.user_email}")
+    hint_text = "\n".join(hint_parts)
+
+    answers = {q["id"]: "" for q in questions}
+
+    if client:
+        q_list = json.dumps([{"id": q["id"], "label": q["label"]} for q in questions])
+        content = call_ai(
+            "Extract form field values from user-provided text. Return JSON only with field id as key and extracted value as value. Empty string if not found. Never invent SSN, alien numbers, or payment data.",
+            f"Form: {form['form_name']}\nQuestions:\n{q_list}\n\nUser text:\n{hint_text[:4000]}\n\nReturn only: {{\"field_id\": \"value\", ...}}")
+        try:
+            answers = parse_json(content)
+        except:
+            pass
+    else:
+        # Basic fallback: populate name/email fields from user_name/user_email
+        for q in questions:
+            qid = q["id"].lower()
+            if req.user_name and any(k in qid for k in ["full_name","full_legal_name","name","first_name"]):
+                parts = req.user_name.split()
+                if "first" in qid and parts:
+                    answers[q["id"]] = parts[0]
+                elif "last" in qid and len(parts) > 1:
+                    answers[q["id"]] = parts[-1]
+                elif "full" in qid or qid == "name":
+                    answers[q["id"]] = req.user_name
+            if req.user_email and any(k in qid for k in ["email"]):
+                answers[q["id"]] = req.user_email
+
+    return {"form": form, "answers": answers}
 
 @app.post("/api/generate-pdf")
 def generate_pdf(req: PdfRequest):

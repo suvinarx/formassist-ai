@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { getFormById, getCategoryById, getFormsByCategory } from "../data/formsData";
+import { useSEO, formSchema } from "../hooks/useSEO";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -31,6 +32,15 @@ export default function FormDetailPage() {
 
   const category = getCategoryById(form.category);
   const hasPdf   = !!form.pdf_path && !pdfError;
+
+  // ── SEO: dynamic title / meta / schema per form ──────────────────────
+  useSEO({
+    title:       `Fill ${form.short_name} Online Free — AI Pre-Fill`,
+    description: `${form.form_name}. ${form.description} Fill with AI, download your pre-filled PDF instantly. Free, no SSN required. | DocuLyft`,
+    canonical:   `/form/${form.form_id}`,
+    ogType:      "article",
+    schema:      formSchema({ ...form, category_label: category?.label }),
+  });
 
   return (
     <div className="fd-shell">
@@ -64,7 +74,7 @@ export default function FormDetailPage() {
       <nav className="fa-topnav">
         <div className="fa-topnav-brand" onClick={() => navigate("/")} style={{ cursor:"pointer" }}>
           <div className="fa-brand-mark">F</div>
-          <span className="fa-brand-name">FormAssist AI</span>
+          <span className="fa-brand-name">DocuLyft</span>
         </div>
         <div className="fa-topnav-links">
           <button className="fa-topnav-link" onClick={() => navigate("/")}>Home</button>
@@ -264,8 +274,40 @@ export default function FormDetailPage() {
   );
 }
 
+// Cross-form relationship map — manually curated for highest-traffic forms
+const RELATED_MAP = {
+  w9:    ["w4","1099nec","ss4","1040"],
+  w4:    ["w9","w2","1040","1099nec"],
+  w2:    ["w4","1040","schedA","4868"],
+  "1040":  ["schedA","schedC","4868","1040x"],
+  "1040x": ["1040","schedA","4868"],
+  schedA:  ["1040","schedC","1040x"],
+  schedC:  ["1040","schedA","ss4"],
+  "4868":  ["1040","1040x"],
+  i485:  ["i130","i765","i864","n400"],
+  i130:  ["i485","i864","i765"],
+  i765:  ["i485","i821d","n400"],
+  n400:  ["i485","i765","i90"],
+  i864:  ["i485","i130"],
+  i90:   ["i485","n400"],
+  i9:    ["w4","w9"],
+  ds11:  ["ds64","ds3053"],
+  ds64:  ["ds11","ds3053"],
+  va526ez: ["va4142","va1990"],
+  va1990:  ["va526ez","va4142"],
+  va4142:  ["va526ez","va1990"],
+  wh380e:  ["wh381","i9"],
+  wh381:   ["wh380e","i9"],
+};
+
 function getRelatedForms(currentForm) {
-  return getFormsByCategory(currentForm.category)
-    .filter(f => f.form_id !== currentForm.form_id)
-    .slice(0, 4);
+  const curated = (RELATED_MAP[currentForm.form_id] || [])
+    .map(id => getFormById(id))
+    .filter(Boolean);
+  if (curated.length >= 3) return curated.slice(0, 5);
+  // Fall back to same-category
+  const sameCat = getFormsByCategory(currentForm.category)
+    .filter(f => f.form_id !== currentForm.form_id);
+  const combined = [...curated, ...sameCat.filter(f => !curated.find(c => c.form_id === f.form_id))];
+  return combined.slice(0, 4);
 }

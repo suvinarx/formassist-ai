@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { useSEO, SITE_SCHEMA } from "./hooks/useSEO";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import AuthModal from "./AuthModal";
@@ -10,6 +11,9 @@ import FormDetailPage from "./pages/FormDetailPage.jsx";
 import SecurityPage from "./pages/SecurityPage.jsx";
 import FormFillPage from "./pages/FormFillPage.jsx";
 import SituationPage from "./pages/SituationPage.jsx";
+import AboutPage from "./pages/AboutPage.jsx";
+import PrivacyPage from "./pages/PrivacyPage.jsx";
+import TermsPage from "./pages/TermsPage.jsx";
 import { FORMS } from "./data/formsData";
 const FORMS_FLAT = FORMS.filter(f => !f.hidden);
 
@@ -30,7 +34,7 @@ function HowItWorks() {
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>,
       tag: "Accuracy",
       title: "98% pre-fill accuracy",
-      desc: "Powered by Claude AI, DocuLyft extracts your details with industry-leading precision. DocuLyft uses leading AI to deliver industry-best pre-fill accuracy across all form types.",
+      desc: "Powered by Claude AI, DocuLyft extracts your details with industry-leading precision across all supported form types.",
       accent: "#1a9e6e",
     },
     {
@@ -43,8 +47,8 @@ function HowItWorks() {
     {
       icon: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>,
       tag: "Recognition",
-      title: "Trusted by thousands",
-      desc: "DocuLyft has helped thousands of people navigate government paperwork faster — rated top marks for accuracy, privacy, and ease of use.",
+      title: "FormLift's #1 rated tool",
+      desc: "DocuLyft is built to make government forms accessible to everyone — free, accurate, and easy to review before submitting.",
       accent: "#a855f7",
     },
   ];
@@ -135,6 +139,13 @@ const FAQS = [
 ];
 
 function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
+  // ── SEO: homepage ─────────────────────────────────────────────────────
+  useSEO({
+    title:       "Fill Government Forms Online — AI Form Filler",
+    description: "DocuLyft fills U.S. government forms for you using AI. Describe your situation, review the pre-filled PDF, and submit through official channels. 28 forms. Free.",
+    canonical:   "/",
+    schema:      SITE_SCHEMA,
+  });
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -348,7 +359,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
           </div>
         </div>
         <div className="fa-tile-body">
-          <h3 className="fa-tile-title">Unsure which form to fill?</h3>
+          <h2 className="fa-tile-title">Unsure which form to fill?</h2>
           <p className="fa-tile-desc">Describe your situation and we'll identify, pre-fill, and generate the right forms automatically.</p>
           <ul className="fa-tile-checks">
             <li><span>✓</span><span><strong>AI finds the right form</strong> from your description</span></li>
@@ -373,7 +384,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
           </div>
         </div>
         <div className="fa-tile-body">
-          <h3 className="fa-tile-title">Know which form you need?</h3>
+          <h2 className="fa-tile-title">Know which form you need?</h2>
           <p className="fa-tile-desc">Browse all 119 official forms by category — tax, immigration, passport, veterans, and more.</p>
           <ul className="fa-tile-checks">
             <li><span>✓</span><span><strong>10 categories</strong> of federal forms</span></li>
@@ -431,7 +442,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
       {/* ── Top nav ── */}
       <nav className="fa-topnav">
         <div className="fa-topnav-brand">
-          <div className="fa-brand-mark">D</div>
+          <div className="fa-brand-mark">F</div>
           <span className="fa-brand-name">DocuLyft</span>
         </div>
         <div className="fa-topnav-links">
@@ -446,6 +457,8 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
             </div>
           </div>
           <button className="fa-topnav-link" onClick={() => navigate("/security")}>Security</button>
+          <button className="fa-topnav-link" onClick={() => navigate("/about")}>About</button>
+          <a className="fa-topnav-link" href="mailto:support@doculyft.com" style={{textDecoration:"none"}}>Contact</a>
           <button className="fa-topnav-link" onClick={() => document.querySelector(".hiw-section")?.scrollIntoView({ behavior: "smooth" })}>How it works</button>
         </div>
         <div className="fa-topnav-right">
@@ -468,7 +481,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
         <div className="fa-hero-fullbleed">
           <div className="fa-hero-overlay" />
           <div className="fa-hero-content">
-            <h1 className="fa-hero-h1">Fill Any Form<br /><span className="fa-hero-accent">in Minutes</span></h1>
+            <h1 className="fa-hero-h1">Fill Any Government Form<br /><span className="fa-hero-accent">in Minutes</span></h1>
             <p className="fa-hero-p">Our AI asks simple questions and fills tax forms, passport applications, and government documents — from official .gov PDFs.</p>
             <div className="fa-hero-search-wrap">
               <input
@@ -514,13 +527,31 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                 </div>
               )}
             </div>
+            {/* Quick-search chips */}
+            <div className="fa-search-chips">
+              {["W-9","I-485","Form 1040","DS-11","N-400","I-9","W-4","I-130"].map(chip => (
+                <button key={chip} className="fa-search-chip"
+                  onClick={() => { setSearchQuery(chip); setSearchResults(FORMS_FLAT.filter(f => f.short_name.toLowerCase().includes(chip.toLowerCase()) || f.form_id.toLowerCase().includes(chip.toLowerCase())).slice(0,6)); }}>
+                  {chip}
+                </button>
+              ))}
+            </div>
             <div className="fa-hero-btns">
               <button className="fa-hero-btn-primary" onClick={() => document.querySelector(".fa-tile-pair")?.scrollIntoView({ behavior: "smooth" })}>
                 Get Started →
               </button>
               <button className="fa-hero-btn-secondary" onClick={() => document.querySelector(".hiw-section")?.scrollIntoView({ behavior: "smooth" })}>
-                Learn More
+                How it works
               </button>
+            </div>
+            <div className="fa-hero-trust">
+              <span className="fa-hero-trust-item"><span className="fa-hero-trust-dot" />28 official .gov forms</span>
+              <span className="fa-hero-trust-sep">·</span>
+              <span className="fa-hero-trust-item"><span className="fa-hero-trust-dot" />No SSN required</span>
+              <span className="fa-hero-trust-sep">·</span>
+              <span className="fa-hero-trust-item"><span className="fa-hero-trust-dot" />Always free</span>
+              <span className="fa-hero-trust-sep">·</span>
+              <span className="fa-hero-trust-item"><span className="fa-hero-trust-dot" />IRS · USCIS · SSA · State Dept</span>
             </div>
           </div>
         </div>
@@ -585,7 +616,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
             <div className="fa-footer-top">
               <div className="fa-footer-brand">
                 <div className="fa-footer-logo">
-                  <div className="fa-brand-mark" style={{ width: 32, height: 32, fontSize: 14 }}>D</div>
+                  <div className="fa-brand-mark" style={{ width: 32, height: 32, fontSize: 14 }}>F</div>
                   <span className="fa-brand-name" style={{ color: "#fff" }}>DocuLyft</span>
                 </div>
                 <p className="fa-footer-tagline">Official government forms, pre-filled by AI. Review, sign, and submit through official channels.</p>
@@ -605,11 +636,15 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                   <button className="fa-footer-link" onClick={() => navigate("/security")}>Security & Privacy</button>
                   <button className="fa-footer-link" onClick={() => document.querySelector(".hiw-section")?.scrollIntoView({ behavior: "smooth" })}>How it works</button>
                   <button className="fa-footer-link" onClick={() => navigate("/find-form")}>AI Form Finder</button>
+                  <button className="fa-footer-link" onClick={() => navigate("/about")}>About</button>
+                  <a className="fa-footer-link" href="mailto:support@doculyft.com" style={{textDecoration:"none",display:"block"}}>support@doculyft.com</a>
                 </div>
                 <div className="fa-footer-col">
                   <div className="fa-footer-col-title">Legal</div>
-                  <span className="fa-footer-text">DocuLyft is not affiliated with any government agency. We prepare helper packets only — you submit through official channels.</span>
-                  <span className="fa-footer-text" style={{ marginTop: 10, display: "block" }}>We never store SSNs, payment data, or government ID numbers.</span>
+                  <button className="fa-footer-link" onClick={() => navigate("/privacy")}>Privacy Policy</button>
+                  <button className="fa-footer-link" onClick={() => navigate("/terms")}>Terms of Service</button>
+                  <span className="fa-footer-text" style={{ marginTop: 10, display: "block" }}>DocuLyft is not affiliated with any government agency. We prepare helper packets only — you submit through official channels.</span>
+                  <span className="fa-footer-text" style={{ marginTop: 6, display: "block" }}>We never store SSNs, payment data, or government ID numbers.</span>
                 </div>
               </div>
             </div>
@@ -667,6 +702,9 @@ export default function App() {
         <Route path="/form/:formId/fill" element={<FormFillPage />} />
         <Route path="/find-form" element={<SituationPage />} />
         <Route path="/security" element={<SecurityPage />} />
+        <Route path="/about"    element={<AboutPage />} />
+        <Route path="/privacy"  element={<PrivacyPage />} />
+        <Route path="/terms"    element={<TermsPage />} />
       </Routes>
     </div>
   );

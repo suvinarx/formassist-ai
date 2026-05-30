@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { getFormById, getCategoryById } from "../data/formsData";
 
 const API = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -9,6 +9,7 @@ const isSensitive = (id) => SENSITIVE.some(s => id.toLowerCase().includes(s));
 export default function FormFillPage() {
   const { formId } = useParams();
   const navigate   = useNavigate();
+  const location   = useLocation();
   const form       = getFormById(formId);
   const category   = form ? getCategoryById(form.category) : null;
 
@@ -38,6 +39,24 @@ export default function FormFillPage() {
       })
       .catch(() => setQuestions(buildGeneric(form?.fields || [])));
   }, [formId]);
+
+  // Auto-fill from situation text passed via navigate state (from SituationPage)
+  useEffect(() => {
+    const situation = location.state?.prefillSituation || location.state?.situation;
+    if (!situation || !questions) return;
+    // Switch straight to manual mode and trigger AI fill in background
+    setEntryMode("manual");
+    setLoading(true);
+    setLoadingMsg("AI is pre-filling from your situation…");
+    fetch(`${API}/api/ai-fill`, {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ form_id: formId, user_details: situation }),
+    })
+      .then(r => r.json())
+      .then(d => { if (d.answers) setAnswers(a => ({ ...a, ...d.answers })); })
+      .catch(() => {})
+      .finally(() => { setLoading(false); setLoadingMsg(""); });
+  }, [questions, location.state]);
 
   // Restore saved non-sensitive data
   useEffect(() => {
@@ -106,7 +125,16 @@ export default function FormFillPage() {
 
   function handleEmail() {
     if (!emailAddr.trim()) { setError("Enter your email address."); return; }
-    window.location.href = `mailto:${emailAddr}?subject=Your FormAssist AI packet — ${form?.short_name}&body=Your pre-filled ${form?.short_name} packet is ready. Download it here:%0A${pdfUrl}%0A%0AReview all fields before submitting officially.`;
+    const subject = encodeURIComponent("Your DocuLyft packet — " + (form?.short_name || ""));
+    const body = encodeURIComponent(
+      "Your pre-filled " + (form?.short_name || "") + " packet is ready.\n\n" +
+      "1. Download your PDF from the DocuLyft page.\n" +
+      "2. Review every field before submitting.\n" +
+      "3. Add sensitive info (SSN, signatures) by hand.\n" +
+      "4. Submit only through the official agency channel.\n\n" +
+      "Download URL (only works while the server is running):\n" + pdfUrl
+    );
+    window.open(`mailto:${emailAddr}?subject=${subject}&body=${body}`, "_blank");
     setEmailSent(true);
   }
 
@@ -131,7 +159,7 @@ export default function FormFillPage() {
       <nav className="fa-nav">
         <div className="fa-brand">
           <div className="fa-brand-mark">F</div>
-          <span className="fa-brand-name">FormAssist AI</span>
+          <span className="fa-brand-name">DocuLyft</span>
         </div>
         <div style={{ display:"flex", alignItems:"center", gap:12 }}>
           {step === "fill" && entryMode === "manual" && questions && (
@@ -365,7 +393,7 @@ export default function FormFillPage() {
 
           {/* Download */}
           <div className="ff-deliver-grid" style={{marginTop:28}}>
-            <a href={pdfUrl} download={`${form.short_name}_FormAssist.pdf`} className="ff-deliver-card" style={{textDecoration:"none"}}>
+            <a href={pdfUrl} download={`${form.short_name}_DocuLyft.pdf`} className="ff-deliver-card" style={{textDecoration:"none"}}>
               <div className="ff-deliver-icon" style={{background:"#edfaf3"}}>
                 <svg viewBox="0 0 24 24" fill="none" stroke="#1a6641" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               </div>

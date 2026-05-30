@@ -1,10 +1,20 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { getCategoryById, getFormsByCategory } from "../data/formsData";
+import { useSEO, categorySchema } from "../hooks/useSEO";
 
 export default function CategoryPage() {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const category = getCategoryById(categoryId);
+
+  // ── SEO ──────────────────────────────────────────────────────────────
+  const catForms = category ? getFormsByCategory(category.id) : [];
+  useSEO(category ? {
+    title:       `${category.label} Forms — Fill Online with AI`,
+    description: `Fill ${category.label.toLowerCase()} forms online with AI. ${category.description} Free helper PDFs. | DocuLyft`,
+    canonical:   `/category/${category.id}`,
+    schema:      categorySchema(category, catForms),
+  } : {});
   const forms = getFormsByCategory(categoryId);
 
   if (!category) {

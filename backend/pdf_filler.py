@@ -66,16 +66,9 @@ FORM_PDFS = {
     "n400":  FORMS_DIR/"immigration/n400.pdf",
     "n600":  FORMS_DIR/"immigration/n600.pdf",
     "ds11":  FORMS_DIR/"passport/ds11.pdf",
-    "ds82":  FORMS_DIR/"passport/ds82.pdf",
     "ds64":  FORMS_DIR/"passport/ds64.pdf",
     "ds3053":FORMS_DIR/"passport/ds3053.pdf",
-    "ds5504":FORMS_DIR/"passport/ds5504.pdf",
-    "ss5":   FORMS_DIR/"social-security/ss5.pdf",
-    "ssa44": FORMS_DIR/"social-security/ssa44.pdf",
-    "ssa827":FORMS_DIR/"social-security/ssa827.pdf",
-    "ssa3368":FORMS_DIR/"social-security/ssa3368.pdf",
-    "cms40b":FORMS_DIR/"healthcare/cms40b.pdf",
-    "cmsl564":FORMS_DIR/"healthcare/cmsl564.pdf",
+    # ds82, ds5504, ss5, ssa44, ssa827, ssa3368, va530, ps3575 PDFs not in this build — data_only fallback
     "wh380e":FORMS_DIR/"employment/wh380e.pdf",
     "wh380f":FORMS_DIR/"employment/wh380f.pdf",
     "wh381": FORMS_DIR/"employment/wh381.pdf",
@@ -84,10 +77,8 @@ FORM_PDFS = {
     "wh385": FORMS_DIR/"employment/wh385.pdf",
     "wh385v":FORMS_DIR/"employment/wh385v.pdf",
     "va526ez":FORMS_DIR/"veterans/va526ez.pdf",
-    "va530": FORMS_DIR/"veterans/va530.pdf",
     "va1990":FORMS_DIR/"veterans/va1990.pdf",
     "va4142":FORMS_DIR/"veterans/va4142.pdf",
-    "usps_change_of_address_helper":FORMS_DIR/"moving/ps3575.pdf",
     "irs_8822":FORMS_DIR/"tax/8822.pdf",
     "ps1508":FORMS_DIR/"moving/ps1508.pdf",
 }
@@ -215,7 +206,7 @@ def _formatted_data_pdf(form_name, agency, answers, questions, dest):
     step_s =ParagraphStyle("ST",fontSize=9,fontName="Helvetica",textColor=GRAY,leading=14,spaceAfter=3)
 
     story=[]
-    story.append(Paragraph("FormAssist AI",title_s))
+    story.append(Paragraph("DocuLyft",title_s))
     story.append(Paragraph("Prepared Data — Not an official submission",sub_s))
     story.append(Spacer(1,6))
     story.append(HRFlowable(width="100%",thickness=2,color=NAVY))
@@ -279,5 +270,5 @@ def _formatted_data_pdf(form_name, agency, answers, questions, dest):
     story.append(Spacer(1,14))
     story.append(HRFlowable(width="100%",thickness=0.5,color=colors.HexColor("#e5e7eb")))
     story.append(Spacer(1,8))
-    story.append(Paragraph("Disclaimer: FormAssist AI prepares information only. It does not provide legal advice and does not submit forms on your behalf. Always verify with the relevant agency.",note_s))
+    story.append(Paragraph("Disclaimer: DocuLyft prepares information only. It does not provide legal advice and does not submit forms on your behalf. Always verify with the relevant agency.",note_s))
     doc.build(story)
