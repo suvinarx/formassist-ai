@@ -13,3 +13,4 @@ run.sh.save
 .env
 __pycache__/
 venv/
+*.zip
