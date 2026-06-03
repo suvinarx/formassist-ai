@@ -13,3 +13,10 @@ run.sh.save
 .env
 __pycache__/
 venv/
+*.zip
+<<<<<<< HEAD
+=======
+frontend 2/
+frontend2/
+*.zip
+>>>>>>> 3528e04 (added)
