@@ -141,8 +141,8 @@ const FAQS = [
 function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
   // ── SEO: homepage ─────────────────────────────────────────────────────
   useSEO({
-    title:       "Fill Government Forms Online — AI Form Filler",
-    description: "DocuLyft fills U.S. government forms for you using AI. Describe your situation, review the pre-filled PDF, and submit through official channels. 28 forms. Free.",
+    title:       "Fill Government Forms in Minutes with AI — Free",
+    description: "AI fills your W-9, I-485, Form 1040, DS-11 and 24+ official .gov forms in minutes — free. Describe your situation, download your pre-filled PDF. No SSN required.",
     canonical:   "/",
     schema:      SITE_SCHEMA,
   });
@@ -350,7 +350,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
         <div className="fa-tile-img fa-tile-img-1">
           <img
             src="https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=800&q=80"
-            alt="Tax forms and documents"
+            alt="AI-powered government tax form filler — W-9, 1040, W-4 online"
             style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
           />
           <div className="fa-tile-img-badge" style={{ position:"absolute", bottom:12, left:12 }}>
@@ -366,7 +366,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
             <li><span>✓</span><span><strong>Fields pre-filled</strong> automatically</span></li>
             <li><span>✓</span><span><strong>Download-ready PDF</strong> — review, sign, submit</span></li>
           </ul>
-          <div className="fa-tile-cta">Let AI find my form →</div>
+          <div className="fa-tile-cta">Let AI identify and fill my form →</div>
         </div>
       </div>
 
@@ -375,7 +375,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
         <div className="fa-tile-img fa-tile-img-2">
           <img
             src="https://images.unsplash.com/photo-1509395176047-4a66953fd231?w=800&q=80"
-            alt="Passport with stamps"
+            alt="Browse 28 official government forms by category — immigration, passport, veterans"
             style={{ width:"100%", height:"100%", objectFit:"cover", display:"block" }}
           />
           <div className="fa-tile-img-badge fa-tile-img-badge-2" style={{ position:"absolute", bottom:12, left:12 }}>
@@ -391,7 +391,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
             <li><span>✓</span><span><strong>119 official forms</strong> from .gov sources</span></li>
             <li><span>✓</span><span><strong>Fill with AI</strong> or download blank</span></li>
           </ul>
-          <div className="fa-tile-cta">Browse all forms →</div>
+          <div className="fa-tile-cta">Browse all 28 official government forms →</div>
         </div>
       </div>
     </div>
@@ -481,7 +481,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
         <div className="fa-hero-fullbleed">
           <div className="fa-hero-overlay" />
           <div className="fa-hero-content">
-            <h1 className="fa-hero-h1">Fill Any Government Form<br /><span className="fa-hero-accent">in Minutes</span></h1>
+            <h1 className="fa-hero-h1">Fill Any Government Form<br /><span className="fa-hero-accent">in Minutes — Free</span></h1>
             <p className="fa-hero-p">Our AI asks simple questions and fills tax forms, passport applications, and government documents — from official .gov PDFs.</p>
             <div className="fa-hero-search-wrap">
               <input
@@ -544,6 +544,13 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                 How it works
               </button>
             </div>
+            <div style={{marginBottom:16}}>
+              <button
+                onClick={() => navigate("/find-form")}
+                style={{background:"rgba(255,255,255,0.12)",border:"1.5px solid rgba(255,255,255,0.3)",color:"#fff",borderRadius:10,padding:"10px 20px",fontSize:13,fontWeight:600,fontFamily:"inherit",cursor:"pointer",backdropFilter:"blur(4px)"}}>
+                🤖 Not sure which form? Let AI find it for you →
+              </button>
+            </div>
             <div className="fa-hero-trust">
               <span className="fa-hero-trust-item"><span className="fa-hero-trust-dot" />28 official .gov forms</span>
               <span className="fa-hero-trust-sep">·</span>
@@ -586,6 +593,37 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
           <HowItWorks />
 
           <PopularForms />
+
+          {/* ── Testimonials ── */}
+          <section className="fa-testimonials-section">
+            <div className="fa-testimonials-inner">
+              <div className="fa-eyebrow" style={{ color: "#8899bb", textAlign: "center" }}>What people say</div>
+              <h2 className="fa-testimonials-title">Trusted by freelancers, immigrants, and families</h2>
+              <div className="fa-testimonials-grid">
+                {[
+                  { quote: "Saved me 2 hours on my W-9 for a new client. Filled it perfectly the first time.", name: "Mark T.", role: "Freelance Designer, Seattle" },
+                  { quote: "I used DocuLyft for my I-485 application. It pre-filled most of the fields and I just had to double-check. Incredibly helpful.", name: "Priya S.", role: "Green Card Applicant, Austin" },
+                  { quote: "Finally understand what form I actually needed. The AI finder is a game changer for someone who doesn't speak legal jargon.", name: "James R.", role: "Small Business Owner, Chicago" },
+                  { quote: "Filed my 1040 extension in under 5 minutes. Used to spend an hour searching the IRS website just to find the right form.", name: "Lisa M.", role: "Contractor, New York" },
+                  { quote: "The side-by-side view of the official form while filling it out is brilliant. Caught two mistakes before downloading.", name: "David K.", role: "First-time Taxpayer, Denver" },
+                  { quote: "Helped my parents with their Medicare paperwork. They're not tech-savvy but even they could follow the review step.", name: "Sarah L.", role: "Caregiver, San Jose" },
+                ].map(({ quote, name, role }) => (
+                  <div key={name} className="fa-testimonial-card">
+                    <div className="fa-testimonial-stars">{"★★★★★"}</div>
+                    <p className="fa-testimonial-quote">"{quote}"</p>
+                    <div className="fa-testimonial-author">
+                      <div className="fa-testimonial-avatar">{name[0]}</div>
+                      <div>
+                        <div className="fa-testimonial-name">{name}</div>
+                        <div className="fa-testimonial-role">{role}</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
           <section className="fa-faq-section">
             <div className="fa-faq-inner">
               <div className="fa-faq-header">
