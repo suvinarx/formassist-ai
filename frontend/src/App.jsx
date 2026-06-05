@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-<<<<<<< HEAD
->>>>>>> develop
+import { getRedirectResult, onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase";
 import AuthModal from "./AuthModal";
 import BrowseByCategory from "./components/BrowseByCategory.jsx";
@@ -15,6 +14,7 @@ import AboutPage from "./pages/AboutPage.jsx";
 import PrivacyPage from "./pages/PrivacyPage.jsx";
 import TermsPage from "./pages/TermsPage.jsx";
 import { FORMS } from "./data/formsData";
+import { useSEO, SITE_SCHEMA } from "./hooks/useSEO";
 const FORMS_FLAT = FORMS.filter(f => !f.hidden);
 
 function HowItWorks() {
