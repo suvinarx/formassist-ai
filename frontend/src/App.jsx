@@ -61,15 +61,18 @@ function HowItWorks() {
   ];
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setFading(true);
-      setTimeout(() => {
-        setActiveCard(c => (c + 1) % TRUST_CARDS.length);
-        setFading(false);
-      }, 400);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
+  const unsub = onAuthStateChanged(auth, (u) => {
+    console.log("Auth state changed:", u);
+
+    setUser(u || null);
+
+    if (u) {
+      setShowAuth(false);
+    }
+  });
+
+  return () => unsub();
+}, []);
 
   const card = TRUST_CARDS[activeCard];
 
