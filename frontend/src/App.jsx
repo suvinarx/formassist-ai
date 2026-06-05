@@ -699,13 +699,38 @@ export default function App() {
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
-    // Handle Google redirect sign-in result
-    getRedirectResult(auth).catch(console.error);
+  let mounted = true;
 
-    // Listen for auth state changes
-    const unsub = onAuthStateChanged(auth, (u) => setUser(u ?? null));
-    return unsub;
-  }, []);
+  const unsub = onAuthStateChanged(auth, (u) => {
+    console.log("Auth state changed:", u);
+
+    if (!mounted) return;
+
+    setUser(u ?? null);
+
+    if (u) {
+      setShowAuth(false);
+    }
+  });
+
+  getRedirectResult(auth)
+    .then((result) => {
+      console.log("Redirect result:", result);
+
+      if (result?.user && mounted) {
+        setUser(result.user);
+        setShowAuth(false);
+      }
+    })
+    .catch((err) => {
+      console.error("Redirect login failed:", err);
+    });
+
+  return () => {
+    mounted = false;
+    unsub();
+  };
+}, []);
 
   function getFirstName(u) {
     if (!u) return "";
