@@ -3,7 +3,6 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithRedirect,
-  getRedirectResult,
   updateProfile,
 } from "firebase/auth";
 import { auth, googleProvider } from "./firebase";
@@ -58,16 +57,17 @@ export default function AuthModal({ onClose }) {
   }
 
   async function handleGoogle() {
-  setLoading(true);
-  setFirebaseError("");
-  try {
-    await signInWithRedirect(auth, googleProvider);
-    // Don't call onClose() here — the page will redirect away
-  } catch (err) {
-    setFirebaseError(friendlyError(err.code));
-    setLoading(false);
+    setLoading(true);
+    setFirebaseError("");
+    try {
+      // Do not close the modal manually. Firebase will navigate away and then
+      // App.jsx will process getRedirectResult() when the app loads again.
+      await signInWithRedirect(auth, googleProvider);
+    } catch (err) {
+      setFirebaseError(friendlyError(err.code));
+      setLoading(false);
+    }
   }
-}
 
   function friendlyError(code) {
     switch (code) {
