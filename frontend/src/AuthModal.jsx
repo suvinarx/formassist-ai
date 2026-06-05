@@ -58,17 +58,16 @@ export default function AuthModal({ onClose }) {
   }
 
   async function handleGoogle() {
-    setLoading(true);
-    setFirebaseError("");
-    try {
-      signInWithRedirect(auth, googleProvider);
-      onClose();
-    } catch (err) {
-      setFirebaseError(friendlyError(err.code));
-    } finally {
-      setLoading(false);
-    }
+  setLoading(true);
+  setFirebaseError("");
+  try {
+    await signInWithRedirect(auth, googleProvider);
+    // Don't call onClose() here — the page will redirect away
+  } catch (err) {
+    setFirebaseError(friendlyError(err.code));
+    setLoading(false);
   }
+}
 
   function friendlyError(code) {
     switch (code) {
