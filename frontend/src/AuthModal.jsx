@@ -6,7 +6,8 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-import { auth, googleProvider } from "./firebase";
+
+import { auth, googleProvider } from "./firebase"; 
 
 export default function AuthModal({ onClose }) {
   const [mode, setMode] = useState("signin"); // "signin" | "signup"
@@ -84,7 +85,7 @@ export default function AuthModal({ onClose }) {
     onClose();
   } catch (err) {
     console.error("Google login failed:", err);
-    setFirebaseError(friendlyError(err.code));
+    setFirebaseError(friendlyError(err.code || err.message));
   } finally {
     setLoading(false);
   }
