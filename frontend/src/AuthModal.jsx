@@ -1,9 +1,10 @@
-import { useState } from "react";
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
-  signInWithRedirect,
+  signInWithPopup,
   updateProfile,
+  setPersistence,
+  browserLocalPersistence,
 } from "firebase/auth";
 import { auth, googleProvider } from "./firebase";
 
@@ -34,40 +35,60 @@ export default function AuthModal({ onClose }) {
   }
 
   async function handleSubmit() {
-    const e = validate();
-    if (Object.keys(e).length) { setErrors(e); return; }
-
-    setLoading(true);
-    setFirebaseError("");
-    try {
-      if (mode === "signup") {
-        const cred = await createUserWithEmailAndPassword(auth, form.email, form.password);
-        await updateProfile(cred.user, {
-          displayName: `${form.first_name.trim()} ${form.last_name.trim()}`,
-        });
-      } else {
-        await signInWithEmailAndPassword(auth, form.email, form.password);
-      }
-      onClose();
-    } catch (err) {
-      setFirebaseError(friendlyError(err.code));
-    } finally {
-      setLoading(false);
-    }
+  const e = validate();
+  if (Object.keys(e).length) {
+    setErrors(e);
+    return;
   }
+
+  setLoading(true);
+  setFirebaseError("");
+
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+
+    if (mode === "signup") {
+      const cred = await createUserWithEmailAndPassword(
+        auth,
+        form.email,
+        form.password
+      );
+
+      await updateProfile(cred.user, {
+        displayName: `${form.first_name.trim()} ${form.last_name.trim()}`,
+      });
+    } else {
+      await signInWithEmailAndPassword(auth, form.email, form.password);
+    }
+
+    onClose();
+  } catch (err) {
+    console.error("Email auth failed:", err);
+    setFirebaseError(friendlyError(err.code));
+  } finally {
+    setLoading(false);
+  }
+}
 
   async function handleGoogle() {
-    setLoading(true);
-    setFirebaseError("");
-    try {
-      // Do not close the modal manually. Firebase will navigate away and then
-      // App.jsx will process getRedirectResult() when the app loads again.
-      await signInWithRedirect(auth, googleProvider);
-    } catch (err) {
-      setFirebaseError(friendlyError(err.code));
-      setLoading(false);
-    }
+  setLoading(true);
+  setFirebaseError("");
+
+  try {
+    await setPersistence(auth, browserLocalPersistence);
+
+    const result = await signInWithPopup(auth, googleProvider);
+
+    console.log("Google login success:", result.user);
+
+    onClose();
+  } catch (err) {
+    console.error("Google login failed:", err);
+    setFirebaseError(friendlyError(err.code));
+  } finally {
+    setLoading(false);
   }
+}
 
   function friendlyError(code) {
     switch (code) {
