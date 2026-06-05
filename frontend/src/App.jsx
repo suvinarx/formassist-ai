@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import { useSEO, SITE_SCHEMA } from "./hooks/useSEO";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+<<<<<<< HEAD
+>>>>>>> develop
 import { auth } from "./firebase";
 import AuthModal from "./AuthModal";
 import BrowseByCategory from "./components/BrowseByCategory.jsx";
@@ -193,7 +193,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
   useEffect(() => {
     const onMove = (e) => {
       if (!isDragging.current) return;
-      const delta = startX.current - e.clientX; // drag left → panel grows
+      const delta = startX.current - e.clientX;
       setRightWidth(Math.min(MAX_W, Math.max(MIN_W, startW.current + delta)));
     };
     const onUp = () => {
@@ -564,7 +564,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
         </div>
       )}
 
-      {/* ── Non-lead steps use the right panel ── */}
+      {/* ── Non-lead steps use the split panel ── */}
       {step !== "lead" && (
         <div className="fa-split-container">
           <div className="fa-left">{leftPanel}</div>
@@ -584,14 +584,11 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
         </div>
       )}
 
-      {/* ── Full-width sections below — completely unaffected by resize ── */}
+      {/* ── Full-width sections below ── */}
       {step === "lead" && (
         <>
           <BrowseByCategory />
-
-          {/* ── How it works + rotating trust cards ── */}
           <HowItWorks />
-
           <PopularForms />
 
           {/* ── Testimonials ── */}
@@ -702,6 +699,10 @@ export default function App() {
   const [showAuth, setShowAuth] = useState(false);
 
   useEffect(() => {
+    // Handle Google redirect sign-in result
+    getRedirectResult(auth).catch(console.error);
+
+    // Listen for auth state changes
     const unsub = onAuthStateChanged(auth, (u) => setUser(u ?? null));
     return unsub;
   }, []);
