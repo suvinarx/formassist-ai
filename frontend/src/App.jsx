@@ -813,8 +813,18 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
       )}
 
       <nav className="fa-topnav">
-        <div className="fa-topnav-brand">
-          <div className="fa-brand-mark">F</div>
+        <div
+          className="fa-topnav-brand"
+          onClick={() => navigate("/")}
+          style={{ cursor: "pointer" }}
+        >
+          <div className="fa-brand-logo-box">
+            <img
+              src="/logo.png"
+              alt=""
+              className="fa-brand-logo-img"
+            />
+          </div>
           <span className="fa-brand-name">DocuLyft</span>
         </div>
 
@@ -943,7 +953,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
             <div className="fa-hero-search-wrap">
               <input
                 className="fa-hero-search"
-                placeholder="Search for a form — W-9, I-485, rental, school, job, healthcare…"
+                placeholder="Search for a form or category..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
@@ -1061,7 +1071,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                 className="fa-hero-btn-primary"
                 onClick={() => document.querySelector(".fa-tile-pair")?.scrollIntoView({ behavior: "smooth" })}
               >
-                Get Started →
+                Explore forms →
               </button>
 
               <button
@@ -1072,24 +1082,15 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
               </button>
             </div>
 
-            <div style={{ marginBottom: 16 }}>
-              <button
-                onClick={() => navigate("/find-form")}
-                style={{
-                  background: "rgba(255,255,255,0.12)",
-                  border: "1.5px solid rgba(255,255,255,0.3)",
-                  color: "#fff",
-                  borderRadius: 10,
-                  padding: "10px 20px",
-                  fontSize: 13,
-                  fontWeight: 600,
-                  fontFamily: "inherit",
-                  cursor: "pointer",
-                  backdropFilter: "blur(4px)",
-                }}
-              >
-                🤖 Not sure what you need? Ask a form-specific AI agent →
-              </button>
+            <div
+              onClick={() => navigate("/find-form")}
+              className="fa-ai-helper-card"
+            >
+              <span className="fa-ai-helper-badge">AI</span>
+              <span>
+                Not sure which form you need?
+                <strong> Let AI guide you →</strong>
+              </span>
             </div>
 
             <div className="fa-hero-trust">
