@@ -10,12 +10,14 @@ import CategoryPage from "./pages/CategoryPage.jsx";
 import FormDetailPage from "./pages/FormDetailPage.jsx";
 import SecurityPage from "./pages/SecurityPage.jsx";
 import FormFillPage from "./pages/FormFillPage.jsx";
+import ContactPage from "./pages/ContactPage.jsx";
 import SituationPage from "./pages/SituationPage.jsx";
 import AboutPage from "./pages/AboutPage.jsx";
 import PrivacyPage from "./pages/PrivacyPage.jsx";
 import TermsPage from "./pages/TermsPage.jsx";
 import { FORMS } from "./data/formsData";
 import { useSEO, SITE_SCHEMA } from "./hooks/useSEO";
+import { trackEvent } from "./utils/analytics";
 import "./App.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
@@ -32,28 +34,28 @@ const SITUATION_CHIPS = [
 
 const FAQS = [
   {
-    q: "Does DocuLyft officially submit forms on my behalf?",
-    a: "No. DocuLyft prepares a helper packet — a pre-filled PDF you can review, complete, and submit yourself through the appropriate official channels. We never submit anything on your behalf.",
+    q: "What is DocuLyft?",
+    a: "DocuLyft is a centralized form hub powered by form-specific AI agents. It helps users find, understand, prepare, review, and download commonly used forms in one place.",
   },
   {
-    q: "What information do you collect?",
-    a: "We only collect the situational details you type in, your name, and your email address for account purposes. We never ask for your Social Security Number, payment card details, government ID, or signature.",
+    q: "Is DocuLyft only for government forms?",
+    a: "No. DocuLyft started with official forms, but the broader goal is to support common paperwork across government, tax, employment, school, rental, healthcare, business, and administrative categories.",
   },
   {
-    q: "How accurate is the AI pre-fill?",
-    a: "The AI extracts information directly from your situation description and is highly accurate for standard details like names, addresses, and dates. Always review every field before submitting the official form.",
+    q: "What is a form-specific AI agent?",
+    a: "A form-specific AI agent is customized around a particular form. It understands the form's purpose, required fields, workflow, and common mistakes so it can ask simpler questions and help prepare the form more accurately.",
   },
   {
-    q: "Can I use this for any type of form?",
-    a: "DocuLyft currently supports common government and administrative forms across categories like address changes, vehicle transfers, name changes, and benefits enrollment. More form types are added regularly.",
+    q: "Does DocuLyft submit forms for me?",
+    a: "No. DocuLyft helps prepare helper packets only. You review the information, download the form, sign where needed, and submit it through the appropriate official, business, school, employer, or organization channel.",
   },
   {
-    q: "Is my data secure?",
-    a: "Yes. Your data is encrypted in transit and at rest. We do not sell or share your personal information with third parties, and you can request deletion of your data at any time.",
+    q: "How does DocuLyft improve accuracy?",
+    a: "DocuLyft agents are refined as forms, workflows, and completion patterns evolve. The goal is to make each agent smarter over time and reduce common form-completion mistakes.",
   },
   {
-    q: "Do I need an account to use DocuLyft?",
-    a: "You need a free account to generate form packets. This allows us to securely associate your information with your session and provide a better experience across multiple forms.",
+    q: "Is my information secure?",
+    a: "DocuLyft uses secure TLS communication and does not store customer form information. Users stay in control of reviewing and submitting their own forms.",
   },
 ];
 
@@ -77,8 +79,8 @@ function HowItWorks() {
         </svg>
       ),
       tag: "Security",
-      title: "Bank-grade security",
-      desc: "All data is encrypted in transit and at rest using 256-bit AES encryption. We never store your SSN, payment details, or signatures — not even temporarily.",
+      title: "Secure by design",
+      desc: "DocuLyft uses secure TLS communication and does not store customer form information. You stay in control of your paperwork from start to finish.",
       link: { label: "Learn more about security →", href: "/security" },
       accent: "#3d6aff",
     },
@@ -97,8 +99,8 @@ function HowItWorks() {
         </svg>
       ),
       tag: "Accuracy",
-      title: "98% pre-fill accuracy",
-      desc: "Powered by Claude AI, DocuLyft extracts your details with industry-leading precision across all supported form types.",
+      title: "Form-specific intelligence",
+      desc: "Each DocuLyft agent is customized to a specific form, helping ask the right questions and reduce common completion mistakes.",
       accent: "#1a9e6e",
     },
     {
@@ -117,7 +119,7 @@ function HowItWorks() {
       ),
       tag: "Control",
       title: "You stay in control",
-      desc: "We never submit anything on your behalf. Every form is reviewed, edited, and submitted by you — through official government and agency channels only.",
+      desc: "DocuLyft prepares and organizes the information, but you always review, download, sign, and submit forms yourself.",
       accent: "#e07c1a",
     },
     {
@@ -133,9 +135,9 @@ function HowItWorks() {
           <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
         </svg>
       ),
-      tag: "Recognition",
-      title: "FormLift's #1 rated tool",
-      desc: "DocuLyft is built to make government forms accessible to everyone — free, accurate, and easy to review before submitting.",
+      tag: "Vision",
+      title: "One hub for everyday forms",
+      desc: "DocuLyft brings commonly used forms together in one place and powers them with AI agents built for each workflow.",
       accent: "#a855f7",
     },
   ];
@@ -143,23 +145,23 @@ function HowItWorks() {
   const STEPS = [
     {
       num: "01",
-      title: "Describe your situation",
-      desc: "Type what you need in plain English — no legal jargon. Or browse 119 official forms directly by category.",
+      title: "Find the right form",
+      desc: "Search the centralized library or describe your situation in plain English.",
     },
     {
       num: "02",
-      title: "AI fills the form",
-      desc: "Our AI reads your description, finds the right form, and pre-fills every field it can from your details.",
+      title: "Use a form-specific AI agent",
+      desc: "Each agent understands its form, asks simple questions, and helps reduce completion mistakes.",
     },
     {
       num: "03",
-      title: "Review every field",
-      desc: "Check the pre-filled form side-by-side. Edit anything the AI got wrong. Add sensitive info like SSN by hand.",
+      title: "Review the prepared answers",
+      desc: "Check every field, make edits, and confirm the information before downloading.",
     },
     {
       num: "04",
-      title: "Download & submit officially",
-      desc: "Download your packet as a PDF. Sign where required and submit through the official agency channel — we never submit for you.",
+      title: "Download and submit yourself",
+      desc: "DocuLyft prepares the helper packet. You sign and submit through the correct channel.",
     },
   ];
 
@@ -172,9 +174,9 @@ function HowItWorks() {
           <div className="fa-eyebrow" style={{ color: "rgba(255,255,255,0.4)" }}>
             How it works
           </div>
-          <h2 className="hiw-title">Simple steps to your filled form</h2>
+          <h2 className="hiw-title">From confusing form to clear next step</h2>
           <p className="hiw-subtitle">
-            We make navigating government paperwork easier, faster, and more accurate.
+            DocuLyft combines a centralized form library with AI agents customized to each form.
           </p>
 
           <div className="hiw-steps">
@@ -231,9 +233,9 @@ function HowItWorks() {
 
 function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
   useSEO({
-    title: "Fill Government Forms in Minutes with AI — Free",
+    title: "DocuLyft — AI Agents for Common Forms",
     description:
-      "AI fills your W-9, I-485, Form 1040, DS-11 and 24+ official .gov forms in minutes — free. Describe your situation, download your pre-filled PDF. No SSN required.",
+      "Find, understand, and prepare commonly used forms with form-specific AI agents. DocuLyft helps simplify paperwork across government, tax, school, job, rental, healthcare, and business forms.",
     canonical: "/",
     schema: SITE_SCHEMA,
   });
@@ -625,34 +627,34 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
           </div>
 
           <div className="fa-tile-body">
-            <h2 className="fa-tile-title">Unsure which form to fill?</h2>
+            <h2 className="fa-tile-title">Not sure which form you need?</h2>
             <p className="fa-tile-desc">
-              Describe your situation and we'll identify, pre-fill, and generate the right forms
-              automatically.
+              Describe your situation and a form-specific AI agent can help identify the right
+              form, ask the right questions, and prepare a review-ready packet.
             </p>
 
             <ul className="fa-tile-checks">
               <li>
                 <span>✓</span>
                 <span>
-                  <strong>AI finds the right form</strong> from your description
+                  <strong>AI-guided discovery</strong> based on your situation
                 </span>
               </li>
               <li>
                 <span>✓</span>
                 <span>
-                  <strong>Fields pre-filled</strong> automatically
+                  <strong>Form-specific questions</strong> instead of confusing instructions
                 </span>
               </li>
               <li>
                 <span>✓</span>
                 <span>
-                  <strong>Download-ready PDF</strong> — review, sign, submit
+                  <strong>Review-ready output</strong> — edit, download, and submit yourself
                 </span>
               </li>
             </ul>
 
-            <div className="fa-tile-cta">Let AI identify and fill my form →</div>
+            <div className="fa-tile-cta">Ask an AI form agent →</div>
           </div>
         </div>
 
@@ -692,34 +694,34 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
           </div>
 
           <div className="fa-tile-body">
-            <h2 className="fa-tile-title">Know which form you need?</h2>
+            <h2 className="fa-tile-title">Know the form you need?</h2>
             <p className="fa-tile-desc">
-              Browse all 119 official forms by category — tax, immigration, passport, veterans, and
-              more.
+              Browse a growing library of commonly used forms across government, tax, employment,
+              school, rental, healthcare, business, and administrative categories.
             </p>
 
             <ul className="fa-tile-checks">
               <li>
                 <span>✓</span>
                 <span>
-                  <strong>10 categories</strong> of federal forms
+                  <strong>Centralized library</strong> for commonly used forms
                 </span>
               </li>
               <li>
                 <span>✓</span>
                 <span>
-                  <strong>119 official forms</strong> from .gov sources
+                  <strong>Multiple form categories</strong> beyond government paperwork
                 </span>
               </li>
               <li>
                 <span>✓</span>
                 <span>
-                  <strong>Fill with AI</strong> or download blank
+                  <strong>AI-assisted preparation</strong> with user review
                 </span>
               </li>
             </ul>
 
-            <div className="fa-tile-cta">Browse all 28 official government forms →</div>
+            <div className="fa-tile-cta">Browse the form library →</div>
           </div>
         </div>
       </div>
@@ -763,6 +765,15 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
             href={downloadUrl}
             target="_blank"
             rel="noreferrer"
+            onClick={() =>
+              trackEvent("form_download", {
+                formId: selectedForm?.form_id || null,
+                formName: selectedForm?.form_name || null,
+                category: selectedForm?.category || null,
+                agency: selectedForm?.agency || null,
+                source: "generated_pdf",
+              })
+            }
           >
             ⬇ Download pre-filled PDF
           </a>
@@ -864,13 +875,9 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
             About
           </button>
 
-          <a
-            className="fa-topnav-link"
-            href="mailto:support@doculyft.com"
-            style={{ textDecoration: "none" }}
-          >
+          <button className="fa-topnav-link" onClick={() => navigate("/contact")}>
             Contact
-          </a>
+          </button>
 
           <button
             className="fa-topnav-link"
@@ -922,25 +929,31 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
 
           <div className="fa-hero-content">
             <h1 className="fa-hero-h1">
-              Fill Any Government Form
+              AI agents for the forms
               <br />
-              <span className="fa-hero-accent">in Minutes — Free</span>
+              <span className="fa-hero-accent">you use every day</span>
             </h1>
 
             <p className="fa-hero-p">
-              Our AI asks simple questions and fills tax forms, passport applications, and government
-              documents — from official .gov PDFs.
+              Find commonly used forms in one place. DocuLyft gives each form its own AI agent
+              to ask simple questions, reduce confusion, and help you prepare paperwork with
+              greater accuracy.
             </p>
 
             <div className="fa-hero-search-wrap">
               <input
                 className="fa-hero-search"
-                placeholder="Search for a form — W-9, I-485, DS-11, 1040…"
+                placeholder="Search for a form — W-9, I-485, rental, school, job, healthcare…"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" && searchQuery.trim()) {
                     const q = searchQuery.toLowerCase();
+
+                    trackEvent("search", {
+                      searchQuery: searchQuery.trim(),
+                      source: "hero_search_enter",
+                    });
 
                     const match = FORMS_FLAT.find(
                       (f) =>
@@ -972,6 +985,11 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
 
                   if (!q.trim()) return;
 
+                  trackEvent("search", {
+                    searchQuery: searchQuery.trim(),
+                    source: "hero_search_button",
+                  });
+
                   setSearchResults(
                     FORMS_FLAT.filter(
                       (f) =>
@@ -992,6 +1010,12 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                       key={f.form_id}
                       className="fa-hero-search-result"
                       onClick={() => {
+                        trackEvent("form_view_click", {
+                          formId: f.form_id,
+                          formName: f.form_name,
+                          category: f.category || null,
+                          source: "hero_search_results",
+                        });
                         navigate(`/form/${f.form_id}`);
                         setSearchResults([]);
                         setSearchQuery("");
@@ -1013,6 +1037,10 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                     className="fa-search-chip"
                     onClick={() => {
                       setSearchQuery(chip);
+                      trackEvent("search", {
+                        searchQuery: chip,
+                        source: "hero_search_chip",
+                      });
                       setSearchResults(
                         FORMS_FLAT.filter(
                           (f) =>
@@ -1060,29 +1088,29 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                   backdropFilter: "blur(4px)",
                 }}
               >
-                🤖 Not sure which form? Let AI find it for you →
+                🤖 Not sure what you need? Ask a form-specific AI agent →
               </button>
             </div>
 
             <div className="fa-hero-trust">
               <span className="fa-hero-trust-item">
                 <span className="fa-hero-trust-dot" />
-                28 official .gov forms
+                Centralized form hub
               </span>
               <span className="fa-hero-trust-sep">·</span>
               <span className="fa-hero-trust-item">
                 <span className="fa-hero-trust-dot" />
-                No SSN required
+                Form-specific AI agents
               </span>
               <span className="fa-hero-trust-sep">·</span>
               <span className="fa-hero-trust-item">
                 <span className="fa-hero-trust-dot" />
-                Always free
+                You review before download
               </span>
               <span className="fa-hero-trust-sep">·</span>
               <span className="fa-hero-trust-item">
                 <span className="fa-hero-trust-dot" />
-                IRS · USCIS · SSA · State Dept
+                You submit forms yourself
               </span>
             </div>
           </div>
@@ -1124,7 +1152,7 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
               </div>
 
               <h2 className="fa-testimonials-title">
-                Trusted by freelancers, immigrants, and families
+                Built for people who want paperwork to feel simpler
               </h2>
 
               <div className="fa-testimonials-grid">
@@ -1228,12 +1256,12 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                 </div>
 
                 <p className="fa-footer-tagline">
-                  Official government forms, pre-filled by AI. Review, sign, and submit through
-                  official channels.
+                  A centralized hub for commonly used forms, powered by form-specific AI agents.
+                  Find, prepare, review, and download forms in one place.
                 </p>
 
                 <div className="fa-footer-source">
-                  Forms sourced from IRS · USCIS · SSA · State Dept. · VA · CMS · USPS
+                  Built for government, tax, employment, school, rental, healthcare, business, and administrative forms.
                 </div>
               </div>
 
@@ -1311,12 +1339,11 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
                   </button>
 
                   <span className="fa-footer-text" style={{ marginTop: 10, display: "block" }}>
-                    DocuLyft is not affiliated with any government agency. We prepare helper packets
-                    only — you submit through official channels.
+                    DocuLyft is a form discovery and preparation tool. We do not submit forms on behalf of users.
                   </span>
 
                   <span className="fa-footer-text" style={{ marginTop: 6, display: "block" }}>
-                    We never store SSNs, payment data, or government ID numbers.
+                    Users are responsible for reviewing, signing, and submitting forms through the appropriate channel.
                   </span>
                 </div>
               </div>
@@ -1331,6 +1358,19 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
       )}
     </>
   );
+}
+
+function AnalyticsTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    trackEvent("page_view", {
+      page: location.pathname,
+      search: location.search || "",
+    });
+  }, [location.pathname, location.search]);
+
+  return null;
 }
 
 function App() {
@@ -1406,6 +1446,8 @@ function App() {
 
   return (
     <div className="fa-shell">
+      <AnalyticsTracker />
+
       {showAuth && <AuthModal onClose={() => setShowAuth(false)} />}
 
       <Routes>
@@ -1428,8 +1470,10 @@ function App() {
         <Route path="/find-form" element={<SituationPage />} />
         <Route path="/security" element={<SecurityPage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
         <Route path="/terms" element={<TermsPage />} />
+        
       </Routes>
     </div>
   );

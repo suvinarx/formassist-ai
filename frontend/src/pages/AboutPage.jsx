@@ -6,126 +6,556 @@ export default function AboutPage() {
   const navigate = useNavigate();
 
   useSEO({
-    title:     "About DocuLyft — AI Government Form Filler",
-    description: "Learn about DocuLyft — who we are, our mission to make government paperwork accessible, and how we keep your data safe.",
+    title: "About DocuLyft — A Central Hub for Common Forms",
+    description:
+      "DocuLyft is building a centralized repository of commonly used forms, helping people find, understand, prepare, and download forms in one place.",
     canonical: "/about",
   });
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: "#f9fafb" }}>
-
       {/* Nav */}
-      <nav style={{ background: "#0d1f3c", padding: "0 32px", height: 56, display: "flex", alignItems: "center", gap: 12 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }} onClick={() => navigate("/")}>
-          <div style={{ width: 28, height: 28, background: "#e8612a", borderRadius: 7, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, color: "#fff", fontSize: 14 }}>D</div>
-          <span style={{ color: "#fff", fontWeight: 700, fontSize: 15 }}>DocuLyft</span>
-        </div>
-        <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
-          <button onClick={() => navigate("/")} style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)", color: "rgba(255,255,255,0.7)", borderRadius: 8, padding: "5px 14px", fontSize: 13, cursor: "pointer" }}>← Home</button>
-          <a href="mailto:support@doculyft.com" style={{ background: "#e8612a", border: "none", color: "#fff", borderRadius: 8, padding: "5px 14px", fontSize: 13, cursor: "pointer", textDecoration: "none", display: "flex", alignItems: "center" }}>Contact us</a>
-        </div>
-      </nav>
+      {/* Nav */}
+<nav className="fa-topnav">
+  <div
+    className="fa-topnav-brand"
+    onClick={() => navigate("/")}
+    style={{ cursor: "pointer" }}
+  >
+    <div className="fa-brand-mark">F</div>
+    <span className="fa-brand-name">DocuLyft</span>
+  </div>
+
+  <div className="fa-topnav-links">
+    <button className="fa-topnav-link" onClick={() => navigate("/")}>
+      Home
+    </button>
+
+    <div className="fa-menu-dropdown">
+      <button className="fa-topnav-link">
+        Browse forms <span className="fa-menu-chevron">▾</span>
+      </button>
+
+      <div className="fa-menu-dropdown-panel">
+        {[
+          "Tax Forms",
+          "Immigration",
+          "Passport & Travel",
+          "Benefits & Social",
+          "Healthcare",
+          "Employment",
+          "Veterans",
+          "Moving & Address",
+          "Motor Vehicle",
+          "Legal",
+        ].map((label, i) => {
+          const ids = [
+            "tax",
+            "immigration",
+            "passport",
+            "benefits",
+            "healthcare",
+            "employment",
+            "veterans",
+            "moving",
+            "vehicle",
+            "legal",
+          ];
+
+          return (
+            <button
+              key={label}
+              className="fa-menu-dd-item"
+              onClick={() => navigate(`/category/${ids[i]}`)}
+            >
+              {label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+
+    <button className="fa-topnav-link" onClick={() => navigate("/security")}>
+      Security
+    </button>
+
+    <button className="fa-topnav-link" onClick={() => navigate("/about")}>
+      About
+    </button>
+
+    <a
+      className="fa-topnav-link"
+      href="mailto:support@doculyft.com"
+      style={{ textDecoration: "none" }}
+    >
+      Contact
+    </a>
+  </div>
+
+  <div className="fa-topnav-right">
+    <button className="fa-topnav-signin" onClick={() => navigate("/")}>
+      Get started
+    </button>
+  </div>
+</nav>
 
       {/* Hero */}
-      <div style={{ background: "linear-gradient(135deg, #0d1f3c 0%, #1a3460 100%)", padding: "64px 32px 56px", textAlign: "center" }}>
-        <div style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "rgba(255,255,255,0.4)", marginBottom: 14 }}>About DocuLyft</div>
-        <h1 style={{ fontFamily: "'DM Serif Display',Georgia,serif", fontSize: "2.6rem", fontWeight: 400, color: "#fff", margin: "0 0 18px", lineHeight: 1.2 }}>
-          Government forms shouldn't<br />require a law degree
+      <section
+        style={{
+          background: "linear-gradient(135deg, #0d1f3c 0%, #1a3460 100%)",
+          padding: "72px 32px 64px",
+          textAlign: "center",
+        }}
+      >
+        <div
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            textTransform: "uppercase",
+            letterSpacing: "0.1em",
+            color: "rgba(255,255,255,0.45)",
+            marginBottom: 14,
+          }}
+        >
+          About DocuLyft
+        </div>
+
+        <h1
+          style={{
+            fontFamily: "'DM Serif Display', Georgia, serif",
+            fontSize: "2.7rem",
+            fontWeight: 400,
+            color: "#fff",
+            margin: "0 0 18px",
+            lineHeight: 1.18,
+          }}
+        >
+          One place for the forms people use every day
         </h1>
-        <p style={{ fontSize: 17, color: "rgba(255,255,255,0.7)", lineHeight: 1.7, maxWidth: 560, margin: "0 auto 28px" }}>
-          DocuLyft was built to make U.S. government paperwork accessible to everyone — not just those who can afford legal help.
+
+        <p
+          style={{
+            fontSize: 17,
+            color: "rgba(255,255,255,0.72)",
+            lineHeight: 1.7,
+            maxWidth: 680,
+            margin: "0 auto",
+          }}
+        >
+          DocuLyft is building a centralized repository of commonly used forms —
+          making it easier to find, understand, prepare, and download paperwork
+          from one simple place.
         </p>
-        <a href="mailto:support@doculyft.com" style={{ display: "inline-block", background: "#e8612a", color: "#fff", borderRadius: 10, padding: "12px 28px", fontSize: 15, fontWeight: 700, textDecoration: "none" }}>
-          Get in touch →
-        </a>
-      </div>
+      </section>
 
-      <div style={{ maxWidth: 800, margin: "0 auto", padding: "56px 24px 80px" }}>
-
+      <main style={{ maxWidth: 900, margin: "0 auto", padding: "64px 24px 80px" }}>
         {/* Mission */}
-        <section style={{ marginBottom: 56 }}>
-          <h2 style={{ fontFamily: "'DM Serif Display',Georgia,serif", fontSize: "1.6rem", fontWeight: 400, color: "#0d1f3c", marginBottom: 16 }}>Our mission</h2>
-          <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.8, marginBottom: 14 }}>
-            Every year, millions of Americans struggle with government forms — tax filings, immigration applications, passport renewals, benefits enrollments. The instructions are dense, the stakes are high, and a single mistake can mean weeks of delays or costly rejections.
+        <section
+          style={{
+            background: "#fff",
+            border: "1px solid #e5e7eb",
+            borderRadius: 18,
+            padding: "36px",
+            marginBottom: 28,
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontSize: "1.8rem",
+              fontWeight: 400,
+              color: "#0d1f3c",
+              margin: "0 0 14px",
+            }}
+          >
+            Our mission
+          </h2>
+
+          <p
+            style={{
+              fontSize: 15,
+              color: "#374151",
+              lineHeight: 1.8,
+              margin: "0 0 14px",
+            }}
+          >
+            Forms are everywhere — government applications, school paperwork,
+            rental forms, job documents, healthcare intake forms, tax forms,
+            business forms, and more. The problem is that they are scattered
+            across different websites, hard to search, and often confusing to
+            complete.
           </p>
-          <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.8, marginBottom: 14 }}>
-            DocuLyft uses AI to close that gap. You describe your situation in plain English; our AI reads it, finds the right form, and pre-fills every field it can. You review, add sensitive information by hand, and download a print-ready PDF. Then you submit it yourself — through the official agency channel.
-          </p>
-          <p style={{ fontSize: 15, color: "#374151", lineHeight: 1.8 }}>
-            We never submit forms on your behalf. We never store your SSN, payment details, or government ID numbers. Our job is to do the tedious part so you can focus on what matters.
+
+          <p
+            style={{
+              fontSize: 15,
+              color: "#374151",
+              lineHeight: 1.8,
+              margin: 0,
+            }}
+          >
+            DocuLyft brings commonly used forms together in one place and uses AI
+            to help users understand what they need, fill what they can, and
+            review everything before downloading.
           </p>
         </section>
 
-        {/* What we cover */}
-        <section style={{ marginBottom: 56, background: "#fff", border: "1px solid #e5e7eb", borderRadius: 16, padding: "32px 36px" }}>
-          <h2 style={{ fontFamily: "'DM Serif Display',Georgia,serif", fontSize: "1.4rem", fontWeight: 400, color: "#0d1f3c", marginBottom: 20 }}>What DocuLyft covers</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px 32px" }}>
+        {/* What DocuLyft helps with */}
+        <section
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: 18,
+            marginBottom: 28,
+          }}
+        >
+          <InfoCard
+            title="Find forms faster"
+            body="Search or browse commonly used forms from one central place instead of jumping across many websites."
+          />
+
+          <InfoCard
+            title="Understand what to fill"
+            body="Use plain language guidance to understand what information a form is asking for."
+          />
+
+          <InfoCard
+            title="Prepare with AI"
+            body="DocuLyft can help map your answers into form fields so you can review and complete paperwork faster."
+          />
+
+          <InfoCard
+            title="Download and submit yourself"
+            body="You stay in control. DocuLyft helps prepare forms, but you review, sign, and submit them yourself."
+          />
+        </section>
+
+        {/* Categories */}
+        <section
+          style={{
+            background: "#fff",
+            border: "1px solid #e5e7eb",
+            borderRadius: 18,
+            padding: "36px",
+            marginBottom: 28,
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontSize: "1.7rem",
+              fontWeight: 400,
+              color: "#0d1f3c",
+              margin: "0 0 20px",
+            }}
+          >
+            More than government forms
+          </h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))",
+              gap: "14px 24px",
+            }}
+          >
             {[
-              ["IRS / Tax", "W-9, W-4, W-2, Form 1040, 1099-NEC, Schedule A & C, and more"],
-              ["USCIS / Immigration", "I-9, I-130, I-485, I-765, N-400, I-864, I-90"],
-              ["State Department", "DS-11 Passport Application, DS-64 Lost Passport"],
-              ["Veterans Affairs", "VA 21-526EZ, VA 22-1990, VA 21-4142"],
-              ["Social Security", "SSA-44 Medicare income appeal"],
-              ["USPS / Moving", "PS Form 3575 Change of Address"],
-              ["Employment / FMLA", "WH-380-E, WH-381 leave forms"],
-              ["And more", "28 active forms, growing regularly"],
-            ].map(([cat, desc]) => (
-              <div key={cat} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
-                <span style={{ color: "#2dd4b0", fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✓</span>
-                <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#0d1f3c" }}>{cat}</div>
-                  <div style={{ fontSize: 12, color: "#6b7280", lineHeight: 1.5 }}>{desc}</div>
-                </div>
+              "Government forms",
+              "Tax forms",
+              "Job and employment forms",
+              "Rental and housing forms",
+              "School and student forms",
+              "Healthcare intake forms",
+              "Business and vendor forms",
+              "General administrative forms",
+            ].map((item) => (
+              <div
+                key={item}
+                style={{
+                  display: "flex",
+                  gap: 10,
+                  alignItems: "center",
+                  fontSize: 14,
+                  color: "#374151",
+                }}
+              >
+                <span
+                  style={{
+                    width: 20,
+                    height: 20,
+                    borderRadius: "50%",
+                    background: "#2dd4b0",
+                    color: "#0d1f3c",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: 800,
+                    fontSize: 12,
+                    flexShrink: 0,
+                  }}
+                >
+                  ✓
+                </span>
+                {item}
               </div>
             ))}
           </div>
         </section>
 
-        {/* Our commitments */}
-        <section style={{ marginBottom: 56 }}>
-          <h2 style={{ fontFamily: "'DM Serif Display',Georgia,serif", fontSize: "1.4rem", fontWeight: 400, color: "#0d1f3c", marginBottom: 20 }}>Our commitments to you</h2>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {[
-              ["🔒", "We never store your SSN, EIN, or government ID", "Sensitive fields are explicitly excluded from our AI pipeline. You add them by hand on the downloaded PDF."],
-              ["📋", "We never submit forms on your behalf", "DocuLyft produces a helper packet only. You review, sign, and submit through the official government channel."],
-              ["🆓", "Always free to use", "Pre-filling and downloading your form PDF costs nothing. No credit card, no subscription."],
-              ["🏛️", "Forms sourced directly from official .gov sources", "Every PDF comes from IRS.gov, USCIS.gov, State.gov, SSA.gov, VA.gov, or USPS.com — never third-party copies."],
-              ["🔐", "Your data is encrypted in transit and at rest", "We use HTTPS/TLS for all connections and industry-standard encryption for any stored account data."],
-            ].map(([icon, title, desc]) => (
-              <div key={title} style={{ display: "flex", gap: 16, padding: "20px 24px", background: "#fff", border: "1px solid #e5e7eb", borderRadius: 12 }}>
-                <div style={{ fontSize: 24, flexShrink: 0 }}>{icon}</div>
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#0d1f3c", marginBottom: 4 }}>{title}</div>
-                  <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6 }}>{desc}</div>
-                </div>
-              </div>
-            ))}
+        {/* Commitments */}
+        <section
+          style={{
+            background: "#f3f4f6",
+            border: "1px solid #e5e7eb",
+            borderRadius: 18,
+            padding: "34px",
+            marginBottom: 28,
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 18,
+              fontWeight: 700,
+              color: "#0d1f3c",
+              margin: "0 0 18px",
+            }}
+          >
+            What we believe
+          </h2>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <Commitment
+              title="Forms should be easier to find"
+              body="People should not have to search across dozens of websites just to find the right document."
+            />
+
+            <Commitment
+              title="Users should stay in control"
+              body="DocuLyft does not submit forms on behalf of users. Users review, sign, and submit forms themselves."
+            />
+
+            <Commitment
+              title="The repository should stay current"
+              body="Form versions are reviewed and updated regularly so users can access current materials."
+            />
+
+            <Commitment
+              title="Privacy should be simple"
+              body="DocuLyft uses secure TLS communication and does not store customer form information."
+            />
           </div>
+        </section>
+
+        {/* Disclaimer */}
+        <section
+          style={{
+            background: "#fff",
+            border: "1px solid #e5e7eb",
+            borderRadius: 18,
+            padding: "30px 34px",
+            marginBottom: 28,
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 17,
+              fontWeight: 700,
+              color: "#0d1f3c",
+              margin: "0 0 10px",
+            }}
+          >
+            Important note
+          </h2>
+
+          <p
+            style={{
+              fontSize: 14,
+              color: "#6b7280",
+              lineHeight: 1.75,
+              margin: 0,
+            }}
+          >
+            DocuLyft is a form preparation and discovery tool. We are not a
+            government agency, law firm, tax advisor, or filing service. Users are
+            responsible for reviewing their information and submitting forms
+            through the appropriate official or business channel.
+          </p>
         </section>
 
         {/* Contact */}
-        <section style={{ background: "#0d1f3c", borderRadius: 16, padding: "36px", textAlign: "center" }}>
-          <h2 style={{ fontFamily: "'DM Serif Display',Georgia,serif", fontSize: "1.4rem", fontWeight: 400, color: "#fff", marginBottom: 10 }}>Questions or feedback?</h2>
-          <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", marginBottom: 20, lineHeight: 1.6 }}>
-            We read every message and typically respond within 24 hours.
+        <section
+          style={{
+            background: "#0d1f3c",
+            borderRadius: 18,
+            padding: "40px 32px",
+            textAlign: "center",
+          }}
+        >
+          <h2
+            style={{
+              fontFamily: "'DM Serif Display', Georgia, serif",
+              fontSize: "1.7rem",
+              fontWeight: 400,
+              color: "#fff",
+              margin: "0 0 10px",
+            }}
+          >
+            Help us build the form library
+          </h2>
+
+          <p
+            style={{
+              fontSize: 14,
+              color: "rgba(255,255,255,0.65)",
+              lineHeight: 1.7,
+              margin: "0 0 22px",
+            }}
+          >
+            Have a form category you want added? Send us feedback.
           </p>
-          <a href="mailto:support@doculyft.com" style={{ display: "inline-block", background: "#e8612a", color: "#fff", borderRadius: 10, padding: "12px 28px", fontSize: 15, fontWeight: 700, textDecoration: "none" }}>
+
+          <a
+            href="mailto:support@doculyft.com"
+            style={{
+              display: "inline-block",
+              background: "#e8612a",
+              color: "#fff",
+              borderRadius: 10,
+              padding: "12px 28px",
+              fontSize: 15,
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
             support@doculyft.com
           </a>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", marginTop: 14 }}>
-            Not affiliated with IRS, USCIS, SSA, State Department, VA, USPS, or any U.S. government agency.
-          </p>
         </section>
+      </main>
 
-      </div>
-
-      <footer style={{ textAlign: "center", padding: "24px", fontSize: 12, color: "#9ca3af", borderTop: "1px solid #e5e7eb" }}>
+      <footer
+        style={{
+          textAlign: "center",
+          padding: "24px",
+          fontSize: 12,
+          color: "#9ca3af",
+          borderTop: "1px solid #e5e7eb",
+          background: "#fff",
+        }}
+      >
         © {new Date().getFullYear()} DocuLyft ·{" "}
-        <button onClick={() => navigate("/privacy")} style={{ background: "none", border: "none", color: "#6b7280", cursor: "pointer", fontSize: 12 }}>Privacy</button>{" · "}
-        <button onClick={() => navigate("/terms")} style={{ background: "none", border: "none", color: "#6b7280", cursor: "pointer", fontSize: 12 }}>Terms</button>
+        <button
+          onClick={() => navigate("/privacy")}
+          style={{
+            background: "none",
+            border: "none",
+            color: "#6b7280",
+            cursor: "pointer",
+            fontSize: 12,
+          }}
+        >
+          Privacy
+        </button>{" "}
+        ·{" "}
+        <button
+          onClick={() => navigate("/terms")}
+          style={{
+            background: "none",
+            border: "none",
+            color: "#6b7280",
+            cursor: "pointer",
+            fontSize: 12,
+          }}
+        >
+          Terms
+        </button>
       </footer>
+    </div>
+  );
+}
+
+function InfoCard({ title, body }) {
+  return (
+    <div
+      style={{
+        background: "#fff",
+        border: "1px solid #e5e7eb",
+        borderRadius: 16,
+        padding: "26px",
+      }}
+    >
+      <h3
+        style={{
+          fontSize: 16,
+          fontWeight: 700,
+          color: "#0d1f3c",
+          margin: "0 0 8px",
+        }}
+      >
+        {title}
+      </h3>
+
+      <p
+        style={{
+          fontSize: 14,
+          color: "#6b7280",
+          lineHeight: 1.65,
+          margin: 0,
+        }}
+      >
+        {body}
+      </p>
+    </div>
+  );
+}
+
+function Commitment({ title, body }) {
+  return (
+    <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+      <span
+        style={{
+          width: 22,
+          height: 22,
+          borderRadius: "50%",
+          background: "#2dd4b0",
+          color: "#0d1f3c",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontWeight: 800,
+          fontSize: 13,
+          flexShrink: 0,
+          marginTop: 1,
+        }}
+      >
+        ✓
+      </span>
+
+      <div>
+        <div
+          style={{
+            fontSize: 14,
+            fontWeight: 700,
+            color: "#0d1f3c",
+            marginBottom: 4,
+          }}
+        >
+          {title}
+        </div>
+
+        <div
+          style={{
+            fontSize: 13,
+            color: "#6b7280",
+            lineHeight: 1.65,
+          }}
+        >
+          {body}
+        </div>
+      </div>
     </div>
   );
 }
