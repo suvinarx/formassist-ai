@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSEO } from "../hooks/useSEO";
+import Logo from "../components/Logo";
 
 export default function AboutPage() {
   const navigate = useNavigate();
@@ -26,8 +27,7 @@ export default function AboutPage() {
     onClick={() => navigate("/")}
     style={{ cursor: "pointer" }}
   >
-    <div className="fa-brand-mark">F</div>
-    <span className="fa-brand-name">DocuLyft</span>
+    <Logo light />
   </div>
 
   <div className="fa-topnav-links">

@@ -319,129 +319,151 @@
     "category": "Tax",
     "agency": "IRS",
     "questions": [
-      {
-        "id": "first_name_middle",
-        "label": "Step 1a: Your first name and middle initial",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": "last_name",
-        "label": "Step 1a: Your last name",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": "address",
-        "label": "Step 1a: Home address (number and street or rural route)",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": "city_state_zip",
-        "label": "Step 1a: City or town, state, and ZIP code",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": "ssn",
-        "label": "Step 1b: Social Security Number",
-        "type": "text",
-        "required": false
-      },
-      {
-        "id": "filing_status",
-        "label": "Step 1c: Filing status",
-        "type": "single_choice",
-        "options": [
-          "Single or Married filing separately",
-          "Married filing jointly or Qualifying surviving spouse",
-          "Head of household"
-        ],
-        "required": true
-      },
-      {
-        "id": "step2_note",
-        "label": "Step 2 \u2014 Multiple Jobs: Complete ONLY if you (or your spouse if MFJ) have more than one job at a time, OR if you are MFJ and your spouse also works. If this does NOT apply to you, skip to Step 3.",
-        "type": "text",
-        "required": false,
-        "is_note": true
-      },
-      {
-        "id": "multiple_jobs_method",
-        "label": "Step 2: Multiple jobs or spouse works \u2014 choose ONE method (or skip if only one job)",
-        "type": "single_choice",
-        "options": [
-          "Skip \u2014 I have only one job and am Single or MFJ with non-working spouse",
-          "Use IRS Tax Withholding Estimator at IRS.gov/W4App (most accurate)",
-          "Use Multiple Jobs Worksheet on page 3 of the W-4",
-          "Check this box (ONLY if there are exactly 2 jobs total with similar pay)"
-        ],
-        "required": false
-      },
-      {
-        "id": "step3_note",
-        "label": "Step 3 \u2014 Dependents: If your total income is $200,000 or less ($400,000 if MFJ), complete this step. Otherwise skip.",
-        "type": "text",
-        "required": false,
-        "is_note": true
-      },
-      {
-        "id": "qualifying_children_amount",
-        "label": "Step 3: Number of qualifying children under 17 \u00d7 $2,000 (e.g., 2 children = enter $4,000)",
-        "type": "text",
-        "required": false
-      },
-      {
-        "id": "other_dependents_amount",
-        "label": "Step 3: Number of other dependents \u00d7 $500 (e.g., 1 dependent = enter $500)",
-        "type": "text",
-        "required": false
-      },
-      {
-        "id": "step4_note",
-        "label": "Step 4 \u2014 Optional adjustments. Complete only if they apply to you.",
-        "type": "text",
-        "required": false,
-        "is_note": true
-      },
-      {
-        "id": "other_income",
-        "label": "Step 4a: Other income NOT from jobs (interest, dividends, retirement) \u2014 enter annual amount",
-        "type": "text",
-        "required": false
-      },
-      {
-        "id": "deductions",
-        "label": "Step 4b: Deductions \u2014 only if you plan to itemize (from Deductions Worksheet page 3)",
-        "type": "text",
-        "required": false
-      },
-      {
-        "id": "extra_withholding",
-        "label": "Step 4c: Extra withholding \u2014 additional amount per pay period to withhold",
-        "type": "text",
-        "required": false
-      },
-      {
-        "id": "employer_name",
-        "label": "Employer's name and address",
-        "type": "text",
-        "required": true
-      },
-      {
-        "id": "first_date_of_employment",
-        "label": "First date of employment",
-        "type": "text",
-        "required": false
-      },
-      {
-        "id": "employer_ein",
-        "label": "Employer Identification Number (EIN)",
-        "type": "text",
-        "required": false
-      }
+  {
+    "id": "first_name_middle",
+    "label": "What is your first name and middle initial?",
+    "type": "text",
+    "section": "About you",
+    "required": true
+  },
+  {
+    "id": "last_name",
+    "label": "What is your last name?",
+    "type": "text",
+    "section": "About you",
+    "required": true
+  },
+  {
+    "id": "address",
+    "label": "What is your home street address?",
+    "helper": "Example: 123 Main St Apt 4B",
+    "type": "text",
+    "section": "About you",
+    "required": true
+  },
+  {
+    "id": "city_state_zip",
+    "label": "What is your city, state, and ZIP code?",
+    "helper": "Example: Seattle, WA 98101",
+    "type": "text",
+    "section": "About you",
+    "required": true
+  },
+  {
+    "id": "ssn",
+    "label": "Do you want to include your Social Security Number?",
+    "helper": "You can leave this blank and write it by hand later.",
+    "type": "text",
+    "section": "Sensitive information",
+    "required": false,
+    "sensitive": true
+  },
+  {
+    "id": "filing_status",
+    "label": "Which filing status will you use on your federal tax return?",
+    "type": "single_choice",
+    "section": "Filing status",
+    "options": [
+      "Single or Married filing separately",
+      "Married filing jointly or Qualifying surviving spouse",
+      "Head of household"
+    ],
+    "required": true
+  },
+  {
+    "id": "has_multiple_jobs",
+    "label": "Do you currently have more than one job?",
+    "type": "single_choice",
+    "section": "Jobs",
+    "options": ["Yes", "No"],
+    "required": true
+  },
+  {
+    "id": "spouse_works",
+    "label": "If you are married filing jointly, does your spouse also work?",
+    "helper": "Choose No if this does not apply.",
+    "type": "single_choice",
+    "section": "Jobs",
+    "options": ["Yes", "No"],
+    "required": false
+  },
+  {
+    "id": "exactly_two_similar_jobs",
+    "label": "Are there exactly two jobs total, with similar pay?",
+    "helper": "This helps DocuLyft decide whether to check the Step 2(c) box.",
+    "type": "single_choice",
+    "section": "Jobs",
+    "options": ["Yes", "No"],
+    "required": false,
+    "show_if_any": [
+      { "field": "has_multiple_jobs", "value": "Yes" },
+      { "field": "spouse_works", "value": "Yes" }
     ]
+  },
+  {
+    "id": "children_under_17",
+    "label": "How many qualifying children under age 17 will you claim?",
+    "helper": "DocuLyft will calculate the W-4 dollar amount for you.",
+    "type": "number",
+    "section": "Dependents",
+    "required": false
+  },
+  {
+    "id": "other_dependents_count",
+    "label": "How many other dependents will you claim?",
+    "helper": "This can include older children or other qualifying dependents.",
+    "type": "number",
+    "section": "Dependents",
+    "required": false
+  },
+  {
+    "id": "other_income",
+    "label": "Do you have other yearly income not from jobs?",
+    "helper": "Examples: interest, dividends, retirement income. Leave blank if none.",
+    "type": "text",
+    "section": "Optional adjustments",
+    "required": false
+  },
+  {
+    "id": "deductions",
+    "label": "Do you want to claim extra deductions beyond the standard deduction?",
+    "helper": "Leave blank unless you know you will itemize or use the W-4 deductions worksheet.",
+    "type": "text",
+    "section": "Optional adjustments",
+    "required": false
+  },
+  {
+    "id": "extra_withholding",
+    "label": "Do you want extra tax withheld from each paycheck?",
+    "helper": "Enter the extra dollar amount per paycheck, or leave blank.",
+    "type": "text",
+    "section": "Optional adjustments",
+    "required": false
+  },
+  {
+    "id": "employer_name",
+    "label": "Employer name and address",
+    "helper": "Optional. Your employer can complete this section.",
+    "type": "text",
+    "section": "Employer information",
+    "required": false
+  },
+  {
+    "id": "first_date_of_employment",
+    "label": "First date of employment",
+    "type": "text",
+    "section": "Employer information",
+    "required": false
+  },
+  {
+    "id": "employer_ein",
+    "label": "Employer Identification Number, if known",
+    "helper": "Optional. Your employer can complete this.",
+    "type": "text",
+    "section": "Employer information",
+    "required": false
+  }
+]
   },
   {
     "form_id": "w2",

@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
+  GoogleAuthProvider,
   updateProfile,
   setPersistence,
   browserLocalPersistence,
@@ -99,6 +100,13 @@ export default function AuthModal({ onClose }) {
       await setPersistence(auth, browserLocalPersistence);
 
       const result = await signInWithPopup(auth, googleProvider);
+
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const accessToken = credential?.accessToken;
+
+      if (accessToken) {
+        sessionStorage.setItem("google_drive_access_token", accessToken);
+      }
 
       console.log("Google login success:", result.user);
 
@@ -255,7 +263,9 @@ export default function AuthModal({ onClose }) {
                 mode === "signup" ? "At least 6 characters" : "Your password"
               }
               className={errors.password ? "input-error" : ""}
-              autoComplete={mode === "signin" ? "current-password" : "new-password"}
+              autoComplete={
+                mode === "signin" ? "current-password" : "new-password"
+              }
             />
             {errors.password && (
               <span className="field-error">{errors.password}</span>
@@ -274,7 +284,7 @@ export default function AuthModal({ onClose }) {
         <p className="modal-privacy">
           {mode === "signin" ? (
             <>
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <button
                 type="button"
                 className="nudge-link"

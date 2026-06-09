@@ -3184,6 +3184,34 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
   max-width: 980px;
   padding: 120px 96px;
 }
+.dl-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.dl-logo-img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.dl-logo-text {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--navy, #0d1f3c);
+}
+
+.dl-logo-light .dl-logo-text {
+  color: #ffffff;
+}
 
 .fa-hero-h1 {
   font-size: clamp(3rem, 5.4vw, 4.4rem);

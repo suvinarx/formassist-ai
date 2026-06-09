@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import Logo from "../components/Logo";
 
 export default function SecurityPage() {
   const navigate = useNavigate();
@@ -13,8 +14,7 @@ export default function SecurityPage() {
     onClick={() => navigate("/")}
     style={{ cursor: "pointer" }}
   >
-    <div className="fa-brand-mark">F</div>
-    <span className="fa-brand-name">DocuLyft</span>
+     <Logo light />
   </div>
 
   <div className="fa-topnav-links">

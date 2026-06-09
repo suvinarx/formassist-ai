@@ -68,18 +68,29 @@ W9 = {
 # f1_08=other income, f1_09=deductions, f1_10=extra withholding
 # Employer section: f1_11=employer name+addr, f1_12=first date, f1_13=EIN
 W4 = {
+    # Step 1(a)
     "first_name_middle":          "topmostSubform[0].Page1[0].Step1a[0].f1_01[0]",
     "last_name":                  "topmostSubform[0].Page1[0].Step1a[0].f1_02[0]",
     "address":                    "topmostSubform[0].Page1[0].Step1a[0].f1_03[0]",
     "city_state_zip":             "topmostSubform[0].Page1[0].Step1a[0].f1_04[0]",
+
+    # Step 1(b)
     "ssn":                        "topmostSubform[0].Page1[0].f1_05[0]",
-    "dependents_amount":          "topmostSubform[0].Page1[0].Step3_ReadOrder[0].f1_06[0]",
-    "other_income":               "topmostSubform[0].Page1[0].f1_08[0]",
-    "deductions":                 "topmostSubform[0].Page1[0].f1_09[0]",
-    "extra_withholding":          "topmostSubform[0].Page1[0].f1_10[0]",
-    "employer_name":              "topmostSubform[0].Page1[0].f1_11[0]",
-    "first_date_of_employment":   "topmostSubform[0].Page1[0].f1_12[0]",
-    "employer_ein":               "topmostSubform[0].Page1[0].f1_13[0]",
+
+    # Step 3 — 2026 W-4 fields
+    "qualifying_children_amount":  "topmostSubform[0].Page1[0].Step3_ReadOrder[0].f1_06[0]",
+    "other_dependents_amount":     "topmostSubform[0].Page1[0].Step3_ReadOrder[0].f1_07[0]",
+    "dependents_amount":           "topmostSubform[0].Page1[0].f1_08[0]",
+
+    # Step 4 — 2026 W-4 fields
+    "other_income":                "topmostSubform[0].Page1[0].f1_09[0]",
+    "deductions":                  "topmostSubform[0].Page1[0].f1_10[0]",
+    "extra_withholding":           "topmostSubform[0].Page1[0].f1_11[0]",
+
+    # Employer section — 2026 W-4 fields
+    "employer_name":               "topmostSubform[0].Page1[0].f1_12[0]",
+    "first_date_of_employment":    "topmostSubform[0].Page1[0].f1_13[0]",
+    "employer_ein":                "topmostSubform[0].Page1[0].f1_14[0]",
 }
 # Filing status checkbox mapping
 W4_FILING_STATUS = {
@@ -88,6 +99,9 @@ W4_FILING_STATUS = {
     "Head of household":                                     "topmostSubform[0].Page1[0].c1_1[2]",
 }
 
+W4_STEP2_CHECKBOX = {
+    "Check this box (ONLY if there are exactly 2 jobs total with similar pay)": "topmostSubform[0].Page1[0].c1_2[0]",
+}
 # ── Form 1040 ─────────────────────────────────────────────────────────────────
 # Page1:
 #   f1_01=your first+middle, f1_02=your last, f1_03=your SSN

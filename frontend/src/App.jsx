@@ -1040,31 +1040,37 @@ function MainApp({ user, setShowAuth, getFirstName, handleSignOut }) {
             </div>
 
             <div className="fa-search-chips">
-              {["W-9", "I-485", "Form 1040", "DS-11", "N-400", "I-9", "W-4", "I-130"].map(
-                (chip) => (
-                  <button
-                    key={chip}
-                    className="fa-search-chip"
-                    onClick={() => {
-                      setSearchQuery(chip);
-                      trackEvent("search", {
-                        searchQuery: chip,
-                        source: "hero_search_chip",
-                      });
-                      setSearchResults(
-                        FORMS_FLAT.filter(
-                          (f) =>
-                            f.short_name.toLowerCase().includes(chip.toLowerCase()) ||
-                            f.form_id.toLowerCase().includes(chip.toLowerCase())
-                        ).slice(0, 6)
-                      );
-                    }}
-                  >
-                    {chip}
-                  </button>
-                )
-              )}
-            </div>
+  {["W-9", "I-485", "Form 1040", "DS-11", "N-400", "I-9", "W-4", "I-130"].map(
+    (chip) => (
+      <button
+        key={chip}
+        className="fa-search-chip"
+        onClick={() => {
+          const q = chip.toLowerCase();
+
+          const match = FORMS_FLAT.find(
+            (f) =>
+              f.short_name?.toLowerCase() === q ||
+              f.form_id?.toLowerCase() === q ||
+              f.form_name?.toLowerCase().includes(q)
+          );
+
+          if (match) {
+            setSearchResults([]);
+            setSearchQuery("");
+            navigate(`/form/${match.form_id}`);
+            return;
+          }
+
+          setSearchQuery(chip);
+          setSearchResults([]);
+        }}
+      >
+        {chip}
+      </button>
+    )
+  )}
+</div>
 
             <div className="fa-hero-btns">
               <button

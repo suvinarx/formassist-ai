@@ -20,3 +20,15 @@ frontend 2/
 frontend2/
 *.zip
 >>>>>>> 3528e04 (added)
+
+# Local Firebase tools/exports
+firebase_purge.sh
+firebase_to_csv.sh
+firestore_export/
+
+# Environment files
+.env
+*.env
+backend/.env
+frontend/.env
+frontend/.env.local
